@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/','HomeController@index');
 Route::post('/login','HomeController@loginPost');
 Route::post('/admin-login','HomeController@adminLoginPost');
-// Route::post('/forget-password','HomeController@forgetPassword');
+Route::post('/forget-password','HomeController@forgetPassword');
 Route::get('/log-out','HomeController@loginOut');
 // Route::get('/check-version','HomeController@checkVersion');
 
@@ -25,7 +25,7 @@ Route::get('/log-out','HomeController@loginOut');
 // Route::post('/change-password','HomeController@changePasswordPost');
 // Route::get('/reset-password/{id}','HomeController@resetPasswordPost');
 // Route::post('/reset-password/{id}','HomeController@resetPasswordPost');
-Route::get('/admin','HomeController@adminIndex');
+Route::get('/my-admin','HomeController@adminIndex');
 // Route::get('/twilio-sand','HomeController@twilioSand');
 
 Route::group(['prefix'=>'admin'], function () {

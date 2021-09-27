@@ -133,7 +133,7 @@ class HomeController extends Controller
 	
 	public function loginOut(){
 		Auth::logout();
-		return redirect('/');
+		return redirect('/my-admin');
 	}
 
 	public function does_url_exists($url) {
