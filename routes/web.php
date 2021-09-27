@@ -17,7 +17,7 @@ Route::get('/','HomeController@index');
 Route::post('/login','HomeController@loginPost');
 Route::post('/admin-login','HomeController@adminLoginPost');
 // Route::post('/forget-password','HomeController@forgetPassword');
-// Route::get('/log-out','HomeController@loginOut');
+Route::get('/log-out','HomeController@loginOut');
 // Route::get('/check-version','HomeController@checkVersion');
 
 // Route::get('/search-result','HomeController@searchResult');
