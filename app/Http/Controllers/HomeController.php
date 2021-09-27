@@ -61,7 +61,7 @@ class HomeController extends Controller
 				return Redirect::to('/');
 			}
 		} else {
-			return Redirect::to('/admin')->with('invalid_login','Invalid email or password');
+			return Redirect::to('/my-admin')->with('invalid_login','Invalid email or password');
 		}
 	}
 	
