@@ -1,344 +1,486 @@
+<!doctype html>
+<html class="no-js" lang="en">
 
-<!DOCTYPE html>
-<html dir="ltr" lang="en">
-   <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <!-- Tell the browser to be responsive to screen width -->
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="robots" content="noindex,nofollow">
-      <title>USCIS VERIFY</title>
-      <!-- Favicon icon -->
-      <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
-      <!-- Custom CSS -->
-      <link href="{{ url('clients/plugins/bower_components/chartist/dist/chartist.min.css') }}" rel="stylesheet">
-	  <link href="https://beontime.io/css/toaster.css" rel="stylesheet">
-      <link rel="stylesheet" href="{{ url('clients/plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css') }}">
-      <!-- Custom CSS -->
-      <link href="{{ url('clients/css/style.min.css') }}" rel="stylesheet">
-      <link href="{{ url('clients/css/style.css') }}" rel="stylesheet">
-      <link href="http://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" rel="stylesheet">
-	  
-   </head>
-   <body>
-      <!-- ============================================================== -->
-      <!-- Preloader - style you can find in spinners.css -->
-      <!-- ============================================================== -->
-      <div class="preloader">
-         <div class="lds-ripple">
-            <div class="lds-pos"></div>
-            <div class="lds-pos"></div>
-         </div>
-      </div>
-      <!-- ============================================================== -->
-      <!-- Main wrapper - style you can find in pages.scss -->
-      <!-- ============================================================== -->
-      <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
-         data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
-         <!-- ============================================================== -->
-         <!-- Topbar header - style you can find in pages.scss -->
-         <!-- ============================================================== -->
-         <header class="topbar" data-navbarbg="skin5">
-            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-               <div class="navbar-header" data-logobg="skin6">
-                  <!-- ============================================================== -->
-                  <!-- Logo -->
-                  <!-- ============================================================== -->
-                  <a class="navbar-brand" href="{{ url('/') }}">
-                  <span class="logo-text pl-0 w-100 text-center">
-                  <img src="{{ url('images/logo.png') }}" alt="homepage" width="120px" />
-                  </span>
-                  </a>
-                  <!-- ============================================================== -->
-                  <!-- End Logo -->
-                  <!-- ============================================================== -->
-                  <!-- ============================================================== -->
-                  <!-- toggle and nav items -->
-                  <!-- ============================================================== -->
-                  <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
-                     href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
-               </div>
-               <!-- ============================================================== -->
-               <!-- End Logo -->
-               <!-- ============================================================== -->
-               <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
-                  <ul class="navbar-nav d-none d-md-block d-lg-none">
-                     <li class="nav-item">
-                        <a class="nav-toggler nav-link waves-effect waves-light text-white"
-                           href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
-                     </li>
-                  </ul>
-                  <!-- ============================================================== -->
-                  <!-- Right side toggle and nav items -->
-                  <!-- ============================================================== -->
-                  <!-- ul class="navbar-nav  d-flex align-items-center pl-25">
-                      <li class=" in">
-                        <form role="search" class="app-search d-none d-md-block mr-3">
-                           <input type="text" placeholder="Property Search" class="form-control mt-0">
-                           <a href="" class="active">
-                           <i class="fa fa-search"></i>
-                           </a>
-                        </form>
-                     </li>
-                  </ul -->
-                  <ul class="navbar-nav ml-auto d-flex align-items-center">
-                     <!-- ============================================================== -->
-                     <!-- Search -->
-                     <!-- ============================================================== -->
-                     
-                     <li class="dropdown dropdown-notification nav-item">
-                        <a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="fa fa-bell" style="font-size: 24px" aria-hidden="true"></i><span class="badge badge-pill badge-danger badge-up badge-glow">6</span></a>
-                        <!-- ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
-                           <li class="dropdown-menu-header">
-                              <h6 class="dropdown-header m-0"><span class="grey darken-2">Notifications</span></h6>
-                              <span class="notification-tag badge badge-danger float-right m-0">5 New</span>
-                           </li>
-                           <li class="scrollable-container media-list w-100 ps ps--active-y">
-                              <a href="javascript:void(0)">
-                                 <div class="media">
-                                    <div class="media-left align-self-center"><i class="ft-plus-square icon-bg-circle bg-cyan mr-0"></i></div>
-                                    <div class="media-body">
-                                       <h6 class="media-heading">You have new order!</h6>
-                                       <p class="notification-text font-small-3 text-muted">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                       <small>
-                                       <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">30 minutes ago</time></small>
-                                    </div>
-                                 </div>
-                              </a>
-                              <a href="javascript:void(0)">
-                                 <div class="media">
-                                    <div class="media-left align-self-center"><i class="ft-download-cloud icon-bg-circle bg-red bg-darken-1 mr-0"></i></div>
-                                    <div class="media-body">
-                                       <h6 class="media-heading red darken-1">99% Server load</h6>
-                                       <p class="notification-text font-small-3 text-muted">Aliquam tincidunt mauris eu risus.</p>
-                                       <small>
-                                       <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Five hour ago</time></small>
-                                    </div>
-                                 </div>
-                              </a>
-                              <a href="javascript:void(0)">
-                                 <div class="media">
-                                    <div class="media-left align-self-center"><i class="ft-alert-triangle icon-bg-circle bg-yellow bg-darken-3 mr-0"></i></div>
-                                    <div class="media-body">
-                                       <h6 class="media-heading yellow darken-3">Warning notifixation</h6>
-                                       <p class="notification-text font-small-3 text-muted">Vestibulum auctor dapibus neque.</p>
-                                       <small>
-                                       <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Today</time></small>
-                                    </div>
-                                 </div>
-                              </a>
-                              <a href="javascript:void(0)">
-                                 <div class="media">
-                                    <div class="media-left align-self-center"><i class="ft-check-circle icon-bg-circle bg-cyan mr-0"></i></div>
-                                    <div class="media-body">
-                                       <h6 class="media-heading">Complete the task</h6>
-                                       <small>
-                                       <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Last week</time></small>
-                                    </div>
-                                 </div>
-                              </a>
-                              <a href="javascript:void(0)">
-                                 <div class="media">
-                                    <div class="media-left align-self-center"><i class="ft-file icon-bg-circle bg-teal mr-0"></i></div>
-                                    <div class="media-body">
-                                       <h6 class="media-heading">Generate monthly report</h6>
-                                       <small>
-                                       <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Last month</time></small>
-                                    </div>
-                                 </div>
-                              </a>
-                              <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-                                 <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                              </div>
-                              <div class="ps__rail-y" style="top: 0px; height: 255px; right: 0px;">
-                                 <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 157px;"></div>
-                              </div>
-                           </li>
-                           <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center" href="javascript:void(0)">Read all notifications</a></li>
-                        </ul -->
-                     </li>
-                     <!-- ============================================================== -->
-                     <!-- User profile and search -->
-                     <!-- ============================================================== -->
-                     <li class="dropdown dropdown-user nav-item">
-                        <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown" aria-expanded="false"></span><span class="avatar avatar-online"><img src="{{ url('clients/images/user.png') }}" alt="avatar"><i></i></span><span class="ml-3 user-name text-bold-700">{{Auth::user()->name}}</a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                           <a class="dropdown-item" href="{{ url(user_url('profile')) }}"><i class="fas fa-user-plus"></i> Manage Account</a>
-                           <a class="dropdown-item" href="{{ url('change-password') }}"><i class="fas fa-key"></i> Change Password</a>
-                           <!-- <a class="dropdown-item" href="#"><i class="fas fa-sync-alt"></i> Activity Log</a> -->
-                           <a class="dropdown-item" href="{{ url('/log-out') }}"><i class="fas fa-sign-out-alt"></i> Log out</a>
-                        </div>
-                     </li>
-                     <!-- ============================================================== -->
-                     <!-- User profile and search -->
-                     <!-- ============================================================== -->
-                  </ul>
-               </div>
-            </nav>
-         </header>
-         <!-- ============================================================== -->
-         <!-- End Topbar header -->
-         <!-- ============================================================== -->
-         <!-- ============================================================== -->
-         <!-- Left Sidebar - style you can find in sidebar.scss  -->
-         <!-- ============================================================== -->
-         <aside class="left-sidebar" data-sidebarbg="skin6">
-            <!-- Sidebar scroll-->
-            <div class="scroll-sidebar">
-               <!-- Sidebar navigation-->
-               <nav class="sidebar-nav">
-                  <ul id="sidebarnav">
-                     <!-- User Profile-->
-                     <li class="sidebar-item mt-3">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url(user_url('dashboard')) }}"
-                           aria-expanded="false">
-                        <i class="fas fa-th-large"></i>
-                        <span class="hide-menu">Dashboard</span>
-                        </a>
-                     </li>
-					 @if(Auth::user()->roll_id === 1)
-                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url(user_url('client')) }}"
-                           aria-expanded="false">
-                        <i class="fas fa-users"></i>
-                        <span class="hide-menu">Clients</span>
-                        </a>
-                     </li>
-					@endif
-					@if(Auth::user()->roll_id === 2)
-					 <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url(user_url('providers')) }}"
-                           aria-expanded="false">
-                        <i class="fas fa-users"></i>
-                        <span class="hide-menu">Providers</span>
-                        </a>
-                     </li>
-					@endif
-                     <!-- <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="showing.html"
-                           aria-expanded="false">
-                        <i class="far fa-calendar-alt"></i>
-                        <span class="hide-menu">Showings</span>
-                        </a>
-                     </li>
-                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="open-houses.html"
-                           aria-expanded="false">
-                        <i class="fas fa-home"></i>
-                        <span class="hide-menu">Open Houses</span>
-                        </a>
-                     </li> -->
-                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/log-out') }}"
-                           aria-expanded="false">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span class="hide-menu">Logout</span>
-                        </a>
-                     </li>
-                  </ul>
-               </nav>
-               <!-- End Sidebar navigation -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Dashboard V.1 | Nalika - Material Admin Template</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon
+		============================================ -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <!-- Google Fonts
+		============================================ -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/bootstrap.min.css') }}">
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/font-awesome.min.css') }}">
+	<!-- nalika Icon CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/nalika-icon.css') }}">
+    <!-- owl.carousel CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ url('admin/css/owl.theme.css') }}">
+    <link rel="stylesheet" href="{{ url('admin/css/owl.transitions.css') }}">
+    <!-- animate CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/animate.css') }}">
+    <!-- normalize CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/normalize.css') }}">
+    <!-- meanmenu icon CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/meanmenu.min.css') }}">
+    <!-- main CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/main.css') }}">
+    <!-- morrisjs CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/morrisjs/morris.css') }}">
+    <!-- mCustomScrollbar CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/scrollbar/jquery.mCustomScrollbar.min.css') }}">
+    <!-- metisMenu CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/metisMenu/metisMenu.min.css') }}">
+    <link rel="stylesheet" href="{{ url('admin/css/metisMenu/metisMenu-vertical.css') }}">
+    <!-- calendar CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/calendar/fullcalendar.min.css') }}">
+    <link rel="stylesheet" href="{{ url('admin/css/calendar/fullcalendar.print.min.css') }}">
+    <!-- style CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/style.css') }}">
+    <!-- responsive CSS
+		============================================ -->
+    <link rel="stylesheet" href="{{ url('admin/css/responsive.css') }}">
+    <!-- modernizr JS
+		============================================ -->
+    <script src="{{ url('admin/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <div class="left-sidebar-pro">
+        <nav id="sidebar" class="">
+            <div class="sidebar-header">
+                <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                <strong><img src="img/logo/logosn.png" alt="" /></strong>
             </div>
-            <!-- End Sidebar scroll-->
-         </aside>
-         <!-- ============================================================== -->
-         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-         <!-- ============================================================== -->
-         <!-- ============================================================== -->
-         <!-- Page wrapper  -->
-         <!-- ============================================================== -->
+            <div class="left-custom-menu-adp-wrap comment-scrollbar">
+                <nav class="sidebar-nav left-sidebar-menu-pro">
+                    <ul class="metismenu" id="menu1">
+                        <li class="active">
+                            <a class="has-arrow" href="index.html">
+								   <i class="icon nalika-home icon-wrap"></i>
+								   <span class="mini-click-non">Ecommerce</span>
+								</a>
+                            <ul class="submenu-angle" aria-expanded="true">
+                                <li><a title="Dashboard v.1" href="{{url('/admin/dashboard')}}"><span class="mini-sub-pro">Dashboard v.1</span></a></li>
+                                <!-- li><a title="Dashboard v.2" href="index-1.html"><span class="mini-sub-pro">Dashboard v.2</span></a></li>
+                                <li><a title="Dashboard v.3" href="index-2.html"> <span class="mini-sub-pro">Dashboard v.3</span></a></li>
+                                <li><a title="Product List" href="product-list.html"><span class="mini-sub-pro">Product List</span></a></li>
+                                <li><a title="Product Edit" href="product-edit.html"><span class="mini-sub-pro">Product Edit</span></a></li>
+                                <li><a title="Product Detail" href="product-detail.html"><span class="mini-sub-pro">Product Detail</span></a></li>
+                                <li><a title="Product Cart" href="product-cart.html"><span class="mini-sub-pro">Product Cart</span></a></li>
+                                <li><a title="Product Payment" href="product-payment.html"><span class="mini-sub-pro">Product Payment</span></a></li>
+                                <li><a title="Analytics" href="analytics.html"><span class="mini-sub-pro">Analytics</span></a></li>
+                                <li><a title="Widgets" href="widgets.html"><span class="mini-sub-pro">Widgets</span></a></li -->
+                            </ul>
+                        </li>
+                        <!-- li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-mail icon-wrap"></i> <span class="mini-click-non">Mailbox</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Inbox" href="mailbox.html"><span class="mini-sub-pro">Inbox</span></a></li>
+                                <li><a title="View Mail" href="mailbox-view.html"><span class="mini-sub-pro">View Mail</span></a></li>
+                                <li><a title="Compose Mail" href="mailbox-compose.html"><span class="mini-sub-pro">Compose Mail</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-diamond icon-wrap"></i> <span class="mini-click-non">Interface</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Google Map" href="google-map.html"><span class="mini-sub-pro">Google Map</span></a></li>
+                                <li><a title="Data Maps" href="data-maps.html"><span class="mini-sub-pro">Data Maps</span></a></li>
+                                <li><a title="Pdf Viewer" href="pdf-viewer.html"><span class="mini-sub-pro">Pdf Viewer</span></a></li>
+                                <li><a title="X-Editable" href="x-editable.html"><span class="mini-sub-pro">X-Editable</span></a></li>
+                                <li><a title="Code Editor" href="code-editor.html"><span class="mini-sub-pro">Code Editor</span></a></li>
+                                <li><a title="Tree View" href="tree-view.html"><span class="mini-sub-pro">Tree View</span></a></li>
+                                <li><a title="Preloader" href="preloader.html"><span class="mini-sub-pro">Preloader</span></a></li>
+                                <li><a title="Images Cropper" href="images-cropper.html"><span class="mini-sub-pro">Images Cropper</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-pie-chart icon-wrap"></i> <span class="mini-click-non">Miscellaneous</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="File Manager" href="file-manager.html"><span class="mini-sub-pro">File Manager</span></a></li>
+                                <li><a title="Blog" href="blog.html"><span class="mini-sub-pro">Blog</span></a></li>
+                                <li><a title="Blog Details" href="blog-details.html"><span class="mini-sub-pro">Blog Details</span></a></li>
+                                <li><a title="404 Page" href="404.html"><span class="mini-sub-pro">404 Page</span></a></li>
+                                <li><a title="500 Page" href="500.html"><span class="mini-sub-pro">500 Page</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-bar-chart icon-wrap"></i> <span class="mini-click-non">Charts</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Bar Charts" href="bar-charts.html"><span class="mini-sub-pro">Bar Charts</span></a></li>
+                                <li><a title="Line Charts" href="line-charts.html"><span class="mini-sub-pro">Line Charts</span></a></li>
+                                <li><a title="Area Charts" href="area-charts.html"><span class="mini-sub-pro">Area Charts</span></a></li>
+                                <li><a title="Rounded Charts" href="rounded-chart.html"><span class="mini-sub-pro">Rounded Charts</span></a></li>
+                                <li><a title="C3 Charts" href="c3.html"><span class="mini-sub-pro">C3 Charts</span></a></li>
+                                <li><a title="Sparkline Charts" href="sparkline.html"><span class="mini-sub-pro">Sparkline Charts</span></a></li>
+                                <li><a title="Peity Charts" href="peity.html"><span class="mini-sub-pro">Peity Charts</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-table icon-wrap"></i> <span class="mini-click-non">Data Tables</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Peity Charts" href="static-table.html"><span class="mini-sub-pro">Static Table</span></a></li>
+                                <li><a title="Data Table" href="data-table.html"><span class="mini-sub-pro">Data Table</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-forms icon-wrap"></i> <span class="mini-click-non">Forms Elements</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Basic Form Elements" href="basic-form-element.html"><span class="mini-sub-pro">Bc Form Elements</span></a></li>
+                                <li><a title="Advance Form Elements" href="advance-form-element.html"><span class="mini-sub-pro">Ad Form Elements</span></a></li>
+                                <li><a title="Password Meter" href="password-meter.html"><span class="mini-sub-pro">Password Meter</span></a></li>
+                                <li><a title="Multi Upload" href="multi-upload.html"><span class="mini-sub-pro">Multi Upload</span></a></li>
+                                <li><a title="Text Editor" href="tinymc.html"><span class="mini-sub-pro">Text Editor</span></a></li>
+                                <li><a title="Dual List Box" href="dual-list-box.html"><span class="mini-sub-pro">Dual List Box</span></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-smartphone-call icon-wrap"></i> <span class="mini-click-non">App views</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Notifications" href="notifications.html"><span class="mini-sub-pro">Notifications</span></a></li>
+                                <li><a title="Alerts" href="alerts.html"><span class="mini-sub-pro">Alerts</span></a></li>
+                                <li><a title="Modals" href="modals.html"><span class="mini-sub-pro">Modals</span></a></li>
+                                <li><a title="Buttons" href="buttons.html"><span class="mini-sub-pro">Buttons</span></a></li>
+                                <li><a title="Tabs" href="tabs.html"><span class="mini-sub-pro">Tabs</span></a></li>
+                                <li><a title="Accordion" href="accordion.html"><span class="mini-sub-pro">Accordion</span></a></li>
+                            </ul>
+                        </li>
+                        <li id="removable">
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="icon nalika-new-file icon-wrap"></i> <span class="mini-click-non">Pages</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Login" href="login.html"><span class="mini-sub-pro">Login</span></a></li>
+                                <li><a title="Register" href="register.html"><span class="mini-sub-pro">Register</span></a></li>
+                                <li><a title="Lock" href="lock.html"><span class="mini-sub-pro">Lock</span></a></li>
+                                <li><a title="Password Recovery" href="password-recovery.html"><span class="mini-sub-pro">Password Recovery</span></a></li>
+                            </ul>
+                        </li -->
+                    </ul>
+                </nav>
+            </div>
+        </nav>
+    </div>
+    <!-- Start Welcome area -->
+    <div class="all-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="logo-pro">
+                        <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-advance-area">
+            <div class="header-top-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="header-top-wraper">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-0 col-sm-1 col-xs-12">
+                                        <div class="menu-switcher-pro">
+                                            <button type="button" id="sidebarCollapse" class="btn bar-button-pro header-drl-controller-btn btn-info navbar-btn">
+													<i class="icon nalika-menu-task"></i>
+												</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
+                                        <div class="header-top-menu tabl-d-n hd-search-rp">
+                                            <div class="breadcome-heading">
+												<form role="search" class="">
+													<input type="text" placeholder="Search..." class="form-control">
+													<a href=""><i class="fa fa-search"></i></a>
+												</form>
+											</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                        <div class="header-right-info">
+                                            <ul class="nav navbar-nav mai-top-nav header-right-menu">
+                                               
+                                                <li class="nav-item">
+                                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
+															<i class="icon nalika-user"></i>
+															<span class="admin-name">Advanda Cro</span>
+															<i class="icon nalika-down-arrow nalika-angle-dw"></i>
+														</a>
+                                                    <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
+                                                        <li><a href="register.html"><span class="icon nalika-home author-log-ic"></span> Register</a>
+                                                        </li>
+                                                        <li><a href="#"><span class="icon nalika-user author-log-ic"></span> My Profile</a>
+                                                        </li>
+                                                        <li><a href="lock.html"><span class="icon nalika-diamond author-log-ic"></span> Lock</a>
+                                                        </li>
+                                                        <li><a href="#"><span class="icon nalika-settings author-log-ic"></span> Settings</a>
+                                                        </li>
+                                                        <li><a href="login.html"><span class="icon nalika-unlocked author-log-ic"></span> Log Out</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                               
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu start -->
+            <div class="mobile-menu-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="mobile-menu">
+                                <nav id="dropdown">
+                                    <ul class="mobile-menu-nav">
+                                        <li><a data-toggle="collapse" data-target="#Charts" href="#">Home <span class="admin-project-icon nalika-icon nalika-down-arrow"></span></a>
+                                            <ul class="collapse dropdown-header-top">
+                                                <li><a href="index.html">Dashboard v.1</a></li>
+                                                <li><a href="index-1.html">Dashboard v.2</a></li>
+                                                <li><a href="index-3.html">Dashboard v.3</a></li>
+                                                <li><a href="product-list.html">Product List</a></li>
+                                                <li><a href="product-edit.html">Product Edit</a></li>
+                                                <li><a href="product-detail.html">Product Detail</a></li>
+                                                <li><a href="product-cart.html">Product Cart</a></li>
+                                                <li><a href="product-payment.html">Product Payment</a></li>
+                                                <li><a href="analytics.html">Analytics</a></li>
+                                                <li><a href="widgets.html">Widgets</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#demo" href="#">Mailbox <span class="admin-project-icon nalika-icon nalika-down-arrow"></span></a>
+                                            <ul id="demo" class="collapse dropdown-header-top">
+                                                <li><a href="mailbox.html">Inbox</a>
+                                                </li>
+                                                <li><a href="mailbox-view.html">View Mail</a>
+                                                </li>
+                                                <li><a href="mailbox-compose.html">Compose Mail</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#others" href="#">Miscellaneous <span class="admin-project-icon nalika-icon nalika-down-arrow"></span></a>
+                                            <ul id="others" class="collapse dropdown-header-top">
+                                                <li><a href="file-manager.html">File Manager</a></li>
+                                                <li><a href="contacts.html">Contacts Client</a></li>
+                                                <li><a href="projects.html">Project</a></li>
+                                                <li><a href="project-details.html">Project Details</a></li>
+                                                <li><a href="blog.html">Blog</a></li>
+                                                <li><a href="blog-details.html">Blog Details</a></li>
+                                                <li><a href="404.html">404 Page</a></li>
+                                                <li><a href="500.html">500 Page</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#Miscellaneousmob" href="#">Interface <span class="admin-project-icon nalika-icon nalika-down-arrow"></span></a>
+                                            <ul id="Miscellaneousmob" class="collapse dropdown-header-top">
+                                                <li><a href="google-map.html">Google Map</a>
+                                                </li>
+                                                <li><a href="data-maps.html">Data Maps</a>
+                                                </li>
+                                                <li><a href="pdf-viewer.html">Pdf Viewer</a>
+                                                </li>
+                                                <li><a href="x-editable.html">X-Editable</a>
+                                                </li>
+                                                <li><a href="code-editor.html">Code Editor</a>
+                                                </li>
+                                                <li><a href="tree-view.html">Tree View</a>
+                                                </li>
+                                                <li><a href="preloader.html">Preloader</a>
+                                                </li>
+                                                <li><a href="images-cropper.html">Images Cropper</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#Chartsmob" href="#">Charts <span class="admin-project-icon nalika-icon nalika-down-arrow"></span></a>
+                                            <ul id="Chartsmob" class="collapse dropdown-header-top">
+                                                <li><a href="bar-charts.html">Bar Charts</a>
+                                                </li>
+                                                <li><a href="line-charts.html">Line Charts</a>
+                                                </li>
+                                                <li><a href="area-charts.html">Area Charts</a>
+                                                </li>
+                                                <li><a href="rounded-chart.html">Rounded Charts</a>
+                                                </li>
+                                                <li><a href="c3.html">C3 Charts</a>
+                                                </li>
+                                                <li><a href="sparkline.html">Sparkline Charts</a>
+                                                </li>
+                                                <li><a href="peity.html">Peity Charts</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#Tablesmob" href="#">Tables <span class="admin-project-icon nalika-icon nalika-down-arrow"></span></a>
+                                            <ul id="Tablesmob" class="collapse dropdown-header-top">
+                                                <li><a href="static-table.html">Static Table</a>
+                                                </li>
+                                                <li><a href="data-table.html">Data Table</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#formsmob" href="#">Forms <span class="admin-project-icon nalika-icon nalika-down-arrow"></span></a>
+                                            <ul id="formsmob" class="collapse dropdown-header-top">
+                                                <li><a href="basic-form-element.html">Basic Form Elements</a>
+                                                </li>
+                                                <li><a href="advance-form-element.html">Advanced Form Elements</a>
+                                                </li>
+                                                <li><a href="password-meter.html">Password Meter</a>
+                                                </li>
+                                                <li><a href="multi-upload.html">Multi Upload</a>
+                                                </li>
+                                                <li><a href="tinymc.html">Text Editor</a>
+                                                </li>
+                                                <li><a href="dual-list-box.html">Dual List Box</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#Appviewsmob" href="#">App views <span class="admin-project-icon nalika-icon nalika-down-arrow"></span></a>
+                                            <ul id="Appviewsmob" class="collapse dropdown-header-top">
+                                                <li><a href="basic-form-element.html">Basic Form Elements</a>
+                                                </li>
+                                                <li><a href="advance-form-element.html">Advanced Form Elements</a>
+                                                </li>
+                                                <li><a href="password-meter.html">Password Meter</a>
+                                                </li>
+                                                <li><a href="multi-upload.html">Multi Upload</a>
+                                                </li>
+                                                <li><a href="tinymc.html">Text Editor</a>
+                                                </li>
+                                                <li><a href="dual-list-box.html">Dual List Box</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a data-toggle="collapse" data-target="#Pagemob" href="#">Pages <span class="admin-project-icon nalika-icon nalika-down-arrow"></span></a>
+                                            <ul id="Pagemob" class="collapse dropdown-header-top">
+                                                <li><a href="login.html">Login</a>
+                                                </li>
+                                                <li><a href="register.html">Register</a>
+                                                </li>
+                                                <li><a href="lock.html">Lock</a>
+                                                </li>
+                                                <li><a href="password-recovery.html">Password Recovery</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu end -->
+            <div class="breadcome-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="breadcome-list">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <div class="breadcomb-wp">
+											<div class="breadcomb-ctn">
+												<h2>Dashboard One</h2>
+											</div>
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		@yield('content')
+		
+		
+        <!-- div class="footer-copyright-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="footer-copy-right">
+                            <p>Copyright © 2018 <a href="https://colorlib.com/wp/templates/">Colorlib</a> All rights reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div -->
+    </div>
+    <!-- jquery
+		============================================ -->
+    <script src="{{ url('admin/js/vendor/jquery-1.12.4.min.js') }}"></script>
+    <!-- bootstrap JS
+		============================================ -->
+    <script src="{{ url('admin/js/bootstrap.min.js') }}"></script>
+    <!-- wow JS
+		============================================ -->
+    <script src="{{ url('admin/js/wow.min.js') }}"></script>
+    <!-- price-slider JS
+		============================================ -->
+    <script src="{{ url('admin/js/jquery-price-slider.js') }}"></script>
+    <!-- meanmenu JS
+		============================================ -->
+    <script src="{{ url('admin/js/jquery.meanmenu.js') }}"></script>
+    <!-- owl.carousel JS
+		============================================ -->
+    <script src="{{ url('admin/js/owl.carousel.min.js') }}"></script>
+    <!-- sticky JS
+		============================================ -->
+    <script src="{{ url('admin/js/jquery.sticky.js') }}"></script>
+    <!-- scrollUp JS
+		============================================ -->
+    <script src="{{ url('admin/js/jquery.scrollUp.min.js') }}"></script>
+    <!-- mCustomScrollbar JS
+		============================================ -->
+    <script src="{{ url('admin/js/scrollbar/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+    <script src="{{ url('admin/js/scrollbar/mCustomScrollbar-active.js') }}"></script>
+    <!-- metisMenu JS
+		============================================ -->
+    <script src="{{ url('admin/js/metisMenu/metisMenu.min.js') }}"></script>
+    <script src="{{ url('admin/js/metisMenu/metisMenu-active.js') }}"></script>
+    <!-- sparkline JS
+		============================================ -->
+    <script src="{{ url('admin/js/sparkline/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ url('admin/js/sparkline/jquery.charts-sparkline.js') }}"></script>
+    <!-- calendar JS
+		============================================ -->
+    <script src="{{ url('admin/js/calendar/moment.min.js') }}"></script>
+    <script src="{{ url('admin/js/calendar/fullcalendar.min.js') }}"></script>
+    <script src="{{ url('admin/js/calendar/fullcalendar-active.js') }}"></script>
+	<!-- float JS
+		============================================ -->
+    <script src="{{ url('admin/js/flot/jquery.flot.js') }}"></script>
+    <script src="{{ url('admin/js/flot/jquery.flot.resize.js') }}"></script>
+    <script src="{{ url('admin/js/flot/curvedLines.js') }}"></script>
+    <script src="{{ url('admin/js/flot/flot-active.js') }}"></script>
+    <!-- plugins JS
+		============================================ -->
+    <script src="{{ url('admin/js/plugins.js') }}"></script>
+    <!-- main JS
+		============================================ -->
+    <script src="{{ url('admin/js/main.js') }}"></script>
+</body>
 
-
-
-
-
-
-
-
-
-
-
-@yield('content')
-
-
-
-
- <!-- ============================================================== -->
-         <!-- End Page wrapper  -->
-         <!-- ============================================================== -->
-      </div>
-      <!-- ============================================================== -->
-      <!-- End Wrapper -->
-      <!-- ============================================================== -->
-      <!-- ============================================================== -->
-      <!-- All Jquery -->
-      <!-- ============================================================== -->
-      <script src="{{ url('clients/plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
-      <!-- Bootstrap tether Core JavaScript -->
-      <script src="{{ url('clients/plugins/bower_components/popper.js/dist/umd/popper.min.js') }}"></script>
-      <script src="{{ url('clients/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-      <script src="{{ url('clients/js/app-style-switcher.js') }}"></script>
-      <script src="{{ url('clients/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
-      <!--Wave Effects -->
-      <script src="{{ url('clients/js/waves.js') }}"></script>
-      <!--Menu sidebar -->
-      <script src="{{ url('clients/js/sidebarmenu.js') }}"></script>
-      <!--Custom JavaScript -->
-      <script src="{{ url('clients/js/custom.js') }}"></script>
-      <!--This page JavaScript -->
-      <!--chartis chart-->
-      <script src="{{ url('clients/plugins/bower_components/chartist/dist/chartist.min.js') }}"></script>
-      <script src="{{ url('clients/plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
-      <script src="{{ url('clients/js/pages/dashboards/dashboard1.js') }}"></script>
-      <script src="http://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-	  <script src="https://beontime.io/js/jquery.toast.js"></script>
-	  
-	  
-      <script>
-		$(document).ready( function () {
-			$('#myTable').DataTable({
-				"aaSorting": [[0]],
-				"aoColumnDefs": [
-						{ "bSortable": false, "aTargets": [ 0, 1, 2, 3 ] }
-					]
-			});
-			
-		});
-	  </script>
-	  
-	  @if(Session::has('success_message'))
-	   <script>
-			$.toast({
-				  heading             : 'Success',
-				  text                : "{{Session::get('success_message')}}",
-				  loader              : true,
-				  loaderBg            : '#fff',
-				  showHideTransition  : 'fade',
-				  icon                : 'success',
-				  hideAfter           : 3000,
-				  position            : 'top-right'
-			});
-	   
-	   </script>
-	  @endif
-	  @if(Session::has('error_message'))
-	   <script>
-			$.toast({
-				  heading             : 'Error',
-				  text                : "{{Session::get('error_message')}}",
-				  loader              : true,
-				  loaderBg            : '#fff',
-				  showHideTransition  : 'fade',
-				  icon                : 'error',
-				  hideAfter           : 3000,
-				  position            : 'top-right'
-			  });
-	   
-	   </script>
-	  @endif
-	  
-	  @yield('script')
-	  
-	  
-   </body>
 </html>
