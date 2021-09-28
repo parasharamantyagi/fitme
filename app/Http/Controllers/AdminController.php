@@ -60,16 +60,19 @@ class AdminController extends Controller
 			$response['delayTime'] = 2000;
 			$response['url'] = url('/admin/view-category');
 			return response($this->getSuccessResponse($response));
-			
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }
 	}
 	
 	public function viewCategory(){
-		$category = Category::all();
-		$title = 'View Category';
-		return view('admin/category/view')->with('title',$title)->with('categories',$category);
+		try{
+			$category = Category::orderBy('id','desc')->get();
+			$title = 'View Category';
+			return view('admin/category/view')->with('title',$title)->with('categories',$category);
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
 	}
 	
 	

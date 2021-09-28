@@ -31,7 +31,7 @@
 											<button class="ds-setting">Disabled</button>
 										@endif
                                     </td>
-                                    <td>{{$category->status}}</td>
+                                    <td>{{$category->stock}}</td>
                                     <td>
                                         <!-- button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button -->
                                         <button data-toggle="tooltip" title="Trash" class="pd-setting-ed" onclick="deleteCategory({{$category->id}})"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
