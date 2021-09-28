@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Traits\ResponseTrait;
 use Auth;
 use Redirect;
 use App\User;
-use App\UserDetail;
-use Twilio\Rest\Client;
+use App\Category;
+// use App\UserDetail;
+// use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Hash;
 Use Illuminate\Support\Facades\Validator;
 use Mail;
@@ -15,6 +17,8 @@ use Mail;
 
 class AdminController extends Controller
 {
+	use ResponseTrait;
+	
     public function index(){
 		
 		$users = User::with(['user_detail'])->where('roll_id',1)->orderBy('id','DESC')->get();
@@ -23,8 +27,51 @@ class AdminController extends Controller
 	
 	
 	public function dashboard(){
-		return view('dashboard');
+		$title = 'dashboard';
+		return view('admin/dashboard')->with('title',$title);
 	}
+	
+	public function addCategory(){
+		$title = 'Add Category';
+		return view('admin/category/add')->with('title',$title);
+	}
+	
+	public function addCategoryPost(Request $request){
+		
+		try{
+			$inputData = array('title'=>$request->title,'stock'=>$request->stock,'status'=>$request->status);
+			Category::insert($inputData);
+			$response['message'] = 'Category add successfully';
+			$response['delayTime'] = 2000;
+			$response['url'] = url('/admin/view-category');
+			return response($this->getSuccessResponse($response));
+			
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function CategoryDelete(Request $request){
+		
+		try{
+			$inputData = $request->all();
+			Category::where('id',$request->id)->delete();
+			$response['message'] = 'Category delete successfully';
+			$response['delayTime'] = 2000;
+			$response['url'] = url('/admin/view-category');
+			return response($this->getSuccessResponse($response));
+			
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function viewCategory(){
+		$category = Category::all();
+		$title = 'View Category';
+		return view('admin/category/view')->with('title',$title)->with('categories',$category);
+	}
+	
 	
 	public function provideradd($id = null){
 		$pageData['title'] = 'Provider add';

@@ -19,7 +19,7 @@
 /*----------------------------------------*/
 /*  1.  Theme default CSS
 /*----------------------------------------*/
-html, body {height: 100%; font-family: 'Roboto', sans-serif;font-weight:400;background:#152036;}
+html, body {height: 100%; font-family: 'Roboto', sans-serif;font-weight:400;}
 .floatleft {float:left}
 .floatright {float:right}
 .alignleft {float:left;margin-right:15px;margin-bottom: 15px}
@@ -2460,8 +2460,8 @@ ul.tab-custon-design li.active a, ul.tab-review-design li.active a{
     margin-bottom: 0;
 }
 .form-control {
-    background-color: #152036;
-    background-image: none;
+    /* background-color: #152036; */
+    /* background-image: none; */
     border: 1px solid #152036;
     border-radius: 1px;
     color: inherit;
@@ -2470,7 +2470,7 @@ ul.tab-custon-design li.active a, ul.tab-review-design li.active a{
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
     width: 100%;
 	height:40px;
-	color:#fff;
+	/* color:#fff; */
 }
 .custom-go-button .btn-primary, .custom-dropdowns-button .dropdown-toggle, .dropdown-segmented .dropdown-toggle, .dropdown-segmented .btn-white {
     background-color: #e12503;
@@ -3672,4 +3672,11 @@ th.fc-day-header.fc-widget-header {
 	background:#152036;
 	border-color: #152036;
 	color:#fff;
+}
+a i.fa {
+    font-size: x-large;
+    margin-right: 5px;
+}
+label {
+    color: #fff;
 }

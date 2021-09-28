@@ -12,7 +12,7 @@
       <link rel="stylesheet" href="{{ url('clients/csss/normalize.css') }}" media="screen">
 		<link rel="stylesheet" href="{{ url('clients/csss/grid.css') }}" media="screen">
 		<link rel="stylesheet" href="{{ url('clients/csss/animate.min.css') }}" media="screen">
-		<title>USCIS VERIFY</title>
+		<title>Fitme</title>
    </head>
    <body>
    <header id="header">

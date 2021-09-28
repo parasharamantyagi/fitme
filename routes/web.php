@@ -32,11 +32,14 @@ Route::group(['prefix'=>'admin'], function () {
 	Route::group(['middleware'=>['auth','roles']], function () {
 		// Route::get('/profile','AdminController@adminProfile');
 		Route::get('/dashboard','AdminController@dashboard');
-		// Route::get('/providers','AdminController@index');
-		// Route::get('/provider-add','AdminController@provideradd');
-		// Route::get('/provider-add/{id}','AdminController@provideradd');
-		// Route::post('/provider-add','AdminController@provideraddPost');
-		// Route::post('/provider-add/{id}','AdminController@provideraddPost');
+		Route::get('/add-category','AdminController@addCategory');
+		Route::get('/view-category','AdminController@viewCategory');
+		
+		
+		
+		Route::post('/add-category','AdminController@addCategoryPost');
+		Route::post('/category-delete','AdminController@CategoryDelete');
+		
 	});
 });
 

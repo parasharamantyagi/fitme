@@ -4,9 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Dashboard V.1 | Nalika - Material Admin Template</title>
+    <title>Fitme {{ isset($title) ? ' | '.$title : '' }}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+	
     <!-- favicon
 		============================================ -->
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
@@ -19,6 +21,8 @@
     <!-- Bootstrap CSS
 		============================================ -->
     <link rel="stylesheet" href="{{ url('admin/css/font-awesome.min.css') }}">
+	
+    <link rel="stylesheet" href="https://beontime.io/css/toaster.css">
 	<!-- nalika Icon CSS
 		============================================ -->
     <link rel="stylesheet" href="{{ url('admin/css/nalika-icon.css') }}">
@@ -78,14 +82,19 @@
             <div class="left-custom-menu-adp-wrap comment-scrollbar">
                 <nav class="sidebar-nav left-sidebar-menu-pro">
                     <ul class="metismenu" id="menu1">
-                        <li class="active">
+						
+						<li>
+                            <a class="" href="{{url('/admin/dashboard')}}" aria-expanded="false"><i class="fa fa-home"></i> Dashboard</a>
+                        </li>
+						
+                        <!-- li class="active">
                             <a class="has-arrow" href="index.html">
 								   <i class="icon nalika-home icon-wrap"></i>
 								   <span class="mini-click-non">Ecommerce</span>
 								</a>
                             <ul class="submenu-angle" aria-expanded="true">
                                 <li><a title="Dashboard v.1" href="{{url('/admin/dashboard')}}"><span class="mini-sub-pro">Dashboard v.1</span></a></li>
-                                <!-- li><a title="Dashboard v.2" href="index-1.html"><span class="mini-sub-pro">Dashboard v.2</span></a></li>
+                                <li><a title="Dashboard v.2" href="index-1.html"><span class="mini-sub-pro">Dashboard v.2</span></a></li>
                                 <li><a title="Dashboard v.3" href="index-2.html"> <span class="mini-sub-pro">Dashboard v.3</span></a></li>
                                 <li><a title="Product List" href="product-list.html"><span class="mini-sub-pro">Product List</span></a></li>
                                 <li><a title="Product Edit" href="product-edit.html"><span class="mini-sub-pro">Product Edit</span></a></li>
@@ -93,18 +102,18 @@
                                 <li><a title="Product Cart" href="product-cart.html"><span class="mini-sub-pro">Product Cart</span></a></li>
                                 <li><a title="Product Payment" href="product-payment.html"><span class="mini-sub-pro">Product Payment</span></a></li>
                                 <li><a title="Analytics" href="analytics.html"><span class="mini-sub-pro">Analytics</span></a></li>
-                                <li><a title="Widgets" href="widgets.html"><span class="mini-sub-pro">Widgets</span></a></li -->
+                                <li><a title="Widgets" href="widgets.html"><span class="mini-sub-pro">Widgets</span></a></li>
+                            </ul>
+                        </li -->
+		
+                        <li class="{{ (Request::segment(2) == 'add-category' || Request::segment(2) == 'view-category') ? 'active':'' }}">
+                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="fa fa-bars"></i> <span class="mini-click-non">Category</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Inbox" href="add-category"><span class="mini-sub-pro">Add category</span></a></li>
+                                <li><a title="View Mail" href="view-category"><span class="mini-sub-pro">View category</span></a></li>
                             </ul>
                         </li>
                         <!-- li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-mail icon-wrap"></i> <span class="mini-click-non">Mailbox</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="Inbox" href="mailbox.html"><span class="mini-sub-pro">Inbox</span></a></li>
-                                <li><a title="View Mail" href="mailbox-view.html"><span class="mini-sub-pro">View Mail</span></a></li>
-                                <li><a title="Compose Mail" href="mailbox-compose.html"><span class="mini-sub-pro">Compose Mail</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
                             <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-diamond icon-wrap"></i> <span class="mini-click-non">Interface</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="Google Map" href="google-map.html"><span class="mini-sub-pro">Google Map</span></a></li>
@@ -401,7 +410,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                         <div class="breadcomb-wp">
 											<div class="breadcomb-ctn">
-												<h2>Dashboard One</h2>
+												<h2>{{$title}}</h2>
 											</div>
 										</div>
                                     </div>
@@ -433,7 +442,14 @@
     <script src="{{ url('admin/js/vendor/jquery-1.12.4.min.js') }}"></script>
     <!-- bootstrap JS
 		============================================ -->
+    <script src="{{ url('admin/js/jquery.toast.js') }}"></script>
+	
     <script src="{{ url('admin/js/bootstrap.min.js') }}"></script>
+	
+	<script src="{{ url('admin/js/form-validate.js') }}"></script>
+	
+	<script src="{{ url('admin/js/jquery.validate.js') }}"></script>
+	
     <!-- wow JS
 		============================================ -->
     <script src="{{ url('admin/js/wow.min.js') }}"></script>
@@ -462,25 +478,14 @@
     <script src="{{ url('admin/js/metisMenu/metisMenu-active.js') }}"></script>
     <!-- sparkline JS
 		============================================ -->
-    <script src="{{ url('admin/js/sparkline/jquery.sparkline.min.js') }}"></script>
-    <script src="{{ url('admin/js/sparkline/jquery.charts-sparkline.js') }}"></script>
-    <!-- calendar JS
-		============================================ -->
-    <script src="{{ url('admin/js/calendar/moment.min.js') }}"></script>
-    <script src="{{ url('admin/js/calendar/fullcalendar.min.js') }}"></script>
-    <script src="{{ url('admin/js/calendar/fullcalendar-active.js') }}"></script>
-	<!-- float JS
-		============================================ -->
-    <script src="{{ url('admin/js/flot/jquery.flot.js') }}"></script>
-    <script src="{{ url('admin/js/flot/jquery.flot.resize.js') }}"></script>
-    <script src="{{ url('admin/js/flot/curvedLines.js') }}"></script>
-    <script src="{{ url('admin/js/flot/flot-active.js') }}"></script>
     <!-- plugins JS
 		============================================ -->
     <script src="{{ url('admin/js/plugins.js') }}"></script>
     <!-- main JS
 		============================================ -->
     <script src="{{ url('admin/js/main.js') }}"></script>
+	
+	<script src="{{ url('admin/js/custom.js') }}"></script>
 </body>
 
 </html>
