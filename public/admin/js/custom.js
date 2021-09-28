@@ -25,16 +25,17 @@ var toastr = {
   }
 }
 
-function deleteCategory(id){
+function deleteData(id,action){
 	if(confirm('Are you sure to delete this ..??')){
 		
 		$.ajax({
 				type: 'POST',
-				url: '/admin/category-delete',
+				url: '/admin/delete-data',
 				dataType: 'json',
 				data: {
 						_token: $('meta[name="csrf-token"]').attr('content'),
-						id:id
+						id:id,
+						action:action
 				},
 				success: function (response) {
 					

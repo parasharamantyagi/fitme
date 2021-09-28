@@ -20,6 +20,18 @@ if (! function_exists('user_url')) {
 }
 
 
+if (! function_exists('my_fitme')) {
+	
+    function my_fitme($provider_id,$card_rate) {
+		$users = User::with(['user_detail'])->where('provider_id',$provider_id)->orderBy('id','DESC')->count();
+		if(!$users){
+			$users = 1;
+		}
+        return $users * $card_rate;
+    }
+}
+
+
 if (! function_exists('user_card_rate')) {
 	
     function user_card_rate($provider_id,$card_rate) {

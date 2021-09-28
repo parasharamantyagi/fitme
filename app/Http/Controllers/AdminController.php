@@ -8,6 +8,7 @@ use Auth;
 use Redirect;
 use App\User;
 use App\Category;
+use App\Product;
 // use App\UserDetail;
 // use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Hash;
@@ -51,14 +52,20 @@ class AdminController extends Controller
         }
 	}
 	
-	public function CategoryDelete(Request $request){
+	public function deleteData(Request $request){
 		
 		try{
 			$inputData = $request->all();
-			Category::where('id',$request->id)->delete();
-			$response['message'] = 'Category delete successfully';
+			if($request->action == 'category'){
+				Category::where('id',$request->id)->delete();
+				$response['message'] = 'Category delete successfully';
+				$response['url'] = url('/admin/view-category');
+			}else if($request->action == 'product'){
+				Product::where('id',$request->id)->delete();
+				$response['message'] = 'Product delete successfully';
+				$response['url'] = url('/admin/view-product');
+			}
 			$response['delayTime'] = 2000;
-			$response['url'] = url('/admin/view-category');
 			return response($this->getSuccessResponse($response));
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
@@ -73,6 +80,45 @@ class AdminController extends Controller
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }
+	}
+	
+	
+	public function addProductPost(Request $request){
+		
+		try{
+			$input = $request->all();
+			if ($request->hasFile('image')) {
+				   $image = $request->file('image'); //get the file
+				   $namefile = 	rand(1,999999) .time() . '.' . $image->getClientOriginalExtension();
+				   $destinationPath = public_path('/products'); //public path folder dir
+				   $image->move($destinationPath, $namefile);  //mve to destination you mentioned
+				   $input['image'] = 'products/'.$namefile;
+			}
+			unset($input['_token']);
+			Product::insert($input);
+			$response['message'] = 'Product add successfully';
+			$response['delayTime'] = 2000;
+			$response['url'] = url('/admin/view-product');
+			return response($this->getSuccessResponse($response));
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function viewProduct(){
+		try{
+			$product = Product::select('products.id','products.cat_id','products.name','products.image','products.quantity','categories.title')->join('categories','categories.id','products.cat_id')->orderBy('id','desc')->get();
+			$title = 'View Product';
+			return view('admin/product/view')->with('title',$title)->with('products',$product);
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function addProduct(){
+		$title = 'Add Product';
+		$category = Category::orderBy('id','desc')->get();
+		return view('admin/product/add')->with('title',$title)->with('categories',$category);
 	}
 	
 	

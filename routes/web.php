@@ -35,10 +35,15 @@ Route::group(['prefix'=>'admin'], function () {
 		Route::get('/add-category','AdminController@addCategory');
 		Route::get('/view-category','AdminController@viewCategory');
 		
+		Route::get('/add-product','AdminController@addProduct');
+		Route::get('/view-product','AdminController@viewProduct');
+		
 		
 		
 		Route::post('/add-category','AdminController@addCategoryPost');
-		Route::post('/category-delete','AdminController@CategoryDelete');
+		Route::post('/add-product','AdminController@addProductPost');
+		
+		Route::post('/delete-data','AdminController@deleteData');
 		
 	});
 });
