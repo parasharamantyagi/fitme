@@ -11,7 +11,7 @@
 	
     <!-- favicon
 		============================================ -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="img/logo/logosn_11zon.ico">
     <!-- Google Fonts
 		============================================ -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
@@ -76,8 +76,8 @@
     <div class="left-sidebar-pro">
         <nav id="sidebar" class="">
             <div class="sidebar-header">
-                <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
-                <strong><img src="img/logo/logosn.png" alt="" /></strong>
+                <a href="{{url('admin/dashboard')}}"><img class="main-logo" src="img/logo/logo-flat.jpg" alt="" /></a>
+                <strong><img src="img/logo/logosn_11zon.png" alt="" /></strong>
             </div>
             <div class="left-custom-menu-adp-wrap comment-scrollbar">
                 <nav class="sidebar-nav left-sidebar-menu-pro">
@@ -197,7 +197,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="logo-pro">
-                        <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                        <a href="{{url('admin/dashboard')}}"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
                     </div>
                 </div>
             </div>
@@ -239,12 +239,12 @@
                                                     <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
                                                         <li><a href="register.html"><span class="icon nalika-home author-log-ic"></span> Register</a>
                                                         </li>
-                                                        <li><a href="#"><span class="icon nalika-user author-log-ic"></span> My Profile</a>
+                                                        <!--li><a href="#"><span class="icon nalika-user author-log-ic"></span> My Profile</a>
                                                         </li>
                                                         <li><a href="lock.html"><span class="icon nalika-diamond author-log-ic"></span> Lock</a>
                                                         </li>
                                                         <li><a href="#"><span class="icon nalika-settings author-log-ic"></span> Settings</a>
-                                                        </li>
+                                                        </li -->
                                                         <li><a href="{{url('log-out')}}"><span class="icon nalika-unlocked author-log-ic"></span> Log Out</a>
                                                         </li>
                                                     </ul>

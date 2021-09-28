@@ -14,13 +14,15 @@
                             </div>
                             <table>
                                 <tr>
+                                    <th>Sr. no </th>
                                     <th>Product Title</th>
                                     <th>Status</th>
                                     <th>Stock</th>
                                     <th>Setting</th>
                                 </tr>
-								@foreach($categories as $category)
+								@foreach($categories as $key => $category)
                                 <tr>
+                                    <td>{{$key+1}}</td>
                                     <td>{{$category->title}}</td>
                                     <td>
 										@if($category->status)
