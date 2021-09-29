@@ -31,7 +31,6 @@ Route::group([
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
 		
-		
         Route::get('categories', 'AuthController@getCategories');
 		
 		
