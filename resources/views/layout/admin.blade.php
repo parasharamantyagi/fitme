@@ -115,10 +115,17 @@
                         </li>
 						
 						<li class="{{ (Request::segment(2) == 'add-product' || Request::segment(2) == 'view-product') ? 'active':'' }}">
-                            <a class="has-arrow" href="view-product" aria-expanded="false"><i class="fa fa-bars"></i> <span class="mini-click-non">Product</span></a>
+                            <a class="has-arrow" href="view-product" aria-expanded="false"><i class="fa fa-cubes"></i> <span class="mini-click-non">Product</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="Inbox" href="add-product"><span class="mini-sub-pro">Add Product</span></a></li>
                                 <li><a title="View Mail" href="view-product"><span class="mini-sub-pro">View Product</span></a></li>
+                            </ul>
+                        </li>
+						
+						<li class="{{ (Request::segment(2) == 'view-user') ? 'active':'' }}">
+                            <a class="has-arrow" href="view-product" aria-expanded="false"><i class="fa fa-user"></i> <span class="mini-click-non">User</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="View Mail" href="view-user"><span class="mini-sub-pro">View User</span></a></li>
                             </ul>
                         </li>
 						

@@ -64,6 +64,9 @@ class AdminController extends Controller
 				Product::where('id',$request->id)->delete();
 				$response['message'] = 'Product delete successfully';
 				$response['url'] = url('/admin/view-product');
+			}else if($request->action == 'user_by_id'){
+				$response['message'] = 'User delete successfully';
+				$response['url'] = url('/admin/view-user');
 			}
 			$response['delayTime'] = 2000;
 			return response($this->getSuccessResponse($response));
@@ -161,6 +164,18 @@ class AdminController extends Controller
 		}
 		return view('provider.provideradd')->with('client',$client)->with('pageData',$pageData);
 	}
+	
+	
+	public function viewUser(){
+		try{
+			$all_user = User::all();
+			$title = 'View User';
+			return view('admin/user/view')->with('title',$title)->with('all_users',$all_user);
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
 	
 	public function provideraddPost(Request $request,$id = null){
 		

@@ -32,11 +32,14 @@ Route::group(['prefix'=>'admin'], function () {
 	Route::group(['middleware'=>['auth','roles']], function () {
 		// Route::get('/profile','AdminController@adminProfile');
 		Route::get('/dashboard','AdminController@dashboard');
+		
 		Route::get('/add-category','AdminController@addCategory');
 		Route::get('/view-category','AdminController@viewCategory');
 		
 		Route::get('/add-product','AdminController@addProduct');
 		Route::get('/view-product','AdminController@viewProduct');
+		
+		Route::get('/view-user','AdminController@viewUser');
 		
 		
 		
