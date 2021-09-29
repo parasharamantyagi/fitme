@@ -13,10 +13,13 @@
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
+        "laravel/passport": "9.0",
         "laravel/tinker": "^2.0",
         "laravelcollective/html": "^6.2",
-        "twilio/sdk": "^6.24",
-		"plivo/plivo-php": "^4.8"
+        "plivo/plivo-php": "^4.8",
+        "stripe/stripe-php": "^7.97",
+		"lcobucci/jwt": "3.3.3",
+        "twilio/sdk": "^6.24"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

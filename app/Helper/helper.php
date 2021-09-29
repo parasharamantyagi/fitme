@@ -20,6 +20,15 @@ if (! function_exists('user_url')) {
 }
 
 
+if (!function_exists('api_response')) {
+	
+	function api_response($status,$message,$data)
+    {
+        return array("status"=>$status,"message"=>$message,"data"=>$data);
+    }
+}
+
+
 if (! function_exists('my_fitme')) {
 	
     function my_fitme($provider_id,$card_rate) {
