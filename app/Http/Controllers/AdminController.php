@@ -65,6 +65,7 @@ class AdminController extends Controller
 				$response['message'] = 'Product delete successfully';
 				$response['url'] = url('/admin/view-product');
 			}else if($request->action == 'user_by_id'){
+				User::where('id',$request->id)->delete();
 				$response['message'] = 'User delete successfully';
 				$response['url'] = url('/admin/view-user');
 			}
@@ -168,7 +169,7 @@ class AdminController extends Controller
 	
 	public function viewUser(){
 		try{
-			$all_user = User::all();
+			$all_user = User::where('roll_id',1)->get();
 			$title = 'View User';
 			return view('admin/user/view')->with('title',$title)->with('all_users',$all_user);
 		}catch(\Exception $e){
