@@ -57,3 +57,8 @@ function deleteData(id,action){
 			});
 	}
 }
+
+function editData(id,action){
+	
+	window.location.href=action+'/'+id;
+}

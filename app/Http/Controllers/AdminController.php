@@ -88,7 +88,6 @@ class AdminController extends Controller
 	
 	
 	public function addProductPost(Request $request){
-		
 		try{
 			$input = $request->all();
 			if ($request->hasFile('image')) {
@@ -101,6 +100,27 @@ class AdminController extends Controller
 			unset($input['_token']);
 			Product::insert($input);
 			$response['message'] = 'Product add successfully';
+			$response['delayTime'] = 2000;
+			$response['url'] = url('/admin/view-product');
+			return response($this->getSuccessResponse($response));
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function updateProductId(Request $request,$id){
+		try{
+			$input = $request->all();
+			if ($request->hasFile('image')) {
+				   $image = $request->file('image'); //get the file
+				   $namefile = 	rand(1,999999) .time() . '.' . $image->getClientOriginalExtension();
+				   $destinationPath = public_path('/products'); //public path folder dir
+				   $image->move($destinationPath, $namefile);  //mve to destination you mentioned
+				   $input['image'] = 'products/'.$namefile;
+			}
+			unset($input['_token']);
+			Product::where('id',$id)->update($input);
+			$response['message'] = 'Product update successfully';
 			$response['delayTime'] = 2000;
 			$response['url'] = url('/admin/view-product');
 			return response($this->getSuccessResponse($response));
@@ -122,9 +142,18 @@ class AdminController extends Controller
 	public function addProduct(){
 		$title = 'Add Product';
 		$category = Category::orderBy('id','desc')->get();
-		return view('admin/product/add')->with('title',$title)->with('categories',$category);
+		$product = (object)array('cat_id'=>0,'name'=>'','quantity'=>'');
+		$urlform = 'admin/add-product';
+		return view('admin/product/add')->with('title',$title)->with('categories',$category)->with('product',$product)->with('urlform',$urlform);
 	}
 	
+	public function addProductId($id){
+		$title = 'Update Product';
+		$category = Category::orderBy('id','desc')->get();
+		$product = Product::find($id);
+		$urlform = 'admin/add-product/'.$id;
+		return view('admin/product/add')->with('title',$title)->with('categories',$category)->with('product',$product)->with('urlform',$urlform);
+	}
 	
 	public function provideradd($id = null){
 		$pageData['title'] = 'Provider add';

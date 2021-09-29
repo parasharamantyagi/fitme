@@ -12,11 +12,11 @@
                                 
                                 <div id="myTabContent" class="tab-content custom-product-edit">
                                     <div class="product-tab-list tab-pane fade active in" id="description">
-									{{Form::open(['url'=>url('admin/add-product'),'id'=>'general_form'])}}
+									{{Form::open(['url'=>url($urlform),'id'=>'general_form'])}}
                                         <div class="row">
 												<div class="col-md-6 form-group">
 												  <label>name</label>
-												  <input class="form-control" name="name" type="text" aria-invalid="false">
+												  <input class="form-control" name="name" value="{{$product->name}}" type="text" aria-invalid="false">
 												</div>
 												<div class="col-md-6 form-group">
 												  <label>Image</label>
@@ -29,13 +29,13 @@
 												  <select name="cat_id" class="form-control">
 															<option value="0">Select category</option>
 															@foreach($categories as $category)
-																<option value="{{$category->id}}">{{$category->title}}</option>
+																<option value="{{$category->id}}" @if($category->id == $product->cat_id) selected @endif>{{$category->title}}</option>
 															@endforeach
 														</select>
 												</div>
 												<div class="col-md-6 form-group">
 												  <label>Quantity</label>
-												  <input class="form-control" name="quantity" type="text" aria-invalid="false">
+												  <input class="form-control" name="quantity" value="{{$product->quantity}}" type="text" aria-invalid="false">
 												</div>
                                         </div>
                                         <div class="row">
