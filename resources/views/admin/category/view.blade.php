@@ -1,5 +1,8 @@
 @extends('layout.admin')
 
+@section('style')
+	<link rel="stylesheet" href="{{ url('admin/css/toggle.css') }}">
+@endsection
 @section('content')
 
 
@@ -25,11 +28,14 @@
                                     <td>{{$key+1}}</td>
                                     <td>{{$category->title}}</td>
                                     <td>
-										@if($category->status)
-											<button class="pd-setting">Active</button>
-										@else
-											<button class="ds-setting">Disabled</button>
-										@endif
+										<label class="toggleSwitch nolabel" onclick="">
+											<input class="toggle-switch" data-id="{{$category->id}}" type="checkbox" @if($category->status) checked @endif/>
+											<span>
+												<span>OFF</span>
+												<span>ON</span>
+											</span>
+											<a></a>
+										</label>
                                     </td>
                                     <td>{{$category->stock}}</td>
                                     <td>

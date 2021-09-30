@@ -65,12 +65,12 @@
     <link rel="stylesheet" href="{{ url('admin/css/responsive.css') }}">
     <!-- modernizr JS
 		============================================ -->
-    <script src="{{ url('admin/js/vendor/modernizr-2.8.3.min.js') }}"></script>
 	@if(Request::segment(3))
 	<style>
 		.breadcome-list {margin: 90px 0px 30px;}
 	</style>
 	@endif
+	@yield('style')
 </head>
 
 <body>
@@ -507,6 +507,8 @@
     <script src="{{ url('admin/js/main.js') }}"></script>
 	
 	<script src="{{ url('admin/js/custom.js') }}"></script>
+	
+	@yield('script')
 </body>
 
 </html>

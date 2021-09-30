@@ -53,7 +53,6 @@ class AdminController extends Controller
 	}
 	
 	public function deleteData(Request $request){
-		
 		try{
 			$inputData = $request->all();
 			if($request->action == 'category'){
@@ -70,6 +69,17 @@ class AdminController extends Controller
 				$response['url'] = url('/admin/view-user');
 			}
 			$response['delayTime'] = 2000;
+			return response($this->getSuccessResponse($response));
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function changeStatus(Request $request){
+		try{
+			$inputData = $request->all();
+			Category::where('id',$request->cat_id)->update(array('status'=>$request->is_check));
+			$response['message'] = 'Status change successfully';
 			return response($this->getSuccessResponse($response));
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));

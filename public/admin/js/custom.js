@@ -62,3 +62,24 @@ function editData(id,action){
 	
 	window.location.href=action+'/'+id;
 }
+
+$('.toggle-switch').click(function() {
+	let cat_id = $(this).data("id");
+	let is_check = 0;
+	if ($(this).is(':checked')) {
+		is_check = 1;
+    }
+	$.ajax({
+			type: 'POST',
+			url: '/admin/change-status',
+			dataType: 'json',
+			data: {
+					_token: $('meta[name="csrf-token"]').attr('content'),
+					cat_id:cat_id,
+					is_check:is_check
+			},
+			success: function (response) {
+				
+			}
+		});
+});

@@ -51,6 +51,8 @@ Route::group(['prefix'=>'admin'], function () {
 		
 		Route::post('/delete-data','AdminController@deleteData');
 		
+		Route::post('/change-status','AdminController@changeStatus');
+		
 	});
 });
 
