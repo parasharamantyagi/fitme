@@ -4,21 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Traits\ResponseTrait;
+use App\Validators\ProductValidator;
 use Auth;
 use Redirect;
 use App\User;
-use App\Category;
+use App\Model\Category;
 use App\Product;
 // use App\UserDetail;
 // use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Hash;
 Use Illuminate\Support\Facades\Validator;
 use Mail;
+use DB;
 
 
 class AdminController extends Controller
 {
-	use ResponseTrait;
+	use ProductValidator, ResponseTrait;
 	
     public function index(){
 		
@@ -96,19 +98,44 @@ class AdminController extends Controller
         }
 	}
 	
+	public function addProduct(Request $request){
+		$title = 'Add Product';
+		$category = Category::where('status',1)->orderBy('id','desc')->get();
+		$product_fields = array();
+		$cat_id = '';
+		if($request->cat_id){
+			$cat_id = decryptId($request->cat_id);
+			$product_fields = Category::where('id',$cat_id)->first()->field;
+			if($product_fields){
+				$product_fields = json_decode($product_fields->filed);
+			}
+		}
+		$urlform = 'admin/add-product';
+		return view('admin/product/add')->with('title',$title)->with('product_fields',$product_fields)->with('cat_id',$cat_id)->with('categories',$category)->with('urlform',$urlform);
+	}
 	
 	public function addProductPost(Request $request){
 		try{
-			$input = $request->all();
-			if ($request->hasFile('image')) {
-				   $image = $request->file('image'); //get the file
-				   $namefile = 	rand(1,999999) .time() . '.' . $image->getClientOriginalExtension();
-				   $destinationPath = public_path('/products'); //public path folder dir
-				   $image->move($destinationPath, $namefile);  //mve to destination you mentioned
-				   $input['image'] = 'products/'.$namefile;
+			$cat_id = decryptId($request->cat_id);
+			$product_fields = Category::where('id',$cat_id)->first()->field;
+			$validation = $this->agentNewFeatureValidations($request,validation_name_of_filed($product_fields->filed));
+			if($validation['status']==false){
+				return response($this->getValidationsErrors($validation));
 			}
+			$input = $request->all();
+			$input['cat_id'] = $cat_id;
 			unset($input['_token']);
-			Product::insert($input);
+			DB::table($product_fields->table_name)->insert($input);
+			// if ($request->hasFile('image')) {
+				   // $image = $request->file('image'); //get the file
+				   // $namefile = 	rand(1,999999) .time() . '.' . $image->getClientOriginalExtension();
+				   // $destinationPath = public_path('/products'); //public path folder dir
+				   // $image->move($destinationPath, $namefile);  //mve to destination you mentioned
+				   // $input['image'] = 'products/'.$namefile;
+			// }
+			// unset($input['_token']);
+			// $input['cat_id'] = decryptId($request->cat_id);
+			// Product::insert($input);
 			$response['message'] = 'Product add successfully';
 			$response['delayTime'] = 2000;
 			$response['url'] = url('/admin/view-product');
@@ -129,6 +156,7 @@ class AdminController extends Controller
 				   $input['image'] = 'products/'.$namefile;
 			}
 			unset($input['_token']);
+			$input['cat_id'] = decryptId($request->cat_id);
 			Product::where('id',$id)->update($input);
 			$response['message'] = 'Product update successfully';
 			$response['delayTime'] = 2000;
@@ -141,20 +169,12 @@ class AdminController extends Controller
 	
 	public function viewProduct(){
 		try{
-			$product = Product::select('products.id','products.cat_id','products.name','products.image','products.quantity','categories.title')->join('categories','categories.id','products.cat_id')->orderBy('id','desc')->get();
+			$product = Product::select(['products.*','categories.title'])->join('categories','categories.id','products.cat_id')->orderBy('id','desc')->get();
 			$title = 'View Product';
 			return view('admin/product/view')->with('title',$title)->with('products',$product);
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }
-	}
-	
-	public function addProduct(){
-		$title = 'Add Product';
-		$category = Category::orderBy('id','desc')->get();
-		$product = (object)array('cat_id'=>0,'name'=>'','quantity'=>'');
-		$urlform = 'admin/add-product';
-		return view('admin/product/add')->with('title',$title)->with('categories',$category)->with('product',$product)->with('urlform',$urlform);
 	}
 	
 	public function addProductId($id){
@@ -165,45 +185,6 @@ class AdminController extends Controller
 		return view('admin/product/add')->with('title',$title)->with('categories',$category)->with('product',$product)->with('urlform',$urlform);
 	}
 	
-	public function provideradd($id = null){
-		$pageData['title'] = 'Provider add';
-		
-		// die('wwwww');
-		$client = (object)array(
-				'email'=>'','phone'=>'','contact'=>'','name'=>'','dob'=>'','origin'=>'','gender'=>'','eyes'=>'','hair'=>'','address'=>'',
-				'mailing_address'=>'','mailing_city'=>'','mailing_state'=>'','mailing_zip'=>'','shiping_address'=>'','shiping_city'=>'',
-				'shiping_state'=>'','shiping_zip'=>'','card_rate'=>'','status'=>'','document'=>'','image'=>false
-			);
-		$pageData['form_action'] = 'admin/provider-add';
-		if($id){
-			$client = User::where('user_id',$id)->first();
-			$userDetail = UserDetail::where('user_id',$id)->first();
-			if($userDetail){
-				$client->mailing_address = $userDetail->mailing_address;
-				$client->mailing_city = $userDetail->mailing_city;
-				$client->mailing_state = $userDetail->mailing_state;
-				$client->mailing_zip = $userDetail->mailing_zip;
-				$client->shiping_address = $userDetail->shiping_address;
-				$client->shiping_city = $userDetail->shiping_city;
-				$client->shiping_state = $userDetail->shiping_state;
-				$client->shiping_zip = $userDetail->shiping_zip;
-				$client->card_rate = $userDetail->card_rate;
-			}else{
-				$client->mailing_address = '';
-				$client->mailing_city = '';
-				$client->mailing_state = '';
-				$client->mailing_zip = '';
-				$client->shiping_address = '';
-				$client->shiping_city = '';
-				$client->shiping_state = '';
-				$client->shiping_zip = '';
-				$client->card_rate = '';
-			}
-		
-			$pageData['form_action'] = 'admin/provider-add/'.$id;
-		}
-		return view('provider.provideradd')->with('client',$client)->with('pageData',$pageData);
-	}
 	
 	
 	public function viewUser(){
@@ -214,67 +195,6 @@ class AdminController extends Controller
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }
-	}
-	
-	
-	public function provideraddPost(Request $request,$id = null){
-		
-		if($id){
-			$input = array(
-						'name'=>$request->name,'contact'=>$request->contact,'phone'=>$request->phone_no,'email'=>$request->email,'roll_id'=>1,
-						'status'=>$request->status
-					);
-			User::where('user_id',$id)->update($input);
-			$inputDteail = array(
-							'mailing_address'=>$request->mailing_address,'mailing_city'=>$request->mailing_city,'mailing_state'=>$request->mailing_state,
-							'mailing_zip'=>$request->mailing_zip,'shiping_address'=>$request->shiping_address,'shiping_city'=>$request->shiping_city,
-							'shiping_state'=>$request->shiping_state,'shiping_zip'=>$request->shiping_zip,'card_rate'=>$request->card_rate
-						);
-			UserDetail::updateOrCreate(array('user_id'=>$id),$inputDteail);
-			$message = 'Provider update successfully';
-		}else{
-			$validations = array(
-                'name' => 'required',
-                'contact' => 'required',
-                'phone_no' => 'required',
-                'email' => 'required|email|unique:users',
-                'card_rate' => 'required',
-                'mailing_address' => 'required',
-                'mailing_city' => 'required',
-                'mailing_state' => 'required',
-                'mailing_zip' => 'required',
-                'shiping_address' => 'required',
-                'shiping_city' => 'required',
-                'shiping_state' => 'required',
-                'shiping_zip' => 'required',
-            );
-			$validator = Validator::make($request->all(),$validations);
-			if($validator->fails())
-			  {
-			   return redirect('admin/provider-add')->withErrors($validator)->withInput();
-			  }
-			  
-			$user_id = rand(111111,999999);
-			$input = array(
-						'name'=>$request->name,'contact'=>$request->contact,'phone'=>$request->phone_no,'email'=>$request->email,'roll_id'=>1,
-						'user_id'=>$user_id,'status'=>$request->status,'password'=>Hash::make($user_id)
-					);
-			$inputDteail = array(
-							'mailing_address'=>$request->mailing_address,'mailing_city'=>$request->mailing_city,'mailing_state'=>$request->mailing_state,
-							'mailing_zip'=>$request->mailing_zip,'shiping_address'=>$request->shiping_address,'shiping_city'=>$request->shiping_city,
-							'shiping_state'=>$request->shiping_state,'shiping_zip'=>$request->shiping_zip,'user_id'=>$user_id,'card_rate'=>$request->card_rate
-						);
-			$inputUser = User::insertGetId($input);
-			UserDetail::insert($inputDteail);
-			$email_s = $request->email;
-			Mail::send('emails.contact', ['name' => $request->name, 'email' => $request->email, 'password' => $user_id], function ($message) use($email_s) {
-				$message->from('uscisdev@gmail.com', 'USCIS');
-				$message->to($email_s);
-				$message->subject('Registration');
-			});
-			$message = 'Provider add successfully';
-		}
-		return Redirect::to('/admin/providers')->with('success_message',$message);
 	}
 	
 	

@@ -26,18 +26,18 @@
                                 <tr>
                                     <td>{{$key+1}}</td>
                                     <td><img src="{{'./../'.$product->image}}" alt=""></td>
-                                    <td>{{$product->name}}</td>
-                                    <td>{{$product->title}}</td>
+                                    <td>{{$product->cat_id}}</td>
+                                    <td>{{$product->cat_id}}</td>
                                     <td>
-										@if($product->quantity)
+										@if($product->cat_id)
 											<button class="pd-setting">Active</button>
 										@else
 											<button class="ds-setting">Disabled</button>
 										@endif
                                     </td>
-                                    <td>{{$product->quantity}}</td>
+                                    <td>{{$product->cat_id}}</td>
                                     <td>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed" onclick="editData({{$product->id}},'add-product')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                        <!-- button data-toggle="tooltip" title="Edit" class="pd-setting-ed" onclick="editData({{$product->id}},'add-product')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button -->
                                         <button data-toggle="tooltip" title="Trash" class="pd-setting-ed" onclick="deleteData({{$product->id}},'product')"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                     </td>
                                 </tr>

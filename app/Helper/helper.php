@@ -1,6 +1,8 @@
 <?php
 // use Auth;
 use App\User;
+use Illuminate\Support\Facades\Crypt;
+
 
 if (! function_exists('user_url')) {
 	
@@ -19,6 +21,42 @@ if (! function_exists('user_url')) {
     }
 }
 
+/*
+     * @method       :  encryptDataId
+     * @created_date :  22-03-2019
+     * @purpose      :  to encrypt the data
+     */
+    function encryptID($id = null) {
+        if ($id) {
+            return Crypt::encrypt($id);
+        }
+        return false;
+    }
+
+    /*
+     * @method       : decryptDataId
+     * @created_date : 22-03-2019
+     * @purpose      : to decrypt the data
+     */
+    function decryptId($encrypted_string = null) {
+        if ($encrypted_string) {
+            return Crypt::decrypt($encrypted_string);
+        }
+        return false;
+    }
+	
+	function name_of_filed($input) {
+		return array_column($input, 'name');
+	}
+	
+	function validation_name_of_filed($input) {
+		$array_columns = array_column(json_decode($input), 'name');
+		$new_array = [];
+		foreach ($array_columns as $value) 
+			$new_array[$value] = 'required';
+		return $new_array;
+	}
+	
 
 if (!function_exists('api_response')) {
 	

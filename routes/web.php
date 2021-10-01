@@ -18,19 +18,11 @@ Route::post('/login','HomeController@loginPost');
 Route::post('/admin-login','HomeController@adminLoginPost');
 Route::post('/forget-password','HomeController@forgetPassword');
 Route::get('/log-out','HomeController@loginOut');
-// Route::get('/check-version','HomeController@checkVersion');
 
-// Route::get('/search-result','HomeController@searchResult');
-// Route::get('/change-password','HomeController@changePassword');
-// Route::post('/change-password','HomeController@changePasswordPost');
-// Route::get('/reset-password/{id}','HomeController@resetPasswordPost');
-// Route::post('/reset-password/{id}','HomeController@resetPasswordPost');
 Route::get('/my-admin','HomeController@adminIndex');
-// Route::get('/twilio-sand','HomeController@twilioSand');
 
 Route::group(['prefix'=>'admin'], function () {
 	Route::group(['middleware'=>['auth','roles']], function () {
-		// Route::get('/profile','AdminController@adminProfile');
 		Route::get('/dashboard','AdminController@dashboard');
 		
 		Route::get('/add-category','AdminController@addCategory');
@@ -38,7 +30,6 @@ Route::group(['prefix'=>'admin'], function () {
 		
 		Route::get('/add-product','AdminController@addProduct');
 		Route::get('/view-product','AdminController@viewProduct');
-		
 		Route::get('/add-product/{id}','AdminController@addProductId');
 		
 		Route::get('/view-user','AdminController@viewUser');

@@ -83,3 +83,11 @@ $('.toggle-switch').click(function() {
 			}
 		});
 });
+
+
+$('.product-category').change(function() {
+	
+	window.location.href= "?cat_id="+$(this).val();
+	// console.log();
+	
+});

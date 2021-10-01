@@ -23,14 +23,6 @@
     <link rel="stylesheet" href="{{ url('admin/css/font-awesome.min.css') }}">
 	
     <link rel="stylesheet" href="https://beontime.io/css/toaster.css">
-	<!-- nalika Icon CSS
-		============================================ -->
-    <link rel="stylesheet" href="{{ url('admin/css/nalika-icon.css') }}">
-    <!-- owl.carousel CSS
-		============================================ -->
-    <link rel="stylesheet" href="{{ url('admin/css/owl.carousel.css') }}">
-    <link rel="stylesheet" href="{{ url('admin/css/owl.theme.css') }}">
-    <link rel="stylesheet" href="{{ url('admin/css/owl.transitions.css') }}">
     <!-- animate CSS
 		============================================ -->
     <link rel="stylesheet" href="{{ url('admin/css/animate.css') }}">
@@ -55,8 +47,6 @@
     <link rel="stylesheet" href="{{ url('admin/css/metisMenu/metisMenu-vertical.css') }}">
     <!-- calendar CSS
 		============================================ -->
-    <link rel="stylesheet" href="{{ url('admin/css/calendar/fullcalendar.min.css') }}">
-    <link rel="stylesheet" href="{{ url('admin/css/calendar/fullcalendar.print.min.css') }}">
     <!-- style CSS
 		============================================ -->
     <link rel="stylesheet" href="{{ url('admin/style.css') }}">
@@ -471,9 +461,6 @@
 	
 	<script src="{{ url('admin/js/jquery.validate.js') }}"></script>
 	
-    <!-- wow JS
-		============================================ -->
-    <script src="{{ url('admin/js/wow.min.js') }}"></script>
     <!-- price-slider JS
 		============================================ -->
     <script src="{{ url('admin/js/jquery-price-slider.js') }}"></script>
