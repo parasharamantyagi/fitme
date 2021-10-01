@@ -45,8 +45,8 @@ if (! function_exists('user_url')) {
         return false;
     }
 	
-	function name_of_filed($input) {
-		return array_column($input, 'name');
+	function name_of_filed($input,$val) {
+		return array_column(json_decode($input), $val);
 	}
 	
 	function validation_name_of_filed($input) {

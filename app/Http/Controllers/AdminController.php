@@ -167,11 +167,25 @@ class AdminController extends Controller
         }
 	}
 	
-	public function viewProduct(){
+	public function viewProduct(Request $request){
 		try{
-			$product = Product::select(['products.*','categories.title'])->join('categories','categories.id','products.cat_id')->orderBy('id','desc')->get();
+			$cat_id = 0;
+			$product = array();
+			$category = Category::where('status',1)->orderBy('id','desc')->get();
+			$name_of_fileds = array();
+			$label_of_fileds = array();
+			if($request->cat_id){
+				$cat_id = decryptId($request->cat_id);
+				$product_fields = Category::where('id',$cat_id)->first()->field;
+				if($product_fields){
+					$name_of_fileds = name_of_filed($product_fields->filed,'name');
+					$label_of_fileds = name_of_filed($product_fields->filed,'label');
+					$product = DB::table($product_fields->table_name)->get();
+					$product = json_decode(json_encode($product),true);
+				}
+			}
 			$title = 'View Product';
-			return view('admin/product/view')->with('title',$title)->with('products',$product);
+			return view('admin/product/view')->with('title',$title)->with('name_of_fileds',$name_of_fileds)->with('label_of_fileds',$label_of_fileds)->with('cat_id',$cat_id)->with('categories',$category)->with('products',$product);
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }
