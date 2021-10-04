@@ -45,4 +45,17 @@ trait ResponseTrait
         $response['delayTime'] = 4000;
         return $response;
     }
+	
+	/**
+     * @param   : $message
+     * @rresponse
+     * @method  : getErrorResponse
+     * @purpose : Response on Error
+     */
+    public function getApiErrorResponse($message='Something went wrong. Try again later !'){
+        $response['status'] = 0;
+        $response['message'] = $message;
+        $response['data'] = array();
+        return $response;
+    }
 }

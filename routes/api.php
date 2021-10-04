@@ -17,15 +17,26 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'prefix' => 'auth'
 ], function () {
-    Route::post('login', 'AuthController@login');
-    Route::post('signup', 'AuthController@signup');
+    Route::post('login', 'Api\AuthController@login');
+    Route::post('signup', 'Api\AuthController@signup');
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
-        Route::get('logout', 'AuthController@logout');
-        Route::get('user', 'AuthController@user');
+        Route::get('logout', 'Api\AuthController@logout');
+        Route::get('user', 'Api\AuthController@user');
+        Route::get('categories', 'Api\AuthController@getCategories');
 		
-        Route::get('categories', 'AuthController@getCategories');
+		
+        Route::post('products', 'Api\AuthController@getProducts');
+        Route::post('product-detail', 'Api\AuthController@getProductDetail');
+		
+		
+		Route::get('get-cart', 'Api\AuthController@getCart');
+		Route::post('add-cart', 'Api\AuthController@addCart');
+		Route::post('remove-cart', 'Api\AuthController@removeCart');
+		
+		
+
     });
 });
 

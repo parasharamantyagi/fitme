@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use Redirect;
-use App\User;
+use App\Model\User;
 use App\Traits\ResponseTrait;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Hash;
