@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Traits\ResponseTrait;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use App\Model\User;
+use App\User;
 use App\Model\Category;
 use App\Model\Cart;
 use DB;

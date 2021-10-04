@@ -7,7 +7,7 @@ use App\Traits\ResponseTrait;
 use App\Validators\ProductValidator;
 use Auth;
 use Redirect;
-use App\Model\User;
+use App\User;
 use App\Model\Category;
 use App\Model\Product;
 // use App\UserDetail;
