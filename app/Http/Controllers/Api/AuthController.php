@@ -105,7 +105,14 @@ class AuthController extends Controller
 			if($user_otp){
 				if($user_otp->otp == $credentials['otp']){
 					User::where('id',$user_otp->id)->update(array('email_verified_at'=>Carbon::now()));
-					return response()->json(api_response(1, "OTP match successfully", $user_otp));
+					$tokenResult = $user_otp->createToken('Personal Access Token');
+					return response()->json(api_response(1, "OTP match successfully", [
+						'access_token' => $tokenResult->accessToken,
+						'token_type' => 'Bearer',
+						'expires_at' => Carbon::parse(
+							$tokenResult->token->expires_at
+						)->toDateTimeString()
+					]));
 				}else{
 					return response()->json(api_response(0, "Your otp does not match", array()));
 				}
