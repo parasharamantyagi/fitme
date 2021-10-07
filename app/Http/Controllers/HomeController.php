@@ -34,7 +34,7 @@ class HomeController extends Controller
 			// return view('emails.email')->with('name',$user->name)->with('with_url',url('reset-password/'.Crypt::encrypt($user->id)));
 			$email_s = $request->email;
 			Mail::send('emails.email', ['name' => $user->name, 'with_url' => url('reset-password/'.Crypt::encrypt($user->id))], function ($message) use($email_s) {
-				$message->from('uscisdev@gmail.com', 'USCIS');
+				$message->from('uscisdev@gmail.com', 'FITME');
 				$message->to($email_s);
 				$message->subject('Reset password');
 			});

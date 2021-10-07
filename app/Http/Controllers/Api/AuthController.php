@@ -10,6 +10,7 @@ use App\User;
 use App\Model\Category;
 use App\Model\Cart;
 use DB;
+use Mail;
 
 class AuthController extends Controller
 {
@@ -32,6 +33,7 @@ class AuthController extends Controller
         ]);
 		$checkUser = User::where('email',$request->email)->first();
 		if(!$checkUser){
+			$user_otp = rand(1111,9999);
 			$user = new User([
 				'name' => $request->name,
 				'email' => $request->email,
@@ -39,6 +41,13 @@ class AuthController extends Controller
 				'password' => bcrypt($request->password)
 			]);
 			$user->save();
+			$user->user_otp(array('user_id'=>$user->id,'otp'=>$user_otp,'status'=>0));
+			$email_s = $request->email;
+			Mail::send('emails.verify', ['name' => $user->name, 'otp' => $user_otp], function ($message) use($email_s) {
+				$message->from('uscisdev@gmail.com', 'FITME');
+				$message->to($email_s);
+				$message->subject('Reset password');
+			});
 			return response()->json(api_response(1,"User Create successfully",$user));
 		}else{
 			return response()->json(api_response(0,"This email is already exit",array()));
@@ -63,9 +72,13 @@ class AuthController extends Controller
             'remember_me' => 'boolean'
         ]);
         $credentials = request(['email', 'password']);
+        // $credentials['email_verified_at'] = Carbon::now();
+		
         if(!Auth::attempt($credentials))
             return response()->json(api_response(0,'Invalid email or password',array()));
         $user = $request->user();
+		if(!$user->email_verified_at)
+			return response()->json(api_response(0,'Invalid email or password',array()));
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)
@@ -79,6 +92,30 @@ class AuthController extends Controller
             )->toDateTimeString()
         ]));
     }
+	
+	public function verifyOtp(Request $request)
+    {
+		try{
+			$request->validate([
+				'email' => 'required|string|email',
+				'otp' => 'required',
+			]);
+			$credentials = request(['email', 'otp']);
+			$user_otp = User::select(['users.id','otps.otp'])->join('otps','otps.user_id','users.id')->where('users.email',$credentials['email'])->first();
+			if($user_otp){
+				if($user_otp->otp == $credentials['otp']){
+					User::where('id',$user_otp->id)->update(array('email_verified_at'=>Carbon::now()));
+					return response()->json(api_response(1, "OTP match successfully", $user_otp));
+				}else{
+					return response()->json(api_response(0, "Your otp does not match", array()));
+				}
+			}else{
+				return response()->json(api_response(0, "Sorry this is invalid request", array()));
+			}
+		}catch(\Exception $e){
+            return response($this->getApiErrorResponse($e->getMessage()));
+        }
+	}
   
     /**
      * Logout user (Revoke the token)

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use DB;
 
 class User extends Authenticatable
 {
@@ -41,6 +42,13 @@ class User extends Authenticatable
 	public function user_detail(){
     	return $this->hasOne('App\UserDetail', 'user_id', 'user_id');
     }
+	
+	public function user_otp($input){
+		DB::table('otps')->insert($input);
+    	return true;
+    }
+	
+	
 	
 	protected $validations = [
     'email' => 'sometimes|required|email|unique:users'
