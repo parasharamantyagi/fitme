@@ -40,6 +40,7 @@ Route::group([
 		Route::get('file/user-folder', 'Api\FileController@userFolderGet');
 		Route::get('file/user-image-folder', 'Api\FileController@userImageFolderGet');
 		
+		Route::post('user', 'Api\AuthController@userProfileUpdate');
 		Route::post('file/user-file-get', 'Api\FileController@userFileGet');
 		Route::post('file/user-file', 'Api\FileController@userFilePost');
 		Route::post('file/user-image-get', 'Api\FileController@userImageGet');

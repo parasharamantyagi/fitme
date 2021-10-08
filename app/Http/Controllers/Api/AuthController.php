@@ -66,31 +66,73 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-            'remember_me' => 'boolean'
-        ]);
-        $credentials = request(['email', 'password']);
-        // $credentials['email_verified_at'] = Carbon::now();
-		
-        if(!Auth::attempt($credentials))
-            return response()->json(api_response(0,'Invalid email or password',array()));
-        $user = $request->user();
-		if(!$user->email_verified_at)
-			return response()->json(api_response(0,'Invalid email or password',array()));
-        $tokenResult = $user->createToken('Personal Access Token');
-        $token = $tokenResult->token;
-        if ($request->remember_me)
-            $token->expires_at = Carbon::now()->addWeeks(1);
-        $token->save();
-        return response()->json(api_response(1,"User login successfully",[
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
-        ]));
+        try{
+			if($request->social_type && strtoupper($request->social_type) == 'N')
+			{
+				$request->validate([
+					'email' => 'required|string|email',
+					'password' => 'required|string',
+					'remember_me' => 'boolean'
+				]);
+				$credentials = request(['email', 'password']);
+				if(!Auth::attempt($credentials))
+					return response()->json([
+						'message' => 'Unauthorized'
+					], 401);
+				$user = $request->user();
+				$tokenResult = $user->createToken('Personal Access Token');
+				$token = $tokenResult->token;
+				if ($request->remember_me)
+					$token->expires_at = Carbon::now()->addWeeks(1);
+				$token->save();
+				
+				return response()->json(api_response(1,"User login successfully",[
+					'access_token' => $tokenResult->accessToken,
+					'token_type' => 'Bearer',
+					'expires_at' => Carbon::parse(
+						$tokenResult->token->expires_at
+					)->toDateTimeString()
+				]));
+			}else if(count($request->all()) == 5 && $request->social_type && (strtoupper($request->social_type) == 'A' || strtoupper($request->social_type) == 'F' || strtoupper($request->social_type) == 'G' || strtoupper($request->social_type) == 'I')){
+				$request->validate([
+					'email' => 'required|string|email',
+					'device_type' => 'required|string',
+					'social_type' => 'required|string',
+					'social_token' => 'required|string'
+				]);
+				$user = User::where('email',$request->input('email'))->first();
+				if($user){
+					User::where('id', $user->id)->update(array(
+												'device_type'=>strtoupper($request->device_type),
+												'social_type'=>strtoupper($request->social_type),
+												'social_token'=>$request->social_token));
+				}else{
+					$user = User::create(array(
+												'email'=>$request->email,
+												'email_verified_at'=>Carbon::now(),
+												'device_type'=>strtoupper($request->device_type),
+												'social_type'=>strtoupper($request->social_type),
+												'social_token'=>$request->social_token));				
+				}
+				
+				$tokenResult = $user->createToken('Personal Access Token');
+				$token = $tokenResult->token;
+				if ($request->remember_me)
+					$token->expires_at = Carbon::now()->addWeeks(1);
+				$token->save();
+				return response()->json(api_response(1,"User login successfully",[
+						'access_token' => $tokenResult->accessToken,
+						'token_type' => 'Bearer',
+						'expires_at' => Carbon::parse(
+							$tokenResult->token->expires_at
+						)->toDateTimeString()
+					]));
+			}else{
+				return response()->json(api_response(0,"This is invalid entry",(object)array()));
+			}
+		}catch(\Exception $e){
+            return response(api_response(0,$e->getMessage(),array()));
+        }
     }
 	
 	public function verifyOtp(Request $request)
@@ -145,6 +187,21 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         return response()->json(api_response(1, "User list", $request->user()));
+    }
+	
+	
+	/**
+     * Get the authenticated User
+     *
+     * @return [json] user object
+     */
+    public function userProfileUpdate(Request $request)
+    {
+		$my_user = $request->user();
+		$updateData = array_filter($request->all());
+		User::where('id',$my_user->id)->update($updateData);
+		$user = User::find($my_user->id);
+        return response()->json(api_response(1, "User update successfully", $user));
     }
 	
 	
