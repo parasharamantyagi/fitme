@@ -44,7 +44,12 @@ class User extends Authenticatable
     }
 	
 	public function user_otp($input){
-		DB::table('otps')->insert($input);
+		$checkOtp = DB::table('otps')->where('user_id',$input['user_id'])->first();
+		if($checkOtp){
+			DB::table('otps')->where('user_id',$input['user_id'])->update(array('otp'=>$input['otp']));
+		}else{
+			DB::table('otps')->insert($input);
+		}
     	return true;
     }
 	

@@ -32,14 +32,15 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed'
         ]);
 		$checkUser = User::where('email',$request->email)->first();
-		if(!$checkUser){
+		if(!$checkUser || !$checkUser->email_verified_at){
 			$user_otp = rand(1111,9999);
-			$user = new User([
-				'name' => $request->name,
-				'email' => $request->email,
-				'phone' => $request->phone,
-				'password' => bcrypt($request->password)
-			]);
+			$user = new User;
+			if(!$checkUser->email_verified_at)
+				$user = User::find($checkUser->id);
+			$user->name = $request->name;
+			$user->email = $request->email;
+			$user->phone = $request->phone;
+			$user->password = bcrypt($request->password);
 			$user->save();
 			$user->user_otp(array('user_id'=>$user->id,'otp'=>$user_otp,'status'=>0));
 			$email_s = $request->email;
@@ -80,6 +81,8 @@ class AuthController extends Controller
 						'message' => 'Unauthorized'
 					], 401);
 				$user = $request->user();
+				if(!$user->email_verified_at)
+					return response()->json(api_response(0,"This is invalid email or password",(object)array()));
 				$tokenResult = $user->createToken('Personal Access Token');
 				$token = $tokenResult->token;
 				if ($request->remember_me)
