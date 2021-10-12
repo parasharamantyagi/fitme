@@ -21,7 +21,8 @@
 												<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 													<div class="dropzone-pro">
 														<div id="dropzone">
-															<form action="/upload" class="dropzone dropzone-custom needsclick" id="demo-upload">
+															<form action="/admin/upload" class="dropzone dropzone-custom needsclick" id="demo-upload">
+																{{ csrf_field() }}
 																<div class="dz-message needsclick download-custom">
 																	<i class="fa fa-cloud-download" aria-hidden="true"></i>
 																	<h2>Drop files here or click to upload.</h2>

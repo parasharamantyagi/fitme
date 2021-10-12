@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
 	// protected $table = 'customers';
-    // public function user(){
-    	// return $this->belongsTo('App\User', 'user_id', 'id');
-    // }
+    public function product_images(){
+    	return $this->hasMany('App\Model\ProductImage', 'product_id', 'id');
+    }
 }

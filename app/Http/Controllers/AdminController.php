@@ -10,6 +10,7 @@ use Redirect;
 use App\User;
 use App\Model\Category;
 use App\Model\Product;
+use App\Model\ProductImage;
 // use App\UserDetail;
 // use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Hash;
@@ -100,6 +101,9 @@ class AdminController extends Controller
 	
 	public function addProduct(Request $request){
 		$title = 'Add Product';
+		if($request->session()->has('product_file')){
+			$request->session()->forget('product_file');
+		}		
 		$category = Category::where('status',1)->orderBy('id','desc')->get();
 		$product_fields = array();
 		$cat_id = '';
@@ -125,7 +129,11 @@ class AdminController extends Controller
 			$input = $request->all();
 			$input['cat_id'] = $cat_id;
 			unset($input['_token']);
-			DB::table($product_fields->table_name)->insert($input);
+			$my_product = Product::insertGetId($input);
+			if($request->session()->has('product_file')){
+				ProductImage::where('image_id',$request->session()->get('product_file'))->update(array('product_id'=>$my_product));
+			}
+			// DB::table($product_fields->table_name)->insert($input);
 			// if ($request->hasFile('image')) {
 				   // $image = $request->file('image'); //get the file
 				   // $namefile = 	rand(1,999999) .time() . '.' . $image->getClientOriginalExtension();
@@ -167,6 +175,29 @@ class AdminController extends Controller
         }
 	}
 	
+	
+	public function uploadImage(Request $request){
+		
+		$input = array();
+		$productFile = rand(11111111,99999999);
+		// $input['image_id'] = 4444;
+		if ($request->hasFile('file')) {
+				   $image = $request->file('file'); //get the file
+				   $namefile = 	rand(1,999999) .time() . '.' . $image->getClientOriginalExtension();
+				   $destinationPath = public_path('/products'); //public path folder dir
+				   $image->move($destinationPath, $namefile);  //mve to destination you mentioned
+				   $input['file_path'] = 'products/'.$namefile;
+			}
+		if($request->session()->has('product_file')){
+			 $productFile = $request->session()->get('product_file');
+		}else{
+			$request->session()->put('product_file',$productFile);
+		}
+		$input['image_id'] = $productFile;
+		ProductImage::insert($input);
+		return true;
+	}
+	
 	public function viewProduct(Request $request){
 		try{
 			$cat_id = 0;
@@ -180,8 +211,7 @@ class AdminController extends Controller
 				if($product_fields){
 					$name_of_fileds = name_of_filed($product_fields->filed,'name');
 					$label_of_fileds = name_of_filed($product_fields->filed,'label');
-					$product = DB::table($product_fields->table_name)->get();
-					$product = json_decode(json_encode($product),true);
+					$product = Product::where('cat_id',$cat_id)->get()->toArray();
 				}
 			}
 			$title = 'View Product';
