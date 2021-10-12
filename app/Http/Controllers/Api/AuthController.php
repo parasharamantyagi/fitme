@@ -260,7 +260,7 @@ class AuthController extends Controller
 			$product = array();
 			foreach($myCarts as $myCart){
 				$myCart_one  = $myCart;
-					$product = Product::where('id',$myCart->product_id)->first();
+					$product = Product::with('product_images')->where('id',$myCart->product_id)->first();
 				$resultArray[] = array(
 							'id'=>$myCart_one->id,'user_id'=>$myCart_one->user_id,'cat_id'=>$myCart_one->cat_id,
 							'product_id'=>$myCart_one->product_id,'quantity'=>$myCart_one->quantity,'status'=>$myCart_one->status,
