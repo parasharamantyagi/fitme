@@ -58,6 +58,15 @@ if (! function_exists('user_url')) {
 	}
 	
 
+	if (!function_exists('remove_null')) {
+		function remove_null($array){
+			return array_map(function($v){
+					return (is_null($v)) ? "" : $v;
+				},$array);
+		}
+	}
+
+
 if (!function_exists('api_response')) {
 	
 	function api_response($status,$message,$data)

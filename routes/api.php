@@ -32,6 +32,7 @@ Route::group([
 		
 		Route::get('get-cart', 'Api\AuthController@getCart');
 		Route::post('add-cart', 'Api\AuthController@addCart');
+		Route::post('update-cart', 'Api\AuthController@updateCart');
 		Route::post('remove-cart', 'Api\AuthController@removeCart');
 		
 		

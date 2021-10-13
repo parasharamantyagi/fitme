@@ -190,7 +190,8 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-        return response()->json(api_response(1, "User list", $request->user()));
+		$userData = remove_null($request->user()->toArray());
+        return response()->json(api_response(1, "User list", $userData));
     }
 	
 	
@@ -258,6 +259,7 @@ class AuthController extends Controller
 			$resultArray =array();
 			$myCarts = Cart::where('user_id',$request->user()->id)->get();
 			$product = array();
+			$total_amount = array();
 			foreach($myCarts as $myCart){
 				$myCart_one  = $myCart;
 					$product = Product::with('product_images')->where('id',$myCart->product_id)->first();
@@ -268,8 +270,9 @@ class AuthController extends Controller
 							'category'=>array('id'=>$myCart_one->category->id,'title'=>$myCart_one->category->title),
 							'product'=>$product
 							);
+				$total_amount[] = $myCart_one->quantity * $product->price;
 			}
-			return response()->json(api_response(1, "My cart", $resultArray));
+			return response()->json(api_response(1, "My cart", array('total_amount'=>array_sum($total_amount),'vat'=>'0%','my_item'=>$resultArray)));
 		}catch(\Exception $e){
             return response($this->getApiErrorResponse($e->getMessage()));
         }
@@ -287,6 +290,19 @@ class AuthController extends Controller
 			$resultArray =array();
 			Cart::insert($inputData);
 			return response()->json(api_response(1, "Add to cart successfully", $resultArray));
+		}catch(\Exception $e){
+			return response($this->getApiErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function updateCart(Request $request)
+    {
+		try{
+			$quantity = $request->quantity;
+			foreach($request->id as $key => $my_val){
+				Cart::where('id',$my_val)->update(array('quantity'=>$quantity[$key]));
+			}
+			return response()->json(api_response(1, "Cart update successfully", array()));
 		}catch(\Exception $e){
 			return response($this->getApiErrorResponse($e->getMessage()));
         }
