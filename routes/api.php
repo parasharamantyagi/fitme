@@ -34,7 +34,9 @@ Route::group([
 		Route::post('add-cart', 'Api\AuthController@addCart');
 		Route::post('update-cart', 'Api\AuthController@updateCart');
 		Route::post('remove-cart', 'Api\AuthController@removeCart');
+		Route::post('proceed-to-checkout', 'Api\AuthController@proceedToCheckout');
 		
+		Route::get('my-product', 'Api\AuthController@myProduct');
 		
 		// garud file upload
 		Route::get('file/user-thouthand', 'Api\FileController@userThouthand');

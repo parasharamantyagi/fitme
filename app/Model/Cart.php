@@ -15,4 +15,9 @@ class Cart extends Model
     	return $this->hasOne('App\Model\Category', 'id', 'cat_id');
 		// return $returnData;
     }
+	
+	public function product(){
+    	return $this->hasOne('App\Model\Product', 'id', 'product_id');
+		// return $returnData;
+    }
 }

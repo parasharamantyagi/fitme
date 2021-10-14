@@ -10,6 +10,9 @@ use App\User;
 use App\Model\Category;
 use App\Model\Product;
 use App\Model\Cart;
+use App\Model\PaymentHistory;
+use App\Model\UserProduct;
+use Stripe;
 // use DB;
 use Mail;
 
@@ -257,6 +260,7 @@ class AuthController extends Controller
     {
 		try{
 			$resultArray =array();
+			$message = 'My cart item';
 			$myCarts = Cart::where('user_id',$request->user()->id)->get();
 			$product = array();
 			$total_amount = array();
@@ -272,7 +276,10 @@ class AuthController extends Controller
 							);
 				$total_amount[] = $myCart_one->quantity * $product->price;
 			}
-			return response()->json(api_response(1, "My cart", array('total_amount'=>array_sum($total_amount),'vat'=>'0%','my_item'=>$resultArray)));
+			if(empty($resultArray)){
+				$message = 'No item in cart';
+			}
+			return response()->json(api_response(1, $message, array('total_amount'=>array_sum($total_amount),'vat'=>'0%','my_item'=>$resultArray)));
 		}catch(\Exception $e){
             return response($this->getApiErrorResponse($e->getMessage()));
         }
@@ -318,6 +325,51 @@ class AuthController extends Controller
 			return response($this->getApiErrorResponse($e->getMessage()));
         }
 	}
+	
+	public function proceedToCheckout(Request $request)
+    {
+		try{
+			$user = $request->user()->id;
+			Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+			$products = Cart::with('product')->where('user_id',$user)->get();
+			$userProduct = array();
+			$createCharge = Stripe\Charge::create ([
+					"amount" => $request->amount,
+					"currency" => "USD",
+					"source" => $request->token,
+					"description" => "Making test payment." 
+			]);
+			// $payId = PaymentHistory::insertGetId(array('user_id'=>$user,'charge_id'=>'ch_3JkP8fFmFQnpPZgU0vEnjCd6','amount'=>50,'currency'=>'usd'));
+			if($createCharge->id){
+				$payId = PaymentHistory::insertGetId(array('user_id'=>$user,'charge_id'=>$createCharge->id,'amount'=>$createCharge->amount,'currency'=>$createCharge->currency,'created_at'=>Carbon::now(),'updated_at'=>Carbon::now()));
+				foreach($products as $product){
+					$userProduct[] = array('user_id'=>$user,'ph_id'=>$payId,'product_id'=>$product->product_id,'quantity'=>$product->quantity,'price'=>$product->product->price,'status'=>1);
+				}
+				UserProduct::insert($userProduct);
+				Cart::where('user_id',$user)->delete();
+			}
+			return response()->json(api_response(1, "Product buy successfully", $userProduct));
+		}catch(\Exception $e){
+			return response($this->getApiErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function myProduct(Request $request){
+		try{
+			$user = $request->user()->id;
+			$myProductArray = array();
+			$payHistorys = PaymentHistory::select('id','user_id','amount','currency','created_at')->where('user_id',$user)->orderBy('id', 'DESC')->get();
+			foreach($payHistorys as $payHistory){
+				$payHistory->my_order = UserProduct::with('product')->where('ph_id',$payHistory->id)->get();
+				$myProductArray[] = $payHistory;
+			}
+			return response()->json(api_response(1, "My product list", $myProductArray));
+		}catch(\Exception $e){
+			return response($this->getApiErrorResponse($e->getMessage()));
+        }
+	}
+	
+	
 	
 	
 	

@@ -16,9 +16,9 @@
         "laravel/passport": "9.0",
         "laravel/tinker": "^2.0",
         "laravelcollective/html": "^6.2",
+        "lcobucci/jwt": "3.3.3",
         "plivo/plivo-php": "^4.8",
-        "stripe/stripe-php": "^7.97",
-		"lcobucci/jwt": "3.3.3",
+        "stripe/stripe-php": "^7.100",
         "twilio/sdk": "^6.24"
     },
     "require-dev": {
