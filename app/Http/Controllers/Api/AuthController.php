@@ -274,7 +274,8 @@ class AuthController extends Controller
 							'category'=>array('id'=>$myCart_one->category->id,'title'=>$myCart_one->category->title),
 							'product'=>$product
 							);
-				$total_amount[] = $myCart_one->quantity * $product->price;
+				if($product && $product->price)
+					$total_amount[] = $myCart_one->quantity * $product->price;
 			}
 			if(empty($resultArray)){
 				$message = 'No item in cart';
