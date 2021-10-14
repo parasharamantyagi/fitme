@@ -334,8 +334,9 @@ class AuthController extends Controller
 			Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 			$products = Cart::with('product')->where('user_id',$user)->get();
 			$userProduct = array();
+			$charge_amount = round($request->amount);
 			$createCharge = Stripe\Charge::create ([
-					"amount" => $request->amount,
+					"amount" => $charge_amount,
 					"currency" => "USD",
 					"source" => $request->token,
 					"description" => "Making test payment." 
