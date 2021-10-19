@@ -124,6 +124,13 @@
                             </ul>
                         </li>
 						
+						<li class="{{ (Request::segment(2) == 'view-order') ? 'active':'' }}">
+                            <a class="has-arrow" href="view-order" aria-expanded="false"><i class="fa fa-user"></i> <span class="mini-click-non">Orders</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="View Mail" href="{{url('admin/view-order')}}"><span class="mini-sub-pro">View Orders</span></a></li>
+                            </ul>
+                        </li>
+						
                         <!-- li>
                             <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-diamond icon-wrap"></i> <span class="mini-click-non">Interface</span></a>
                             <ul class="submenu-angle" aria-expanded="false">

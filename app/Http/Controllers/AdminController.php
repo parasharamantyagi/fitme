@@ -11,6 +11,9 @@ use App\User;
 use App\Model\Category;
 use App\Model\Product;
 use App\Model\ProductImage;
+use App\Model\UserProduct;
+use App\Model\Order;
+
 // use App\UserDetail;
 // use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Hash;
@@ -245,6 +248,31 @@ class AdminController extends Controller
 	public function adminProfile(){
 		$users = User::with(['user_detail'])->where('id',Auth::user()->id)->orderBy('id','DESC')->first();
 		return view('adminProfile')->with('userAuth',$users);
+	}
+	
+	public function viewOrder(){
+		try{
+			$allOrder = Order::select('orders.id','user_id','amount','orders.created_at','name','email','address','phone')->join('users','users.id','orders.user_id')->orderBy('id', 'DESC')->get();
+			$title = 'View Order';
+			return view('admin/order/view')->with('title',$title)->with('all_Orders',$allOrder);
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function orderDetail($id){
+		try{
+			$order = Order::find($id);
+			$user_products = UserProduct::with('product')->where('order_id',$id)->get();
+			$title = 'Order detail';
+			// echo '<pre>';
+			// print_r($order->toArray());
+			// print_r($user_products->toArray());
+			// die;
+			return view('admin/order/detail')->with('title',$title)->with('order',$order)->with('user_products',$user_products);
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
 	}
 
 	

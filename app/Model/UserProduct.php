@@ -8,6 +8,6 @@ class UserProduct extends Model
 {
 	// protected $table = 'customers';
     public function product(){
-    	return $this->hasOne('App\Model\Product', 'id', 'ph_id');
+    	return $this->hasOne('App\Model\Product', 'id', 'product_id');
     }
 }

@@ -12,6 +12,7 @@ use App\Model\Product;
 use App\Model\Cart;
 use App\Model\PaymentHistory;
 use App\Model\UserProduct;
+use App\Model\Order;
 use Stripe;
 // use DB;
 use Mail;
@@ -343,9 +344,10 @@ class AuthController extends Controller
 			]);
 			// $payId = PaymentHistory::insertGetId(array('user_id'=>$user,'charge_id'=>'ch_3JkP8fFmFQnpPZgU0vEnjCd6','amount'=>50,'currency'=>'usd'));
 			if($createCharge->id){
-				$payId = PaymentHistory::insertGetId(array('user_id'=>$user,'charge_id'=>$createCharge->id,'amount'=>$createCharge->amount,'currency'=>$createCharge->currency,'created_at'=>Carbon::now(),'updated_at'=>Carbon::now()));
+				$Oid = Order::insertGetId(array('user_id'=>$user,'amount'=>$createCharge->amount));
+				$payId = PaymentHistory::insertGetId(array('user_id'=>$user,'order_id'=>$Oid,'charge_id'=>$createCharge->id,'amount'=>$createCharge->amount,'currency'=>$createCharge->currency,'created_at'=>Carbon::now(),'updated_at'=>Carbon::now()));
 				foreach($products as $product){
-					$userProduct[] = array('user_id'=>$user,'ph_id'=>$payId,'product_id'=>$product->product_id,'quantity'=>$product->quantity,'price'=>$product->product->price,'status'=>1);
+					$userProduct[] = array('user_id'=>$user,'order_id'=>$payId,'Oid'=>$product->product_id,'quantity'=>$product->quantity,'price'=>$product->product->price,'status'=>1);
 				}
 				UserProduct::insert($userProduct);
 				Cart::where('user_id',$user)->delete();
@@ -360,9 +362,9 @@ class AuthController extends Controller
 		try{
 			$user = $request->user()->id;
 			$myProductArray = array();
-			$payHistorys = PaymentHistory::select('id','user_id','amount','currency','created_at')->where('user_id',$user)->orderBy('id', 'DESC')->get();
+			$payHistorys = Order::select('id','user_id','amount','created_at')->where('user_id',$user)->orderBy('id', 'DESC')->get();
 			foreach($payHistorys as $payHistory){
-				$payHistory->my_order = UserProduct::with('product')->where('ph_id',$payHistory->id)->get();
+				$payHistory->my_order = UserProduct::with('product')->where('order_id',$payHistory->id)->get();
 				$myProductArray[] = $payHistory;
 			}
 			return response()->json(api_response(1, "My product list", $myProductArray));
