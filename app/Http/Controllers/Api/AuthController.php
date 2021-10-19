@@ -230,7 +230,7 @@ class AuthController extends Controller
 				if($request->name){
 					$product = $product->where('Bra_name',$request->name);
 				}
-				$product = $product->paginate();
+				$product = $product->orderBy('id', 'DESC')->paginate(10);
 			}
 			return response()->json(api_response(1, "Product list", $product));
 		}catch(\Exception $e){
