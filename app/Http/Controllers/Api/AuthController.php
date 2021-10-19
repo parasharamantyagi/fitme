@@ -232,7 +232,7 @@ class AuthController extends Controller
 				}
 				$product = $product->orderBy('id', 'DESC')->paginate(10);
 			}
-			return response()->json(api_response(1, "Product list", $product));
+			return response()->json(api_response(1, "Product list", remove_null($product->toArray())));
 		}catch(\Exception $e){
             return response($this->getApiErrorResponse($e->getMessage()));
         }
