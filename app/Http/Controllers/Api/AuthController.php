@@ -331,6 +331,7 @@ class AuthController extends Controller
 	public function proceedToCheckout(Request $request)
     {
 		try{
+			// GBP
 			$user = $request->user()->id;
 			Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 			$products = Cart::with('product')->where('user_id',$user)->get();
@@ -338,7 +339,7 @@ class AuthController extends Controller
 			$charge_amount = round($request->amount);
 			$createCharge = Stripe\Charge::create ([
 					"amount" => $charge_amount,
-					"currency" => "USD",
+					"currency" => "GBP",
 					"source" => $request->token,
 					"description" => "Making test payment." 
 			]);

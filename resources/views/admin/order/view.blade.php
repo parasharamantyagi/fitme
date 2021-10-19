@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="product-status-wrap">
-                            <h4>User List</h4>
+                            <h4>Order List</h4>
                             <div class="add-product">
                                 <!-- a href="{{url('admin/add-product')}}">Add Product</a -->
                             </div>
@@ -27,7 +27,7 @@
                                     <td>{{$all_Order->name}}</td>
                                     <td>{{$all_Order->email}}</td>
                                     <td>{{$all_Order->phone}}</td>
-                                    <td>{{$all_Order->amount}}</td>
+                                    <td>{{my_currecy($all_Order->amount)}}</td>
                                     <td>
                                         <button data-toggle="tooltip" title="View detail" class="pd-setting-ed" onclick="editData({{$all_Order->id}},'order-detail')"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                      </td>
