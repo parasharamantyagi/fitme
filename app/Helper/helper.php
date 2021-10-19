@@ -100,7 +100,6 @@ if (! function_exists('user_card_rate')) {
 }
 
 if (! function_exists('my_currecy')) {
-	
     function my_currecy($val) {
         return '£ '.$val;
     }
