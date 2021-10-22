@@ -71,7 +71,7 @@
     <div class="left-sidebar-pro">
         <nav id="sidebar" class="">
             <div class="sidebar-header">
-                <a href="{{url('admin/dashboard')}}"><img class="main-logo" src="img/logo/logo-flat.jpg" alt="" /></a>
+                <a href="{{url('admin/dashboard')}}"><img class="main-logo" src="img/logo/logo-icone2.png" alt="" /></a>
                 <strong><img src="img/logo/logosn_11zon.png" alt="" /></strong>
             </div>
             <div class="left-custom-menu-adp-wrap comment-scrollbar">
