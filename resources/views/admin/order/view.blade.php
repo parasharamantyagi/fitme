@@ -24,9 +24,9 @@
 								@foreach($all_Orders as $key => $all_Order)
                                 <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>{{$all_Order->name}}</td>
+                                    <td>{{($all_Order->name) ? $all_Order->name: 'N/A'}}</td>
                                     <td>{{$all_Order->email}}</td>
-                                    <td>{{$all_Order->phone}}</td>
+                                    <td>{{($all_Order->phone) ? $all_Order->phone:'N/A' }}</td>
                                     <td>{{my_currecy($all_Order->amount)}}</td>
                                     <td>
                                         <button data-toggle="tooltip" title="View detail" class="pd-setting-ed" onclick="editData({{$all_Order->id}},'order-detail')"><i class="fa fa-eye" aria-hidden="true"></i></button>

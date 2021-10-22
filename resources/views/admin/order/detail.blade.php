@@ -61,7 +61,7 @@
                     		<div class="row">
 								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<ul id="myTab" class="tab-review-design">
-										<li class="active"><a href="#description">Address - {{$user_address->address}}</a></li>
+										<li class="active"><a href="#description">Address - {{($user_address->address) ? $user_address->address: 'N/A'}}</a></li>
 									</ul>
 									<ul id="myTab" class="tab-review-design">
 										<li class="active"><a href="#description">Total amount - {{my_currecy($order->amount)}}</a></li>
