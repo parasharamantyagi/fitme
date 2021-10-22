@@ -59,7 +59,17 @@
                     <div class="col-lg-12">
                     	<div class="single-tb-pr">
                     		<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<div class="col-md-6">
+									<ul id="myTab" class="tab-review-design">
+										<li class="active"><a href="#description">Name - {{($user_address->name) ? $user_address->name: 'N/A'}}</a></li>
+									</ul>
+								</div>
+								<div class="col-md-6">
+									<ul id="myTab" class="tab-review-design">
+										<li class="active"><a href="#description">phone - {{($user_address->phone) ? $user_address->phone: 'N/A'}}</a></li>
+									</ul>
+								</div>
+								<div class="col-md-12">
 									<ul id="myTab" class="tab-review-design">
 										<li class="active"><a href="#description">Address - {{($user_address->address) ? $user_address->address: 'N/A'}}</a></li>
 									</ul>
