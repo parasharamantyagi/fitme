@@ -116,6 +116,21 @@ if (! function_exists('product_first_image')) {
     }
 }
 
+if (! function_exists('isAssoc')) {
+    function isAssoc($arr) {
+		if (array() === (array)$arr) return false;
+		return array_keys((array)$arr) !== range(0, count((array)$arr) - 1);
+    }
+}
+
+if (! function_exists('pr')) {
+    function pr($input) {
+		echo '<pre>';
+		print_r($input);
+		die;
+    }
+}
+
 
 
 ?>

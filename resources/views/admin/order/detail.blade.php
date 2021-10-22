@@ -38,7 +38,7 @@
 										<div class="color-quality-pro">
 											<div class="color-quality-details">
 												<h5>Color</h5>
-												<span class="red"></span> <span class="green"></span> <span class="yellow"></span> <span class="black"></span> <span class="white"></span>
+												<span style="background: {{$user_product->color}};"></span>
 											</div>
 											<div class="color-quality">
 												<h4>Quality</h4>

@@ -55,9 +55,15 @@
 													  @if($product_field->field)
 														<select name="{{$product_field->name}}" class="form-control">
 															<option value="">Select {{$product_field->label}}</option>
-															@foreach($product_field->field as $product_field_field)
-																<option value="{{$product_field_field}}">{{$product_field_field}}</option>
-															@endforeach
+															@if(isAssoc($product_field->field))
+																@foreach($product_field->field as $array_key => $product_field_field)
+																	<option value="{{$product_field_field}}">{{$array_key}}</option>
+																@endforeach
+															@else
+																@foreach($product_field->field as $product_field_field)
+																	<option value="{{$product_field_field}}">{{$product_field_field}}</option>
+																@endforeach
+															@endif
 														</select>
 													  @else
 														<input class="form-control" name="{{$product_field->name}}" value="" type="text" aria-invalid="false">

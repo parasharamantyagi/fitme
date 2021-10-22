@@ -348,7 +348,7 @@ class AuthController extends Controller
 				$Oid = Order::insertGetId(array('user_id'=>$user,'amount'=>$createCharge->amount));
 				$payId = PaymentHistory::insertGetId(array('user_id'=>$user,'order_id'=>$Oid,'charge_id'=>$createCharge->id,'amount'=>$createCharge->amount,'currency'=>$createCharge->currency,'created_at'=>Carbon::now(),'updated_at'=>Carbon::now()));
 				foreach($products as $product){
-					$userProduct[] = array('user_id'=>$user,'order_id'=>$Oid,'product_id'=>$product->product_id,'quantity'=>$product->quantity,'price'=>$product->product->price,'status'=>1);
+					$userProduct[] = array('user_id'=>$user,'order_id'=>$Oid,'product_id'=>$product->product_id,'quantity'=>$product->quantity,'color'=>$product->color,'price'=>$product->product->price,'status'=>1);
 				}
 				UserProduct::insert($userProduct);
 				Cart::where('user_id',$user)->delete();
