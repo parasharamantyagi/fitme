@@ -71,8 +71,8 @@
     <div class="left-sidebar-pro">
         <nav id="sidebar" class="">
             <div class="sidebar-header">
-                <a href="{{url('admin/dashboard')}}"><img class="main-logo" src="img/logo/logo-icone2.png" alt="" /></a>
-                <strong><img src="img/logo/logosn_11zon.png" alt="" /></strong>
+                <a href="{{url('admin/dashboard')}}"><img class="main-logo" src="{{url('admin/img/logo/logo-icone2.png')}}" alt="" /></a>
+                <strong><img src="{{url('admin/img/logo/logosn_11zon.png')}}" alt="" /></strong>
             </div>
             <div class="left-custom-menu-adp-wrap comment-scrollbar">
                 <nav class="sidebar-nav left-sidebar-menu-pro">
@@ -215,7 +215,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="logo-pro">
-                        <a href="{{url('admin/dashboard')}}"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                        <a href="{{url('admin/dashboard')}}"><img class="main-logo" src="{{url('admin/img/logo/logo.png')}}" alt="" /></a>
                     </div>
                 </div>
             </div>

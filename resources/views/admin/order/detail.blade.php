@@ -1,5 +1,13 @@
 @extends('layout.admin')
 
+@section('style')
+	<style>
+	.breadcome-list {
+		margin: 30px 0px 30px;
+	}
+	</style>
+@endsection
+
 @section('content')
 
 
