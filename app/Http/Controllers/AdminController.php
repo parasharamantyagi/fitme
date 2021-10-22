@@ -34,8 +34,12 @@ class AdminController extends Controller
 	
 	
 	public function dashboard(){
+		$count_data['order_count'] = Order::count();
+		$count_data['user_count'] = User::count();
+		$count_data['category_count'] = Category::count();
+		$count_data['product_count'] = Product::count();
 		$title = 'dashboard';
-		return view('admin/dashboard')->with('title',$title);
+		return view('admin/dashboard')->with('title',$title)->with('count_data',$count_data);
 	}
 	
 	public function addCategory(){

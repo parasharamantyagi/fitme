@@ -237,10 +237,10 @@
                                     <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
                                         <div class="header-top-menu tabl-d-n hd-search-rp">
                                             <div class="breadcome-heading">
-												<form role="search" class="">
+												<!--form role="search" class="">
 													<input type="text" placeholder="Search..." class="form-control">
 													<a href=""><i class="fa fa-search"></i></a>
-												</form>
+												</form -->
 											</div>
                                         </div>
                                     </div>
@@ -251,13 +251,13 @@
                                                 <li class="nav-item">
                                                     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
 															<i class="icon nalika-user"></i>
-															<span class="admin-name">Advanda Cro</span>
+															<span class="admin-name">Fit me</span>
 															<i class="icon nalika-down-arrow nalika-angle-dw"></i>
 														</a>
                                                     <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
-                                                        <li><a href="register.html"><span class="icon nalika-home author-log-ic"></span> Register</a>
+                                                        <!--li><a href="register.html"><span class="icon nalika-home author-log-ic"></span> Register</a>
                                                         </li>
-                                                        <!--li><a href="#"><span class="icon nalika-user author-log-ic"></span> My Profile</a>
+                                                        <li><a href="#"><span class="icon nalika-user author-log-ic"></span> My Profile</a>
                                                         </li>
                                                         <li><a href="lock.html"><span class="icon nalika-diamond author-log-ic"></span> Lock</a>
                                                         </li>
