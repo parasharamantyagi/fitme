@@ -13,7 +13,7 @@
 								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
 									<div id="myTabContent1" class="tab-content">
 										<div class="product-tab-list tab-pane fade active in" id="single-tab1">
-											<img src="{{url('products/logo.jpg')}}" alt="" style="height: 200px;" />
+											<img src="{{url(product_first_image($user_product->product->product_images))}}" alt="" style="height: 200px;width: 375px;" />
 										</div>
 									</div>
 								</div>
@@ -60,6 +60,9 @@
                     	<div class="single-tb-pr">
                     		<div class="row">
 								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<ul id="myTab" class="tab-review-design">
+										<li class="active"><a href="#description">Address - {{$user_address->address}}</a></li>
+									</ul>
 									<ul id="myTab" class="tab-review-design">
 										<li class="active"><a href="#description">Total amount - {{my_currecy($order->amount)}}</a></li>
 									</ul>

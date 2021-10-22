@@ -263,13 +263,10 @@ class AdminController extends Controller
 	public function orderDetail($id){
 		try{
 			$order = Order::find($id);
+			$user_address = User::find($order->user_id);
 			$user_products = UserProduct::with('product')->where('order_id',$id)->get();
 			$title = 'Order detail';
-			// echo '<pre>';
-			// print_r($order->toArray());
-			// print_r($user_products->toArray());
-			// die;
-			return view('admin/order/detail')->with('title',$title)->with('order',$order)->with('user_products',$user_products);
+			return view('admin/order/detail')->with('title',$title)->with('order',$order)->with('user_products',$user_products)->with('user_address',$user_address);
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }

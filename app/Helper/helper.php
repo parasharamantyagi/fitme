@@ -105,6 +105,17 @@ if (! function_exists('my_currecy')) {
     }
 }
 
+if (! function_exists('product_first_image')) {
+    function product_first_image($input) {
+		if(isset($input[0])){
+			$my_ob = $input[0];
+			return $my_ob->file_path;
+		}else{
+			return 'products/no_product_image.png';
+		}
+    }
+}
+
 
 
 ?>
