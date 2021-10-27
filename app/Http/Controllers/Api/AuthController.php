@@ -231,6 +231,9 @@ class AuthController extends Controller
 				if($request->name){
 					$product = $product->where('Bra_name',$request->name);
 				}
+				if($request->brand_name){
+					$product = $product->whereIn('brand_name',$request->brand_name);
+				}
 				$product = $product->orderBy('id', 'DESC')->paginate(10);
 			}
 			return response()->json(array("status"=>1,"message"=>"Product list","data"=>remove_null($product->toArray()),'brand_name'=>$brand_name[0]->field));
