@@ -233,7 +233,6 @@ class AuthController extends Controller
 				}
 				$product = $product->orderBy('id', 'DESC')->paginate(10);
 			}
-			// $product['brand_name'] = $brand_name;
 			return response()->json(array("status"=>1,"message"=>"Product list","data"=>remove_null($product->toArray()),'brand_name'=>$brand_name[0]->field));
 		}catch(\Exception $e){
             return response($this->getApiErrorResponse($e->getMessage()));
