@@ -40,7 +40,7 @@ class AuthController extends Controller
 		if(!$checkUser || !$checkUser->email_verified_at){
 			$user_otp = rand(1111,9999);
 			$user = new User;
-			if(!$checkUser->email_verified_at)
+			if($checkUser && !$checkUser->email_verified_at)
 				$user = User::find($checkUser->id);
 			$user->name = $request->name;
 			$user->email = $request->email;
