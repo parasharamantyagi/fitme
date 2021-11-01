@@ -22,6 +22,10 @@ trait ProductValidator
 	public function agentNewFeatureValidations(Request $request,$input){
 		try{
             $validations = $input;
+			unset($validations['materialid2']);
+			unset($validations['materialid3']);
+			unset($validations['materialid4']);
+			unset($validations['materialid5']);
             $validator = Validator::make($request->all(), $validations);
             $this->response = $this->validateData($validator);
         }catch(\Exception $e){
