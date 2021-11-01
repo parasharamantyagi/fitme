@@ -70,9 +70,10 @@ class AdminController extends Controller
 				$response['message'] = 'Category delete successfully';
 				$response['url'] = url('/admin/view-category');
 			}else if($request->action == 'product'){
-				Product::where('id',$request->id)->delete();
+				$product = Product::find($request->id);
+				$product->delete();
 				$response['message'] = 'Product delete successfully';
-				$response['url'] = url('/admin/view-product');
+				$response['url'] = url('/admin/view-product?cat_id='.encryptID($product->cat_id));
 			}else if($request->action == 'user_by_id'){
 				User::where('id',$request->id)->delete();
 				$response['message'] = 'User delete successfully';
