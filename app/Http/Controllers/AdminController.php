@@ -228,6 +228,29 @@ class AdminController extends Controller
         }
 	}
 	
+	public function productDetail($id){
+		try{
+			$product_id = decryptId($id);
+			$product = Product::find($product_id);
+			$product_fields = Category::where('id',$product->cat_id)->first()->field;
+			$p_filed = name_of_filed($product_fields->filed,'label');
+			// echo '<pre>';
+			// print_r($product);
+			// print_r($p_filed);
+			// die;
+			return view('admin/product/detail')->with('title','Product detail')->with('product',$product)->with('p_filed',$p_filed);
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+			
+		
+		// $title = 'Update Product';
+		// $category = Category::orderBy('id','desc')->get();
+		// 
+		// $urlform = 'admin/add-product/'.$id;
+		// return view('admin/product/add')->with('title',$title)->with('categories',$category)->with('product',$product)->with('urlform',$urlform);
+	}
+	
 	public function addProductId($id){
 		$title = 'Update Product';
 		$category = Category::orderBy('id','desc')->get();

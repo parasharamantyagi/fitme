@@ -48,6 +48,7 @@
                                     <td>
                                         <!-- button data-toggle="tooltip" title="Edit" class="pd-setting-ed" onclick="editData({{$product['id']}},'add-product')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button -->
                                         <button data-toggle="tooltip" title="Trash" class="pd-setting-ed" onclick="deleteData({{$product['id']}},'product')"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+										<button data-toggle="tooltip" title="View detail" class="pd-setting-ed" onclick="editData('{{encryptID($product['id'])}}','product-detail')"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                     </td>
                                 </tr>
 								@endforeach
