@@ -31,16 +31,18 @@
                                 <tr>
                                     <th>Sr. no </th>
                                     <th>{{$label_of_fileds[0]}}</th>
+                                    <th>{{$label_of_fileds[15]}}</th>
                                     <th>{{$label_of_fileds[1]}}</th>
                                     <th>{{$label_of_fileds[2]}}</th>
                                     <th>{{$label_of_fileds[3]}}</th>
                                     <th>{{$label_of_fileds[4]}}</th>
-                                    <th>Setting</th>
+                                    <th>Action</th>
                                 </tr>
 								@foreach($products as $key => $product)
                                 <tr>
                                     <td>{{$key+1}}</td>
                                     <td>{{$product[$name_of_fileds[0]]}}</td>
+                                    <td>{{$product[$name_of_fileds[15]]}}</td>
                                     <td>{{$product[$name_of_fileds[1]]}}</td>
                                     <td>{{$product[$name_of_fileds[2]]}}</td>
                                     <td>{{$product[$name_of_fileds[3]]}}</td>

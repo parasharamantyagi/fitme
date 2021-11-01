@@ -20,7 +20,7 @@
                                     <th>phone</th>
                                     <th>dob</th>
                                     <th>gender</th>
-									<th>Setting</th>
+									<th>Action</th>
                                 </tr>
 								@foreach($all_users as $key => $all_user)
                                 <tr>
