@@ -383,6 +383,15 @@ class AuthController extends Controller
         }
 	}
 	
+	public function testing(Request $request)
+    {
+		try{
+			return response()->json(api_response(1, "testing 1", array()));
+		}catch(\Exception $e){
+			return response($this->getApiErrorResponse($e->getMessage()));
+        }
+	}
+	
 	
 	
 	
