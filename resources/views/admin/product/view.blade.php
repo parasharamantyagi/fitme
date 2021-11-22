@@ -1,5 +1,6 @@
 @extends('layout.admin')
 @section('style')
+	<link rel="stylesheet" href="{{ url('admin/css/toggle.css') }}">
 	<style>
 	select.product-category.list.form-control {
 		width: 20%;
@@ -36,6 +37,7 @@
                                     <th>{{$label_of_fileds[2]}}</th>
                                     <th>{{$label_of_fileds[3]}}</th>
                                     <th>{{$label_of_fileds[4]}}</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
 								@foreach($products as $key => $product)
@@ -47,6 +49,16 @@
                                     <td>{{$product[$name_of_fileds[2]]}}</td>
                                     <td>{{$product[$name_of_fileds[3]]}}</td>
                                     <td>{{$product[$name_of_fileds[4]]}}</td>
+                                    <td>
+										<label class="toggleSwitch nolabel" onclick="">
+												<input class="toggle-switch" data-type="product" data-id="{{$product['id']}}" type="checkbox" @if($product['status']) checked @endif/>
+												<span>
+													<span>OFF</span>
+													<span>ON</span>
+												</span>
+												<a></a>
+										</label>
+									</td>
                                     <td>
                                         <!-- button data-toggle="tooltip" title="Edit" class="pd-setting-ed" onclick="editData({{$product['id']}},'add-product')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button -->
                                         <button data-toggle="tooltip" title="Trash" class="pd-setting-ed" onclick="deleteData({{$product['id']}},'product')"><i class="fa fa-trash-o" aria-hidden="true"></i></button>

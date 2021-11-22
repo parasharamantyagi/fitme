@@ -29,7 +29,7 @@
                                     <td>{{$category->title}}</td>
                                     <td>
 										<label class="toggleSwitch nolabel" onclick="">
-											<input class="toggle-switch" data-id="{{$category->id}}" type="checkbox" @if($category->status) checked @endif/>
+											<input class="toggle-switch" data-type="category" data-id="{{$category->id}}" type="checkbox" @if($category->status) checked @endif/>
 											<span>
 												<span>OFF</span>
 												<span>ON</span>

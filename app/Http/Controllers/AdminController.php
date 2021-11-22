@@ -89,7 +89,12 @@ class AdminController extends Controller
 	public function changeStatus(Request $request){
 		try{
 			$inputData = $request->all();
-			Category::where('id',$request->cat_id)->update(array('status'=>$request->is_check));
+			
+			if($request->type == "category"){
+				Category::where('id',$request->id)->update(array('status'=>$request->is_check));
+			}else if($request->type == "product"){
+				Product::where('id',$request->id)->update(array('status'=>$request->is_check));
+			}
 			$response['message'] = 'Status change successfully';
 			return response($this->getSuccessResponse($response));
 		}catch(\Exception $e){

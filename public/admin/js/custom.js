@@ -65,6 +65,7 @@ function editData(id,action){
 
 $('.toggle-switch').click(function() {
 	let cat_id = $(this).data("id");
+	let type = $(this).data("type");
 	let is_check = 0;
 	if ($(this).is(':checked')) {
 		is_check = 1;
@@ -75,7 +76,8 @@ $('.toggle-switch').click(function() {
 			dataType: 'json',
 			data: {
 					_token: $('meta[name="csrf-token"]').attr('content'),
-					cat_id:cat_id,
+					id:cat_id,
+					type:type,
 					is_check:is_check
 			},
 			success: function (response) {
