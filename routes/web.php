@@ -31,6 +31,7 @@ Route::group(['prefix'=>'admin'], function () {
 		Route::get('/add-product','AdminController@addProduct');
 		Route::get('/view-product','AdminController@viewProduct');
 		Route::get('/product-detail/{id}','AdminController@productDetail');
+		Route::get('/product-edit/{id}','AdminController@productEdit');
 		Route::get('/add-product/{id}','AdminController@addProductId');
 		
 		Route::get('/view-user','AdminController@viewUser');
@@ -42,6 +43,7 @@ Route::group(['prefix'=>'admin'], function () {
 		Route::post('/add-category','AdminController@addCategoryPost');
 		Route::post('/add-product','AdminController@addProductPost');
 		Route::post('/add-product/{id}','AdminController@updateProductId');
+		Route::post('/product-update/{id}','AdminController@productUpdate');
 		
 		Route::post('/delete-data','AdminController@deleteData');
 		

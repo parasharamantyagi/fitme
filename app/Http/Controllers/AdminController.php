@@ -131,6 +131,54 @@ class AdminController extends Controller
 		return view('admin/product/add')->with('title',$title)->with('product_fields',$product_fields)->with('cat_id',$cat_id)->with('categories',$category)->with('urlform',$urlform);
 	}
 	
+	public function productEdit(Request $request,$id){
+		try{
+			$title = 'Update Product';
+			if($request->session()->has('product_file')){
+					$request->session()->forget('product_file');
+				}
+			$category = Category::where('status',1)->orderBy('id','desc')->get();
+			$product_fields = array();
+			$product_id = decryptId($id);
+			$product = Product::find($product_id);
+			$cat_id = $product->cat_id;
+			$product_fields = Category::where('id',$cat_id)->first()->field;
+			if($product_fields){
+				$product_fields = json_decode($product_fields->filed);
+			}
+			$urlform = 'admin/product-update/'.encryptID($product_id);
+			return view('admin/product/edit')->with('title',$title)->with('product',$product->toArray())->with('product_fields',$product_fields)->with('cat_id',$cat_id)->with('categories',$category)->with('urlform',$urlform);
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function productUpdate(Request $request,$id){
+		try{
+			$id = decryptId($id);
+			$product = Product::find($id);
+			$cat_id = $product->cat_id;
+			$product_fields = Category::where('id',$cat_id)->first()->field;
+			$validation = $this->agentNewFeatureValidations($request,validation_name_of_filed($product_fields->filed));
+			if($validation['status']==false){
+				return response($this->getValidationsErrors($validation));
+			}
+			$input = $request->all();
+			$input['cat_id'] = $cat_id;
+			unset($input['_token']);
+			Product::where('id',$id)->update($input);
+			// if($request->session()->has('product_file')){
+				// ProductImage::where('image_id',$request->session()->get('product_file'))->update(array('product_id'=>$my_product));
+			// }
+			$response['message'] = 'Product update successfully';
+			$response['delayTime'] = 2000;
+			$response['url'] = url('/admin/view-product');
+			return response($this->getSuccessResponse($response));
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
 	public function addProductPost(Request $request){
 		try{
 			$cat_id = decryptId($request->cat_id);
@@ -244,14 +292,9 @@ class AdminController extends Controller
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }
-			
-		
-		// $title = 'Update Product';
-		// $category = Category::orderBy('id','desc')->get();
-		// 
-		// $urlform = 'admin/add-product/'.$id;
-		// return view('admin/product/add')->with('title',$title)->with('categories',$category)->with('product',$product)->with('urlform',$urlform);
 	}
+	
+	
 	
 	public function addProductId($id){
 		$title = 'Update Product';

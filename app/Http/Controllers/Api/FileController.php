@@ -98,8 +98,8 @@ class FileController extends Controller
 			if(!$myFolderCheck){
 				mkdir($folder_name);
 				mkdir("user_thands/".$my_folder_name);
-				copy("user_thands/_withouthands001 2.ply","user_thands/".$my_folder_name."/_withouthands001 2.ply");
-				copy("user_thands/_withouthands001 2.txt","user_thands/".$my_folder_name."/_withouthands001 2.txt");
+				// copy("user_thands/_withouthands001 2.ply","user_thands/".$my_folder_name."/_withouthands001 2.ply");
+				// copy("user_thands/_withouthands001 2.txt","user_thands/".$my_folder_name."/_withouthands001 2.txt");
 			}
 			// $input['file_name'] = $user;
 			if(isset($request->my_file) && $request->my_file!=""){
@@ -149,8 +149,8 @@ class FileController extends Controller
 			if(!$myFolderCheck){
 				mkdir($folder_name);
 				mkdir("user_thands/".$my_folder_name);
-				copy("user_thands/_withouthands001 2.ply","user_thands/".$my_folder_name."/_withouthands001 2.ply");
-				copy("user_thands/_withouthands001 2.txt","user_thands/".$my_folder_name."/_withouthands001 2.txt");
+				// copy("user_thands/_withouthands001 2.ply","user_thands/".$my_folder_name."/_withouthands001 2.ply");
+				// copy("user_thands/_withouthands001 2.txt","user_thands/".$my_folder_name."/_withouthands001 2.txt");
 			}
 			if(isset($request->my_file) && $request->my_file!=""){
 				$image = $request->file('my_file');
