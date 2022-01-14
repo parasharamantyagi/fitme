@@ -232,7 +232,7 @@ class AuthController extends Controller
 				$brand_array[] = array("name"=>$key,"value"=>$brand_name_array);
 			}
 			if($allCat->field){
-				$product = Product::with(['product_images'])->where('cat_id',$request->cat_id);
+				$product = Product::with(['app_product_images'])->where('cat_id',$request->cat_id);
 				if($request->name){
 					$product = $product->where('Bra_name',$request->name);
 				}
@@ -256,7 +256,7 @@ class AuthController extends Controller
 			$all_Cat =array('id'=>$allCat->id,'title'=>$allCat->title,
 							'stock'=>$allCat->stock,'status'=>$allCat->status);
 			if($allCat->field){
-				$product = Product::with(['product_images'])->where('id',$request->product_id)->first();
+				$product = Product::with(['app_product_images'])->where('id',$request->product_id)->first();
 				$all_Cat['product'] = $product;
 			}
 			return response()->json(api_response(1, "Product list", $all_Cat));
@@ -276,7 +276,7 @@ class AuthController extends Controller
 			$total_amount = array();
 			foreach($myCarts as $myCart){
 				$myCart_one  = $myCart;
-					$product = Product::with('product_images')->where('id',$myCart->product_id)->first();
+					$product = Product::with('app_product_images')->where('id',$myCart->product_id)->first();
 				$resultArray[] = array(
 							'id'=>$myCart_one->id,'user_id'=>$myCart_one->user_id,'cat_id'=>$myCart_one->cat_id,
 							'product_id'=>$myCart_one->product_id,'quantity'=>$myCart_one->quantity,'status'=>$myCart_one->status,

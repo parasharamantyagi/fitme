@@ -22,7 +22,7 @@
 		============================================ -->
     <link rel="stylesheet" href="{{ url('admin/css/font-awesome.min.css') }}">
 	
-    <link rel="stylesheet" href="https://beontime.io/css/toaster.css">
+    <link rel="stylesheet" href="{{ url('admin/css/toaster.css') }}">
     <!-- animate CSS
 		============================================ -->
     <link rel="stylesheet" href="{{ url('admin/css/animate.css') }}">
@@ -128,6 +128,14 @@
                             <a class="has-arrow" href="view-order" aria-expanded="false"><i class="fa fa-shopping-cart"></i> <span class="mini-click-non">Orders</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="View Mail" href="{{url('admin/view-order')}}"><span class="mini-sub-pro">View Orders</span></a></li>
+                            </ul>
+                        </li>
+						
+						<li class="{{ (Request::segment(2) == 'add-token' || Request::segment(2) == 'view-token') ? 'active':'' }}">
+                            <a class="has-arrow" href="view-category" aria-expanded="false"><i class="fa fa-th-large" aria-hidden="true"></i> <span class="mini-click-non">Token</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Inbox" href="{{url('admin/add-token')}}"><span class="mini-sub-pro">Add Token</span></a></li>
+                                <li><a title="View Mail" href="{{url('admin/view-token')}}"><span class="mini-sub-pro">View Token</span></a></li>
                             </ul>
                         </li>
 						

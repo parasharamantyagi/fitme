@@ -13,6 +13,7 @@ use App\Model\Product;
 use App\Model\ProductImage;
 use App\Model\UserProduct;
 use App\Model\Order;
+use App\Model\Token;
 
 // use App\UserDetail;
 // use Twilio\Rest\Client;
@@ -78,6 +79,16 @@ class AdminController extends Controller
 				User::where('id',$request->id)->delete();
 				$response['message'] = 'User delete successfully';
 				$response['url'] = url('/admin/view-user');
+			}else if($request->action == 'token'){
+				Token::where('id',$request->id)->delete();
+				$response['message'] = 'Token delete successfully';
+				$response['url'] = url('/admin/view-token');
+			}else if($request->action == 'product_image'){
+				$productImage = ProductImage::find($request->id);
+				$product_id = $productImage->product->id;
+				$productImage->delete();
+				$response['message'] = 'Product image delete successfully';
+				$response['url'] = url('/admin/product-detail/'.encryptID($product_id));
 			}
 			$response['delayTime'] = 2000;
 			return response($this->getSuccessResponse($response));
@@ -94,6 +105,10 @@ class AdminController extends Controller
 				Category::where('id',$request->id)->update(array('status'=>$request->is_check));
 			}else if($request->type == "product"){
 				Product::where('id',$request->id)->update(array('status'=>$request->is_check));
+			}else if($request->type == "product_images"){
+				ProductImage::where('id',$request->id)->update(array('status'=>$request->is_check));
+			}else if($request->type == "token"){
+				Token::where('id',$request->id)->update(array('status'=>$request->is_check));
 			}
 			$response['message'] = 'Status change successfully';
 			return response($this->getSuccessResponse($response));
@@ -167,6 +182,9 @@ class AdminController extends Controller
 			$input['cat_id'] = $cat_id;
 			unset($input['_token']);
 			Product::where('id',$id)->update($input);
+			if($request->session()->has('product_file')){
+				ProductImage::where('image_id',$request->session()->get('product_file'))->update(array('product_id'=>$id));
+			}
 			// if($request->session()->has('product_file')){
 				// ProductImage::where('image_id',$request->session()->get('product_file'))->update(array('product_id'=>$my_product));
 			// }

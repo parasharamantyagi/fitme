@@ -47,6 +47,12 @@ Route::group(['prefix'=>'admin'], function () {
 		
 		Route::post('/delete-data','AdminController@deleteData');
 		
+		Route::get('/add-token','TokenController@addToken');
+		Route::get('/view-token','TokenController@viewToken');
+		Route::post('/add-token','TokenController@addTokenPost');
+		
+		
+		
 		Route::post('/change-status','AdminController@changeStatus');
 		Route::post('/upload','AdminController@uploadImage');
 		

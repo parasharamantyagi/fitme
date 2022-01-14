@@ -1,6 +1,7 @@
 @extends('layout.admin')
 
 @section('style')
+	<link rel="stylesheet" href="{{ url('admin/css/toggle.css') }}">
 	<style>
 	.breadcome-list {
 		margin: 30px 0px 30px;
@@ -23,6 +24,21 @@
 											@foreach($product->product_images as $product_image)
 												<div class="col-md-{{(12/count($product->product_images))}} form-group">
 													<img src="{{url($product_image->file_path)}}" class="form-control" alt="" style="height: 200px;width: 375px;" />
+													<div class="row product_images_action">
+														<div class="col-md-2 form-group">
+														<label class="toggleSwitch nolabel" onclick="" style="margin-top: 5px;">
+																<input class="toggle-switch" data-type="product_images" data-id="{{$product_image->id}}" type="checkbox"  @if($product_image->status) checked @endif/>
+																<span>
+																	<span>OFF</span>
+																	<span>ON</span>
+																</span>
+																<a></a>
+														</label>
+														</div>
+														<div class="col-md-4 form-group custom-pro-edt-ds">
+														<button type="submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10" onclick="deleteData({{$product_image->id}},'product_image')">Delete</button>
+														</div>
+													</div>
 												</div>
 											@endforeach
 											<div class="col-md-4 form-group">
