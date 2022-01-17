@@ -21,7 +21,7 @@
 								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
 									<div id="myTabContent1" class="tab-content">
 										<div class="product-tab-list tab-pane fade active in" id="single-tab1">
-											<img src="{{url(product_first_image($user_product->product->product_images))}}" alt="" style="height: 200px;width: 375px;" />
+											<img src="{{url(product_first_image($user_product->product->app_product_images))}}" alt="" style="height: 200px;width: 375px;" />
 										</div>
 									</div>
 								</div>

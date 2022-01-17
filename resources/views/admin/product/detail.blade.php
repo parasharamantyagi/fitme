@@ -21,8 +21,8 @@
                                 <div id="myTabContent" class="tab-content custom-product-edit">
                                     <div class="product-tab-list tab-pane fade active in" id="description">
 										<div class="row">
-											@foreach($product->product_images as $product_image)
-												<div class="col-md-{{(12/count($product->product_images))}} form-group">
+											@foreach($product->app_product_images as $product_image)
+												<div class="col-md-{{(12/count($product->app_product_images))}} form-group">
 													<img src="{{url($product_image->file_path)}}" class="form-control" alt="" style="height: 200px;width: 375px;" />
 													<div class="row product_images_action">
 														<div class="col-md-2 form-group">
