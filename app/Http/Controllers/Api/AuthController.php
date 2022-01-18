@@ -17,6 +17,8 @@ use Stripe;
 // use DB;
 use Mail;
 
+use App\Http\Resources\Product as ProductResource;
+
 class AuthController extends Controller
 {
 	use ResponseTrait;
@@ -224,6 +226,7 @@ class AuthController extends Controller
     {
 		try{
 			$product =array();
+			$product_array = array();
 			$allCat = Category::where('id',$request->cat_id)->first();
 			$brand_name = json_decode($allCat->field->filed);
 			$brand_name_arrays = $brand_name[0]->field;
@@ -232,7 +235,7 @@ class AuthController extends Controller
 				$brand_array[] = array("name"=>$key,"value"=>$brand_name_array);
 			}
 			if($allCat->field){
-				$product = Product::with(['product_images'])->where('cat_id',$request->cat_id);
+				$product = Product::with(['product_images'])->where('cat_id',$request->cat_id)->where('status',1);
 				if($request->name){
 					$product = $product->where('Bra_name',$request->name);
 				}
@@ -241,7 +244,20 @@ class AuthController extends Controller
 				}
 				$product = $product->orderBy('id', 'DESC')->paginate(10);
 			}
-			return response()->json(array("status"=>1,"message"=>"Product list","data"=>remove_null($product->toArray()),'brand_name'=>$brand_array));
+			$product = $product->toArray();
+			$product_array['current_page'] = $product['current_page'];
+			$product_array['data'] = new ProductResource($product['data']);
+			$product_array['first_page_url'] = $product['first_page_url'];
+			$product_array['from'] = $product['from'];
+			$product_array['last_page'] = $product['last_page'];
+			$product_array['last_page_url'] = $product['last_page_url'];
+			$product_array['next_page_url'] = $product['next_page_url'];
+			$product_array['path'] = $product['path'];
+			$product_array['per_page'] = $product['per_page'];
+			$product_array['prev_page_url'] = $product['prev_page_url'];
+			$product_array['to'] = $product['to'];
+			$product_array['total'] = $product['total'];
+			return response()->json(array("status"=>1,"message"=>"Product list","data"=>remove_null($product_array),'brand_name'=>$brand_array));
 		}catch(\Exception $e){
             return response($this->getApiErrorResponse($e->getMessage()));
         }
