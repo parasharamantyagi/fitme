@@ -288,4 +288,8 @@ class HomeController extends Controller
 			return view('resetPassword');
 		}
 	}
+	
+	public function phpInfoVersion(){
+		echo phpinfo();
+	}
 }

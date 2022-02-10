@@ -20,6 +20,7 @@ Route::post('/forget-password','HomeController@forgetPassword');
 Route::get('/log-out','HomeController@loginOut');
 
 Route::get('/my-admin','HomeController@adminIndex');
+Route::get('/version','HomeController@phpInfoVersion');
 
 Route::group(['prefix'=>'admin'], function () {
 	Route::group(['middleware'=>['auth','roles']], function () {
