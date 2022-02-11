@@ -57,14 +57,8 @@ class FileController extends Controller
 							$result_data[] = $result_push;
 						}
 					}
-					
-					// $result_data[] = array(
-							// 'user_thands/'.$user_file_ss.'/_withouthands001 2.txt',
-							// 'user_thands/'.$user_file_ss.'/_withouthands001 2.ply'
-					// );
 				}
 			}
-			// $user_file = array('user_thands/_withouthands001 2.txt','user_thands/_withouthands001 2.ply');
 			$message = 'Thouthand file get successfully';
 			return response()->json(api_response(1,$message,$result_data));
 		}catch(\Exception $e){
