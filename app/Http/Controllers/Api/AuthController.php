@@ -14,6 +14,7 @@ use App\Model\PaymentHistory;
 use App\Model\UserProduct;
 use App\Model\Order;
 use Stripe;
+use App\Helpers\PlivoSms;
 // use DB;
 use Mail;
 
@@ -88,6 +89,7 @@ class AuthController extends Controller
 						'message' => 'Unauthorized'
 					], 401);
 				$user = $request->user();
+				User::where('id', $user->id)->update(array('device_token'=>$request->device_token));
 				if(!$user->email_verified_at)
 					return response()->json(api_response(0,"This is invalid email or password",(object)array()));
 				$tokenResult = $user->createToken('Personal Access Token');
@@ -103,7 +105,7 @@ class AuthController extends Controller
 						$tokenResult->token->expires_at
 					)->toDateTimeString()
 				]));
-			}else if(count($request->all()) == 5 && $request->social_type && (strtoupper($request->social_type) == 'A' || strtoupper($request->social_type) == 'F' || strtoupper($request->social_type) == 'G' || strtoupper($request->social_type) == 'I')){
+			}else if(count($request->all()) == 6 && $request->social_type && (strtoupper($request->social_type) == 'A' || strtoupper($request->social_type) == 'F' || strtoupper($request->social_type) == 'G' || strtoupper($request->social_type) == 'I')){
 				$request->validate([
 					'email' => 'required|string|email',
 					'device_type' => 'required|string',
@@ -113,6 +115,7 @@ class AuthController extends Controller
 				$user = User::where('email',$request->input('email'))->first();
 				if($user){
 					User::where('id', $user->id)->update(array(
+												'device_token'=>$request->device_token,
 												'device_type'=>strtoupper($request->device_type),
 												'social_type'=>strtoupper($request->social_type),
 												'social_token'=>$request->social_token));
@@ -120,6 +123,7 @@ class AuthController extends Controller
 					$user = User::create(array(
 												'email'=>$request->email,
 												'email_verified_at'=>Carbon::now(),
+												'device_token'=>$request->device_token,
 												'device_type'=>strtoupper($request->device_type),
 												'social_type'=>strtoupper($request->social_type),
 												'social_token'=>$request->social_token));				
@@ -215,9 +219,27 @@ class AuthController extends Controller
         return response()->json(api_response(1, "User update successfully", $user));
     }
 	
+	public function notificationPost(Request $request)
+    {
+		$inputData = explode('_',$request->folder);
+		$user = User::find($inputData[1]);
+		$cccccccccc = PlivoSms::push_notification($user->device_token);
+		return response()->json(api_response(1, "Notification send successfully", $cccccccccc));
+	}
 	
 	public function getCategories(Request $request)
     {
+		// $check_array = array(
+			// "to"=>"",
+			// "notification"=>array(
+					// "body" => "New model has been genrated",
+					// "title"=>"fitme"
+				// ),
+			// "data"=>array()
+			// );
+		// $cccccccccc = PlivoSms::push_notification();
+		// print_r($cccccccccc);
+		// die;
 		$allCat = Category::where('status',1)->get();
         return response()->json(api_response(1, "Category list", $allCat));
     }
