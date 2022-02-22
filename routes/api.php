@@ -21,6 +21,7 @@ Route::group([
     Route::post('signup', 'Api\AuthController@signup');
     Route::post('verify-otp', 'Api\AuthController@verifyOtp');
 	Route::get('test12', 'Api\AuthController@testing');
+	Route::post('notification', 'Api\AuthController@notificationPost');
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
