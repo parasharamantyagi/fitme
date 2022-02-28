@@ -24,6 +24,15 @@ class FileController extends Controller
 		return response()->json(api_response(1,"User detail",array_remove_null($request->user()->toArray())));
     }
 	
+	public function checkFile($input){
+		$input_array = explode(".", $input);
+		if(count($input_array) === 2){
+			if($input_array[1] == 'ply' || $input_array[1] == 'txt'){
+				return true;
+			}
+		}
+	}
+	
 	
 	public function userThouthand(Request $request)
     {
@@ -33,12 +42,23 @@ class FileController extends Controller
 			$user_file_s = UserFile::where('user_id',$input->id)->pluck('my_folder');
 			$my_user_file_s = array_values(array_unique($user_file_s->toArray()));
 			$result_data = array();
+			$result_push = array();
 			foreach($my_user_file_s as $user_file_ss){
+				$result_push = array();
 				if($user_file_ss){
-					$result_data[] = array('user_thands/'.$user_file_ss.'/_withouthands001 2.txt','user_thands/'.$user_file_ss.'/_withouthands001 2.ply');
+					if (is_dir('user_thands/'.$user_file_ss.'/')) {
+						if ($dh = opendir('user_thands/'.$user_file_ss.'/')) {
+							while (($my_file = readdir($dh)) !== false) {
+								if($this->checkFile($my_file)){
+									$result_push[] = 'user_thands/'.$user_file_ss.'/'.$my_file;
+								}
+							}
+							closedir($dh);
+							$result_data[] = $result_push;
+						}
+					}
 				}
 			}
-			// $user_file = array('user_thands/_withouthands001 2.txt','user_thands/_withouthands001 2.ply');
 			$message = 'Thouthand file get successfully';
 			return response()->json(api_response(1,$message,$result_data));
 		}catch(\Exception $e){
