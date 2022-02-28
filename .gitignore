@@ -2,8 +2,6 @@
 /public/products
 /public/user_image
 /public/user_thands
-/public/clients
-/public/admin
 /storage/*.key
 /vendor
 .env
