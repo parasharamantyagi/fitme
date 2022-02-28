@@ -1,5 +1,7 @@
 /node_modules
-/public
+/public/products
+/public/user_image
+/public/user_thands
 /storage/*.key
 /vendor
 .env
