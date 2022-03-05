@@ -52,6 +52,10 @@ Route::group([
 		Route::post('file/user-image', 'Api\FileController@userImagePost');
 		
 		
+		Route::get('band_bust', 'Api\BandController@getBandBust');
+		Route::post('band_bust', 'Api\BandController@addBandBust');
+		Route::delete('band_bust/{id}', 'Api\BandController@deleteBandBust');
+		
 		
 
     });
