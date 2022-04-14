@@ -13,6 +13,7 @@ use App\Model\Cart;
 use App\Model\PaymentHistory;
 use App\Model\UserProduct;
 use App\Model\Order;
+use App\Model\ReferralCode;
 use Stripe;
 use App\Helpers\PlivoSms;
 // use DB;
@@ -52,6 +53,17 @@ class AuthController extends Controller
 			$user->save();
 			$user->user_otp(array('user_id'=>$user->id,'otp'=>$user_otp,'status'=>0));
 			$email_s = $request->email;
+			if($request->referral_code){
+				if (base64_decode($request->referral_code, true)) {
+					ReferralCode::updateOrCreate(
+					array('user_id'=>$user->id),
+					array(
+								'user_id'=>$user->id,'referral_id'=>base64_decode($request->referral_code),
+								'referral_code'=>rand(111111,999999),'amount'=>20.00,'created_at'=>Carbon::now(),
+								'updated_at'=>Carbon::now()
+					));
+				}
+			}
 			Mail::send('emails.verify', ['name' => $user->name, 'otp' => $user_otp], function ($message) use($email_s) {
 				$message->from('uscisdev@gmail.com', 'FITME');
 				$message->to($email_s);
@@ -161,6 +173,7 @@ class AuthController extends Controller
 			if($user_otp){
 				if($user_otp->otp == $credentials['otp']){
 					User::where('id',$user_otp->id)->update(array('email_verified_at'=>Carbon::now()));
+					ReferralCode::where('user_id',$user_otp->id)->update(array('status'=>1));
 					$tokenResult = $user_otp->createToken('Personal Access Token');
 					return response()->json(api_response(1, "OTP match successfully", [
 						'access_token' => $tokenResult->accessToken,
@@ -201,6 +214,7 @@ class AuthController extends Controller
     public function user(Request $request)
     {
 		$userData = remove_null($request->user()->toArray());
+		$userData['referral_code'] = base64_encode($userData['id']);
         return response()->json(api_response(1, "User list", $userData));
     }
 	
@@ -301,6 +315,20 @@ class AuthController extends Controller
 		}catch(\Exception $e){
             return response($this->getApiErrorResponse($e->getMessage()));
         }
+    }
+	
+	
+	/**
+     * Get the authenticated Referral
+     *
+     * @return [json] Referral object
+     */
+    public function myReferral(Request $request)
+    {
+		$referralCode = ReferralCode::where('referral_id',$request->user()->id)->get();
+		// $userData = remove_null($request->user()->toArray());
+		// $userData['referral_code'] = base64_encode($userData['id']);
+        return response()->json(api_response(1, "User list", $referralCode));
     }
 	
 	

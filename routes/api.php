@@ -40,6 +40,9 @@ Route::group([
 		
 		Route::get('my-product', 'Api\AuthController@myProduct');
 		
+		
+		Route::get('my-referral', 'Api\AuthController@myReferral');
+		
 		// garud file upload
 		Route::get('file/user-thouthand', 'Api\FileController@userThouthand');
 		Route::get('file/user-folder', 'Api\FileController@userFolderGet');
