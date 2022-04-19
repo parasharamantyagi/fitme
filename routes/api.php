@@ -42,6 +42,7 @@ Route::group([
 		
 		
 		Route::get('my-referral', 'Api\AuthController@myReferral');
+		Route::post('apply-referral', 'Api\AuthController@applyReferral');
 		
 		// garud file upload
 		Route::get('file/user-thouthand', 'Api\FileController@userThouthand');

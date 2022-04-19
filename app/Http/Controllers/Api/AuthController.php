@@ -13,6 +13,7 @@ use App\Model\Cart;
 use App\Model\PaymentHistory;
 use App\Model\UserProduct;
 use App\Model\Order;
+use App\Model\Token;
 use App\Model\ReferralCode;
 use Stripe;
 use App\Helpers\PlivoSms;
@@ -328,9 +329,38 @@ class AuthController extends Controller
 		$referralCode = ReferralCode::where('referral_id',$request->user()->id)->get();
 		// $userData = remove_null($request->user()->toArray());
 		// $userData['referral_code'] = base64_encode($userData['id']);
-        return response()->json(api_response(1, "User list", $referralCode));
+        return response()->json(api_response(1, "My Referral code", $referralCode));
     }
 	
+	public function applyReferral(Request $request)
+    {
+		$inputData = $request->all();
+		if($request->type && $request->type == 'referral'){
+			$referralCode = ReferralCode::where('referral_id',$request->user()->id)->where('referral_code',$request->token)->first();
+			if($referralCode){
+				$update_array = array('is_used'=>1);
+				$message = "Your token has been apply";
+				if($request->action && $request->action === 'remove'){
+					$update_array = array('is_used'=>0);
+					$message = "Your token has been remove";
+				}
+				$referralCode->update($update_array);
+				return response()->json(api_response(1, $message, $referralCode));
+			}else{
+				return response()->json(api_response(0, "This is invalid token", $inputData));
+			}
+		}else{
+			$referralCode = Token::where('token_name',$request->token)->first();
+			if($referralCode){
+				if($request->order_id){
+					Order::where('id',$request->order_id)->update(array('token_id'=>$referralCode->id));
+				}
+				return response()->json(api_response(1, "Your token has been apply", $inputData));
+			}else{
+				return response()->json(api_response(0, "This is invalid token", $inputData));
+			}
+		}
+    }
 	
 	public function getCart(Request $request)
     {
