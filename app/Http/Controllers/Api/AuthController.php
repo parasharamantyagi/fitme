@@ -352,10 +352,10 @@ class AuthController extends Controller
 		}else{
 			$referralCode = Token::where('token_name',$request->token)->first();
 			if($referralCode){
-				if($request->order_id){
-					Order::where('id',$request->order_id)->update(array('token_id'=>$referralCode->id));
-				}
-				return response()->json(api_response(1, "Your token has been apply", $inputData));
+				// if($request->order_id){
+					// Order::where('id',$request->order_id)->update(array('token_id'=>$referralCode->id));
+				// }
+				return response()->json(api_response(1, "Your token has been apply", $referralCode));
 			}else{
 				return response()->json(api_response(0, "This is invalid token", $inputData));
 			}
@@ -450,7 +450,11 @@ class AuthController extends Controller
 			]);
 			// $payId = PaymentHistory::insertGetId(array('user_id'=>$user,'charge_id'=>'ch_3JkP8fFmFQnpPZgU0vEnjCd6','amount'=>50,'currency'=>'usd'));
 			if($createCharge->id){
-				$Oid = Order::insertGetId(array('user_id'=>$user,'amount'=>$createCharge->amount));
+				$my_order = array('user_id'=>$user,'amount'=>$createCharge->amount);
+				if($request->token_id){
+					$my_order['token_id'] = $request->token_id;
+				}
+				$Oid = Order::insertGetId($my_order);
 				$payId = PaymentHistory::insertGetId(array('user_id'=>$user,'order_id'=>$Oid,'charge_id'=>$createCharge->id,'amount'=>$createCharge->amount,'currency'=>$createCharge->currency,'created_at'=>Carbon::now(),'updated_at'=>Carbon::now()));
 				foreach($products as $product){
 					$userProduct[] = array('user_id'=>$user,'order_id'=>$Oid,'product_id'=>$product->product_id,'quantity'=>$product->quantity,'color'=>$product->color,'price'=>$product->product->price,'status'=>1);
