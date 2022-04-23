@@ -64,6 +64,7 @@ class AuthController extends Controller
 								'updated_at'=>Carbon::now()
 					));
 				}
+				
 			}
 			Mail::send('emails.verify', ['name' => $user->name, 'otp' => $user_otp], function ($message) use($email_s) {
 				$message->from('uscisdev@gmail.com', 'FITME');
@@ -326,7 +327,7 @@ class AuthController extends Controller
      */
     public function myReferral(Request $request)
     {
-		$referralCode = ReferralCode::where('referral_id',$request->user()->id)->where('status',0)->get();
+		$referralCode = ReferralCode::where('referral_id',$request->user()->id)->where('status',1)->get();
 		// $userData = remove_null($request->user()->toArray());
 		// $userData['referral_code'] = base64_encode($userData['id']);
         return response()->json(api_response(1, "My Referral code", $referralCode));
@@ -336,7 +337,7 @@ class AuthController extends Controller
     {
 		$inputData = $request->all();
 		if($request->type && $request->type == 'referral'){
-			$referralCode = ReferralCode::where('referral_id',$request->user()->id)->where('referral_code',$request->token)->where('status',0)->first();
+			$referralCode = ReferralCode::where('referral_id',$request->user()->id)->where('referral_code',$request->token)->where('status',1)->first();
 			if($referralCode){
 				$update_array = array('is_used'=>1);
 				$message = "Your token has been apply";
@@ -452,7 +453,7 @@ class AuthController extends Controller
 					$my_order['token_id'] = $request->token_id;
 				}
 				$Oid = Order::insertGetId($my_order);
-				ReferralCode::where('referral_id',$user)->where('is_used',1)->update(array('status'=>1));
+				ReferralCode::where('referral_id',$user)->where('is_used',1)->update(array('status'=>0));
 				$payId = PaymentHistory::insertGetId(array('user_id'=>$user,'order_id'=>$Oid,'charge_id'=>$createCharge->id,'amount'=>$createCharge->amount,'currency'=>$createCharge->currency,'created_at'=>Carbon::now(),'updated_at'=>Carbon::now()));
 				foreach($products as $product){
 					$userProduct[] = array('user_id'=>$user,'order_id'=>$Oid,'product_id'=>$product->product_id,'quantity'=>$product->quantity,'color'=>$product->color,'price'=>$product->product->price,'status'=>1);
