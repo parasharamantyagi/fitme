@@ -14,6 +14,7 @@ use App\Model\ProductImage;
 use App\Model\UserProduct;
 use App\Model\Order;
 use App\Model\Token;
+use App\Model\Video;
 
 // use App\UserDetail;
 // use Twilio\Rest\Client;
@@ -83,6 +84,10 @@ class AdminController extends Controller
 				Token::where('id',$request->id)->delete();
 				$response['message'] = 'Token delete successfully';
 				$response['url'] = url('/admin/view-token');
+			}else if($request->action == 'video'){
+				Video::where('id',$request->id)->delete();
+				$response['message'] = 'Configuration delete successfully';
+				$response['url'] = url('/admin/view-configuration');
 			}else if($request->action == 'product_image'){
 				$productImage = ProductImage::find($request->id);
 				$product_id = $productImage->product->id;
@@ -109,6 +114,8 @@ class AdminController extends Controller
 				ProductImage::where('id',$request->id)->update(array('status'=>$request->is_check));
 			}else if($request->type == "token"){
 				Token::where('id',$request->id)->update(array('status'=>$request->is_check));
+			}else if($request->type == "video"){
+				Video::where('id',$request->id)->update(array('status'=>$request->is_check));
 			}
 			$response['message'] = 'Status change successfully';
 			return response($this->getSuccessResponse($response));

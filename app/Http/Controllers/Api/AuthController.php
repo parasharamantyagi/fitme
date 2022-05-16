@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\User;
 use App\Model\Category;
 use App\Model\Product;
+use App\Model\Video;
 use App\Model\Cart;
 use App\Model\PaymentHistory;
 use App\Model\UserProduct;
@@ -245,19 +246,19 @@ class AuthController extends Controller
 	
 	public function getCategories(Request $request)
     {
-		// $check_array = array(
-			// "to"=>"",
-			// "notification"=>array(
-					// "body" => "New model has been genrated",
-					// "title"=>"fitme"
-				// ),
-			// "data"=>array()
-			// );
-		// $cccccccccc = PlivoSms::push_notification();
-		// print_r($cccccccccc);
-		// die;
 		$allCat = Category::where('status',1)->get();
         return response()->json(api_response(1, "Category list", $allCat));
+    }
+	
+	public function getVideo(Request $request)
+    {
+		$returnData = array();
+		$allVideos = Video::where('status',1)->get();
+		foreach($allVideos as $my_video){
+			$my_video->is_seen = 0;
+			$returnData[] = $my_video;
+		}
+        return response()->json(api_response(1, "Video list", $returnData));
     }
 	
 	public function getProducts(Request $request)

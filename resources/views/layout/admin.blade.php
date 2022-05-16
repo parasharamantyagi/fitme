@@ -138,6 +138,13 @@
                                 <li><a title="View Mail" href="{{url('admin/view-token')}}"><span class="mini-sub-pro">View Token</span></a></li>
                             </ul>
                         </li>
+						<li class="{{ (Request::segment(2) == 'add-configuration' || Request::segment(2) == 'view-configuration') ? 'active':'' }}">
+                            <a class="has-arrow" href="view-category" aria-expanded="false"><i class="fa fa-th-large" aria-hidden="true"></i> <span class="mini-click-non">Configuration</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Inbox" href="{{url('admin/add-configuration')}}"><span class="mini-sub-pro">Add Configuration</span></a></li>
+                                <li><a title="View Mail" href="{{url('admin/view-configuration')}}"><span class="mini-sub-pro">View Configuration</span></a></li>
+                            </ul>
+                        </li>
 						
                         <!-- li>
                             <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-diamond icon-wrap"></i> <span class="mini-click-non">Interface</span></a>

@@ -61,6 +61,9 @@ Route::group([
 		Route::delete('band_bust/{id}', 'Api\BandController@deleteBandBust');
 		
 		
+		Route::get('get-video', 'Api\AuthController@getVideo');
+		
+		
 
     });
 });

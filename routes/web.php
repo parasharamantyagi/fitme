@@ -52,6 +52,9 @@ Route::group(['prefix'=>'admin'], function () {
 		Route::get('/view-token','TokenController@viewToken');
 		Route::post('/add-token','TokenController@addTokenPost');
 		
+		Route::get('/add-configuration','ConfigurationController@addConfiguration');
+		Route::get('/view-configuration','ConfigurationController@viewConfiguration');
+		Route::post('/add-configuration','ConfigurationController@addConfigurationPost');
 		
 		
 		Route::post('/change-status','AdminController@changeStatus');
