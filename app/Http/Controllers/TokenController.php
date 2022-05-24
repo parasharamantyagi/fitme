@@ -24,7 +24,7 @@ class TokenController extends Controller
 		try{
 			$category = Token::orderBy('id','desc')->get();
 			$title = 'Add Token';
-			return view('admin/token/add')->with('title',$title)->with('categories',$category);
+			return view('admin/token/add')->with('title',$title)->with('categories',$category)->with('current_date',Carbon::now()->format('Y-m-d'));
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }

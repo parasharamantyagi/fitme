@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\User;
 use App\Model\Category;
 use App\Model\Product;
+use App\Model\ProductField;
 use App\Model\Video;
 use App\Model\Cart;
 use App\Model\PaymentHistory;
@@ -274,7 +275,7 @@ class AuthController extends Controller
 				$brand_array[] = array("name"=>$key,"value"=>$brand_name_array);
 			}
 			if($allCat->field){
-				$product = Product::with(['product_images'])->where('cat_id',$request->cat_id)->where('status',1);
+				$product = Product::with(['product_images','product_field.product_field_images'])->where('cat_id',$request->cat_id)->where('status',1);
 				if($request->name){
 					$product = $product->where('Bra_name',$request->name);
 				}
@@ -311,7 +312,7 @@ class AuthController extends Controller
 			$all_Cat =array('id'=>$allCat->id,'title'=>$allCat->title,
 							'stock'=>$allCat->stock,'status'=>$allCat->status);
 			if($allCat->field){
-				$product = Product::with(['product_images'])->where('id',$request->product_id)->first();
+				$product = Product::with(['product_images','product_field.product_field_images'])->where('id',$request->product_id)->first();
 				$all_Cat['product'] = $product;
 			}
 			return response()->json(api_response(1, "Product list", $all_Cat));

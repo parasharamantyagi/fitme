@@ -27,23 +27,21 @@
 												<div class="col-md-6 form-group">
 												  <label>Type</label>
 													<select name="type" class="form-control">
-														<option value="0">Select type</option>
-														<option value="1">Active</option>
-														<option value="0">Disabled</option>
+														<option value="fixed">Select type</option>
+														<option value="percentage">Percentage</option>
+														<option value="fixed">Fixed</option>
 													</select>
 												</div>
 												<div class="col-md-6 form-group">
 												  <label>Valid to</label>
-												  <input class="form-control" name="valid_to" type="date" aria-invalid="false">
+												  <input class="form-control" name="valid_to" type="date" min="{{$current_date}}" aria-invalid="false">
 												</div>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <div class="text-center custom-pro-edt-ds">
-                                                    <button type="submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10">Save
-														</button>
-                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
-														</button>
+                                                    <button type="submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10">Save</button>
+                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard</button>
                                                 </div>
                                             </div>
                                         </div>

@@ -93,3 +93,46 @@ $('.product-category').change(function() {
 	// console.log();
 	
 });
+
+$('button[class="pd-setting-ed plus-circle-button"]').click(function(){
+	let product_bra_append = '<div class="row child">';
+	product_bra_append += '<input name="product_field_id[]" value="0" type="hidden">';
+	product_bra_append += '<div class="col-md-3 form-group">';
+	product_bra_append += $('select[name="Band_size_ID[]"]').parent().html();
+	product_bra_append += '</div>';
+	product_bra_append += '<div class="col-md-3 form-group">';
+	product_bra_append += $('select[name="Cup_size_ID[]"]').parent().html();
+	product_bra_append += '</div>';
+	product_bra_append += '<div class="col-md-3 form-group">';
+	product_bra_append += $('input[name="color[]"]').parent().html();
+	product_bra_append += '</div>';
+	product_bra_append += '<div class="col-md-2 form-group">';
+	product_bra_append += $('input[name="quantity[]"]').parent().html();
+	product_bra_append += '</div>';
+	product_bra_append += '<div class="col-md-1 form-group">';
+	product_bra_append += '<label>&nbsp;</label><br/>';
+	product_bra_append += '<button type="button" data-toggle="tooltip" title="" class="pd-setting-ed minus-circle-button" data-original-title="Add"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>';
+	product_bra_append += '</div>';
+	product_bra_append += '</div>';
+	$('div[class="row parent"]').after(product_bra_append);
+});
+
+$('button[class="pd-setting-ed plus-circle-button-multi_image"]').click(function(){
+	let product_bra_append = '<div class="row child">';
+	product_bra_append += '<div class="col-md-4 form-group">';
+	product_bra_append += '</div>';
+	product_bra_append += '<div class="col-md-4 form-group">';
+	product_bra_append += '<input class="form-control" name="productField_id[]" type="hidden" value="'+$(this).data('id')+'">';
+	product_bra_append += '<input class="form-control" name="images[]" type="file" aria-invalid="false">';
+	product_bra_append += '</div>';
+	product_bra_append += '<div class="col-md-4 form-group">';
+	product_bra_append += '<button type="button" data-toggle="tooltip" data-id="'+$(this).data('id')+'" title="" class="pd-setting-ed minus-circle-button" data-original-title="Add"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>';
+	product_bra_append += '</div>';
+	product_bra_append += '</div>';
+	$('div[class="row parent_'+$(this).data('id')+'"]').after(product_bra_append);
+});
+
+$(document).on("click",'button[class="pd-setting-ed minus-circle-button"]',function() {
+	$(this).parent().parent().remove();
+});
+	

@@ -58,17 +58,38 @@
 												  <span class="form-control">{{$product->Bra_name}}</span>
 											</div>
 											<div class="col-md-4 form-group">
-												  <label>{{$p_filed[16]}}</label>
-												  <div class="form-control" style="background-color: black;">
-													<span></span>
-												  </div>
-											</div>
-											<div class="col-md-4 form-group">
-												  <label>{{$p_filed[17]}}</label>
+												  <label>price</label>
 												  <span class="form-control">{{my_currecy($product->price)}}</span>
 											</div>
 										</div>
-										
+										<label>Color</label>
+										{{Form::open(['url'=>url('admin/product-multi-images'),'id'=>'general_form'])}}
+										<input class="form-control" name="product_id" type="hidden" value="{{$product->id}}">
+										@foreach($product->product_field as $productField)
+										<div class="row parent_{{$productField->id}}">
+											<div class="col-md-4 form-group">
+												  <span class="form-control color_{{$productField->id}}">{{$productField->color}}</span>
+											</div>
+											<div class="col-md-4 form-group">
+												 <input class="form-control" name="productField_id[]" type="hidden" value="{{$productField->id}}">
+												 <input class="form-control" name="images[]" type="file" aria-invalid="false">
+											</div>
+											<div class="col-md-4 form-group">
+												 <button type="button" data-toggle="tooltip" data-id="{{$productField->id}}" title="" class="pd-setting-ed plus-circle-button-multi_image" data-original-title="Add"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+											</div>
+										</div>
+										@endforeach
+										<div class="row">
+											<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="text-center custom-pro-edt-ds">
+                                                    <button type="submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10">Save
+														</button>
+                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
+														</button>
+                                                </div>
+                                            </div>
+										</div>
+										{{Form::close()}}
                                     </div>
                                 </div>
                             </div>

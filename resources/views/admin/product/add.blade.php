@@ -72,6 +72,40 @@
 													@endforeach
 												@endif
                                         </div>
+										@if($cat_id === 6)
+										<div class="row parent">
+											<div class="col-md-3 form-group">
+											  <label>Band size</label>
+												<select name="Band_size_ID[]" class="form-control">
+													<option value="">Select Band size</option>
+													@foreach([24,26,28,30,32,34,36,38,40,42,44,46,48,50] as $band_size_ID)
+														<option value="{{$band_size_ID}}">{{$band_size_ID}}</option>
+													@endforeach
+												</select>
+											</div>
+											<div class="col-md-3 form-group">
+											  <label>Cup size</label>
+												<select name="Cup_size_ID[]" class="form-control">
+													<option value="">Select Cup size</option>
+													@foreach(["AA","A","B","C","D","DD","E","F","FF","G","GG","H","HH","J","JJ","K"] as $cup_size_ID)
+														<option value="{{$cup_size_ID}}">{{$cup_size_ID}}</option>
+													@endforeach
+												</select>
+											</div>
+											<div class="col-md-3 form-group">
+												<label>Colour</label>
+												<input class="form-control" name="color[]" value="" type="text" aria-invalid="false">
+											</div>
+											<div class="col-md-2 form-group">
+												<label>Quantity</label>
+												<input class="form-control" name="quantity[]" value="" type="text" aria-invalid="false">
+											</div>
+											<div class="col-md-1 form-group">
+												<label>&nbsp;</label><br/>
+												<button type="button" data-toggle="tooltip" title="" class="pd-setting-ed plus-circle-button" data-original-title="Add"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+											</div>
+										</div>
+										@endif
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <div class="text-center custom-pro-edt-ds">

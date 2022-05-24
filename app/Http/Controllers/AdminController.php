@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Traits\ResponseTrait;
 use App\Validators\ProductValidator;
+use Carbon\Carbon;
 use Auth;
 use Redirect;
 use App\User;
 use App\Model\Category;
 use App\Model\Product;
+use App\Model\ProductField;
 use App\Model\ProductImage;
 use App\Model\UserProduct;
 use App\Model\Order;
@@ -168,8 +170,9 @@ class AdminController extends Controller
 			if($product_fields){
 				$product_fields = json_decode($product_fields->filed);
 			}
+			// pr($product_fields);
 			$urlform = 'admin/product-update/'.encryptID($product_id);
-			return view('admin/product/edit')->with('title',$title)->with('product',$product->toArray())->with('product_fields',$product_fields)->with('cat_id',$cat_id)->with('categories',$category)->with('urlform',$urlform);
+			return view('admin/product/edit')->with('title',$title)->with('my_product',$product)->with('product',$product->toArray())->with('product_fields',$product_fields)->with('cat_id',$cat_id)->with('categories',$category)->with('urlform',$urlform);
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }
@@ -186,15 +189,38 @@ class AdminController extends Controller
 				return response($this->getValidationsErrors($validation));
 			}
 			$input = $request->all();
+			$product_fields = array('product_field_id'=>$input['product_field_id'],'Band_size_ID'=>$input['Band_size_ID'],'Cup_size_ID'=>$input['Cup_size_ID'],
+									'color'=>$input['color'],'quantity'=>$input['quantity']);
 			$input['cat_id'] = $cat_id;
 			unset($input['_token']);
+			unset($input['Band_size_ID']);
+			unset($input['Cup_size_ID']);
+			unset($input['color']);
+			unset($input['quantity']);
+			unset($input['product_field_id']);
 			Product::where('id',$id)->update($input);
+			ProductField::where('product_id',$id)->whereNotIn('id',$product_fields['product_field_id'])->delete();
+			for ($x = 0; $x < count($product_fields['product_field_id']); $x++) {
+				if($product_fields['product_field_id'][$x]){
+					ProductField::where('id',$product_fields['product_field_id'][$x])->update(array(
+							'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
+							'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x],'color'=>$product_fields['color'][$x],
+							'quantity'=>$product_fields['quantity'][$x]
+							));
+				}else{
+					ProductField::insert(
+							array(
+							'product_id'=>$id,'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
+							'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x],'color'=>$product_fields['color'][$x],
+							'quantity'=>$product_fields['quantity'][$x]
+							)
+					);
+				}
+			}
+			
 			if($request->session()->has('product_file')){
 				ProductImage::where('image_id',$request->session()->get('product_file'))->update(array('product_id'=>$id));
 			}
-			// if($request->session()->has('product_file')){
-				// ProductImage::where('image_id',$request->session()->get('product_file'))->update(array('product_id'=>$my_product));
-			// }
 			$response['message'] = 'Product update successfully';
 			$response['delayTime'] = 2000;
 			$response['url'] = url('/admin/view-product');
@@ -202,6 +228,53 @@ class AdminController extends Controller
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }
+	}
+	
+	public function productMultiImages(Request $request){
+		try{
+			$input = $request->all();
+			$files = $request->file('images');
+			if($request->hasFile('images'))
+			{
+				$index = 0;
+				foreach($_FILES['images']['tmp_name'] as $key => $error){
+					if($_FILES['images']['tmp_name'][$index]){
+					   $filename = file_get_contents($_FILES['images']['tmp_name'][$key]);
+					   $pack_filename = preg_replace("/[^a-z0-9\.]/", "_", strtolower($_FILES['images']['name'][$key]));
+					   $pack_filename = strtotime("now")."_".$pack_filename;
+					   $file_name = $_FILES['images']['name'][$key];
+					   move_uploaded_file($_FILES['images']['tmp_name'][$key],'products/'.$pack_filename);
+					   $input['product_image'][$index] = 'products/'.$pack_filename;
+					// if(!empty($files[$index]->hasFile('images'))){
+						// $namefile = 	rand(1,999999) .time() . '.' . $file->getClientOriginalExtension();
+						// $destinationPath = public_path('/products'); //public path folder dir
+						// $file->move($destinationPath, $namefile);  //mve to destination you mentioned
+						// $input['product_image'][$index] = 'products/'.$namefile;
+					}else{
+						$input['product_image'][$index] = '';
+					}
+					$index++;
+				}
+			}
+			$insert_data = array();
+			for ($x = 0; $x < count($input['productField_id']); $x++) {
+				if($input['productField_id'][$x] && $input['product_image'][$x]){
+					$insert_data[] = array(
+								'file_path'=>$input['product_image'][$x],'product_id'=>$request->product_id,
+								'product_field_id'=>$input['productField_id'][$x],'status'=>1,
+								'created_at'=>Carbon::now(),'updated_at'=>Carbon::now()
+						);
+				}
+			}
+			ProductImage::insert($insert_data);
+			$response['message'] = 'Images update successfully';
+			$response['delayTime'] = 2000;
+			$response['url'] = url('/admin/product-detail/'.encryptID($request->product_id));
+			return response($this->getSuccessResponse($response));
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+		
 	}
 	
 	public function addProductPost(Request $request){
@@ -213,9 +286,24 @@ class AdminController extends Controller
 				return response($this->getValidationsErrors($validation));
 			}
 			$input = $request->all();
+			$product_fields = array('Band_size_ID'=>$input['Band_size_ID'],'Cup_size_ID'=>$input['Cup_size_ID'],
+									'color'=>$input['color'],'quantity'=>$input['quantity']);
 			$input['cat_id'] = $cat_id;
 			unset($input['_token']);
+			unset($input['Band_size_ID']);
+			unset($input['Cup_size_ID']);
+			unset($input['color']);
+			unset($input['quantity']);
 			$my_product = Product::insertGetId($input);
+			for ($x = 0; $x < count($product_fields['Band_size_ID']); $x++) {
+				ProductField::insert(
+						array(
+						'product_id'=>$my_product,'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
+						'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x],'color'=>$product_fields['color'][$x],
+						'quantity'=>$product_fields['quantity'][$x]
+						)
+				);
+			}
 			if($request->session()->has('product_file')){
 				ProductImage::where('image_id',$request->session()->get('product_file'))->update(array('product_id'=>$my_product));
 			}
@@ -232,7 +320,7 @@ class AdminController extends Controller
 			// Product::insert($input);
 			$response['message'] = 'Product add successfully';
 			$response['delayTime'] = 2000;
-			$response['url'] = url('/admin/view-product');
+			$response['url'] = url('/admin/view-product?cat_id='.$request->cat_id);
 			return response($this->getSuccessResponse($response));
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));

@@ -44,6 +44,7 @@ Route::group(['prefix'=>'admin'], function () {
 		Route::post('/add-category','AdminController@addCategoryPost');
 		Route::post('/add-product','AdminController@addProductPost');
 		Route::post('/add-product/{id}','AdminController@updateProductId');
+		Route::post('/product-multi-images','AdminController@productMultiImages');
 		Route::post('/product-update/{id}','AdminController@productUpdate');
 		
 		Route::post('/delete-data','AdminController@deleteData');

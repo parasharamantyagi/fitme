@@ -11,7 +11,11 @@ class Product extends Model
     	return $this->hasMany('App\Model\ProductImage', 'product_id', 'id');
     }
 	
+	public function product_field(){
+    	return $this->hasMany('App\Model\ProductField', 'product_id', 'id');
+    }
+	
 	public function product_images(){
-    	return $this->hasMany('App\Model\ProductImage', 'product_id', 'id')->where('status',1);
+    	return $this->hasMany('App\Model\ProductImage', 'product_id', 'id')->where('status',1)->where('product_field_id',0);
     }
 }

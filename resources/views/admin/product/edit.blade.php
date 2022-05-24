@@ -77,6 +77,49 @@
 													@endforeach
 												@endif
                                         </div>
+										@if($cat_id === 6)
+										@if($my_product->product_field)
+										@foreach($my_product->product_field as $product_key => $productfield)
+										<div class="row <?php echo ($product_key) ? 'child':'parent'; ?>">
+											<input name="product_field_id[]" value="{{$productfield->id}}" type="hidden">
+											<div class="col-md-3 form-group">
+											  <label>Band size</label>
+												<select name="Band_size_ID[]" class="form-control">
+													<option value="">Select Band size</option>
+													@foreach([24,26,28,30,32,34,36,38,40,42,44,46,48,50] as $band_size_ID)
+														<option value="{{$band_size_ID}}"  @if($band_size_ID == $productfield->Band_size_ID) selected @endif>{{$band_size_ID}}</option>
+													@endforeach
+												</select>
+											</div>
+											<div class="col-md-3 form-group">
+											  <label>Cup size</label>
+												<select name="Cup_size_ID[]" class="form-control">
+													<option value="">Select Cup size</option>
+													@foreach(["AA","A","B","C","D","DD","E","F","FF","G","GG","H","HH","J","JJ","K"] as $cup_size_ID)
+														<option value="{{$cup_size_ID}}"  @if($cup_size_ID == $productfield->Cup_size_ID) selected @endif>{{$cup_size_ID}}</option>
+													@endforeach
+												</select>
+											</div>
+											<div class="col-md-3 form-group">
+												<label>Colour</label>
+												<input class="form-control" name="color[]" value="{{$productfield->color}}" type="text" aria-invalid="false">
+											</div>
+											<div class="col-md-2 form-group">
+												<label>Quantity</label>
+												<input class="form-control" name="quantity[]" value="{{$productfield->quantity}}" type="text" aria-invalid="false">
+											</div>
+											<div class="col-md-1 form-group">
+												<label>&nbsp;</label><br/>
+												@if(!$product_key)
+													<button type="button" data-toggle="tooltip" title="" class="pd-setting-ed plus-circle-button" data-original-title="Add"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+												@else
+													<button type="button" data-toggle="tooltip" title="" class="pd-setting-ed minus-circle-button" data-original-title="Add"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+												@endif
+											</div>
+										</div>
+										@endforeach
+										@endif
+										@endif
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <div class="text-center custom-pro-edt-ds">
