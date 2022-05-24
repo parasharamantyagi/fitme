@@ -14,6 +14,7 @@ use App\Model\Video;
 use App\Model\Cart;
 use App\Model\PaymentHistory;
 use App\Model\UserProduct;
+use App\Model\UserVoucher;
 use App\Model\Order;
 use App\Model\Token;
 use App\Model\ReferralCode;
@@ -330,9 +331,17 @@ class AuthController extends Controller
     public function myReferral(Request $request)
     {
 		$referralCode = ReferralCode::where('referral_id',$request->user()->id)->where('status',1)->get();
-		// $userData = remove_null($request->user()->toArray());
-		// $userData['referral_code'] = base64_encode($userData['id']);
         return response()->json(api_response(1, "My Referral code", $referralCode));
+    }
+	
+	public function myVoucher(Request $request)
+    {
+		$referralCode = Token::select('tokens.*')
+		->join('user_vouchers', 'user_vouchers.token_id', 'tokens.id')
+		->where('user_vouchers.user_id',$request->user()->id)
+		->where('user_vouchers.status',1)
+		->where('tokens.category','membership_voucher')->get();
+        return response()->json(api_response(1, "My Voucher code", $referralCode));
     }
 	
 	public function applyReferral(Request $request)

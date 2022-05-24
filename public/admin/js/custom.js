@@ -103,10 +103,13 @@ $('button[class="pd-setting-ed plus-circle-button"]').click(function(){
 	product_bra_append += '<div class="col-md-3 form-group">';
 	product_bra_append += $('select[name="Cup_size_ID[]"]').parent().html();
 	product_bra_append += '</div>';
-	product_bra_append += '<div class="col-md-3 form-group">';
+	product_bra_append += '<div class="col-md-2 form-group">';
 	product_bra_append += $('input[name="color[]"]').parent().html();
 	product_bra_append += '</div>';
 	product_bra_append += '<div class="col-md-2 form-group">';
+	product_bra_append += $('input[name="image[]"]').parent().html();
+	product_bra_append += '</div>';
+	product_bra_append += '<div class="col-md-1 form-group">';
 	product_bra_append += $('input[name="quantity[]"]').parent().html();
 	product_bra_append += '</div>';
 	product_bra_append += '<div class="col-md-1 form-group">';

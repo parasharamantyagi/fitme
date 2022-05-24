@@ -92,11 +92,15 @@
 													@endforeach
 												</select>
 											</div>
-											<div class="col-md-3 form-group">
+											<div class="col-md-2 form-group">
 												<label>Colour</label>
 												<input class="form-control" name="color[]" value="" type="text" aria-invalid="false">
 											</div>
 											<div class="col-md-2 form-group">
+												<label>Image</label>
+												<input class="form-control" name="image[]" type="file" aria-invalid="false">
+											</div>
+											<div class="col-md-1 form-group">
 												<label>Quantity</label>
 												<input class="form-control" name="quantity[]" value="" type="text" aria-invalid="false">
 											</div>
