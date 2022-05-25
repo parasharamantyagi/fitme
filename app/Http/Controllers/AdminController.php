@@ -107,13 +107,14 @@ class AdminController extends Controller
 	public function changeStatus(Request $request){
 		try{
 			$inputData = $request->all();
-			
 			if($request->type == "category"){
 				Category::where('id',$request->id)->update(array('status'=>$request->is_check));
 			}else if($request->type == "product"){
 				Product::where('id',$request->id)->update(array('status'=>$request->is_check));
 			}else if($request->type == "product_images"){
 				ProductImage::where('id',$request->id)->update(array('status'=>$request->is_check));
+			}else if($request->type == "product_field_image"){
+				ProductField::where('id',$request->id)->update(array('status'=>$request->is_check));
 			}else if($request->type == "token"){
 				Token::where('id',$request->id)->update(array('status'=>$request->is_check));
 			}else if($request->type == "video"){
@@ -427,7 +428,8 @@ class AdminController extends Controller
 	public function productDetail($id){
 		try{
 			$product_id = decryptId($id);
-			$product = Product::find($product_id);
+			$product = Product::with(['product_images','admin_product_field.product_field_images'])->find($product_id);
+			// pr($product->toArray());
 			$product_fields = Category::where('id',$product->cat_id)->first()->field;
 			$p_filed = name_of_filed($product_fields->filed,'label');
 			return view('admin/product/detail')->with('title','Product detail')->with('product',$product)->with('p_filed',$p_filed);

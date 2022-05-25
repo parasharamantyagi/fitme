@@ -14,4 +14,8 @@ class ProductField extends Model
 	public function product_field_images(){
     	return $this->hasMany('App\Model\ProductImage', 'product_field_id', 'id')->where('status',1);
     }
+	
+	public function admin_product_field_images(){
+    	return $this->hasMany('App\Model\ProductImage', 'product_field_id', 'id');
+    }
 }

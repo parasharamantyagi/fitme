@@ -12,6 +12,10 @@ class Product extends Model
     }
 	
 	public function product_field(){
+    	return $this->hasMany('App\Model\ProductField', 'product_id', 'id')->where('status',1);
+    }
+	
+	public function admin_product_field(){
     	return $this->hasMany('App\Model\ProductField', 'product_id', 'id');
     }
 	
