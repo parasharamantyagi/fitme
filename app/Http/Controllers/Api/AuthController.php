@@ -331,10 +331,17 @@ class AuthController extends Controller
     public function myReferral(Request $request)
     {
 		$referralCode = ReferralCode::where('referral_id',$request->user()->id)->where('status',1)->get();
-        return response()->json(api_response(1, "My Referral code", $referralCode));
+        return response()->json(api_response(1, "My active voucher code", $referralCode));
     }
 	
 	public function myVoucher(Request $request)
+    {
+		$userVoucher = UserVoucher::where('user_id',$request->user()->id)->where('status',1)->pluck('token_id')->toArray();
+		$referralCode = Token::select('*')->whereNotIn('id',$userVoucher)->where('category','membership_voucher')->get();
+        return response()->json(api_response(1, "My Voucher code", $referralCode));
+    }
+	
+	public function myActiveVoucher(Request $request)
     {
 		$referralCode = Token::select('tokens.*')
 		->join('user_vouchers', 'user_vouchers.token_id', 'tokens.id')
@@ -342,6 +349,36 @@ class AuthController extends Controller
 		->where('user_vouchers.status',1)
 		->where('tokens.category','membership_voucher')->get();
         return response()->json(api_response(1, "My Voucher code", $referralCode));
+    }
+	
+	
+	public function addVoucherPost(Request $request)
+    {
+		$inputData = $request->all();
+		$inputData['user_id'] = $request->user()->id;
+		if($request->hasFile('fron_image')){
+			   $fron_image_image = $request->file('fron_image'); //get the file
+			   $fron_image_image_namefile = 	rand(1,999999) .time() . '.' . $fron_image_image->getClientOriginalExtension();
+			   $destinationPath = public_path('/voucher'); //public path folder dir
+			   $fron_image_image->move($destinationPath, $fron_image_image_namefile);  //mve to destination you mentioned
+			   $inputData['fron_image'] = 'voucher/'.$fron_image_image_namefile;
+		}
+		if($request->hasFile('back_image')){
+			   $back_image = $request->file('back_image'); //get the file
+			   $back_image_namefile = 	rand(1,999999) .time() . '.' . $back_image->getClientOriginalExtension();
+			   $destinationPath = public_path('/voucher'); //public path folder dir
+			   $back_image->move($destinationPath, $back_image_namefile);  //mve to destination you mentioned
+			   $inputData['back_image'] = 'voucher/'.$back_image_namefile;
+		}
+		$inputData['status'] = 0;
+		UserVoucher::insert($inputData);
+		// pr($inputData);
+		// $referralCode = Token::select('tokens.*')
+		// ->join('user_vouchers', 'user_vouchers.token_id', 'tokens.id')
+		// ->where('user_vouchers.user_id',$request->user()->id)
+		// ->where('user_vouchers.status',1)
+		// ->where('tokens.category','membership_voucher')->get();
+        return response()->json(api_response(1, "Voucher detail add successfully", $inputData));
     }
 	
 	public function applyReferral(Request $request)

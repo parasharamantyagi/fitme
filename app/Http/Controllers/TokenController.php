@@ -10,6 +10,7 @@ use Auth;
 use Redirect;
 use App\User;
 use App\Model\Token;
+use App\Model\UserVoucher;
 use Illuminate\Support\Facades\Hash;
 Use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Crypt;
@@ -33,7 +34,7 @@ class TokenController extends Controller
 	
 	public function viewToken(){
 		try{
-			$tokens = Token::orderBy('id','desc')->get();
+			$tokens = Token::whereIn('category',['fixed','referral'])->orderBy('id','desc')->get();
 			$title = 'View Token';
 			return view('admin/token/view')->with('title',$title)->with('tokens',$tokens);
 		}catch(\Exception $e){
@@ -98,6 +99,19 @@ class TokenController extends Controller
         }
 	}
 	
+	public function verifyMembershipVoucher(){
+		try{
+			$tokens = UserVoucher::select('user_vouchers.*','tokens.token_name','tokens.amount','type','valid_to','misapplying_message','applying_message','users.name','users.email','users.phone','users.address')
+					 ->join('users', 'users.id', 'user_vouchers.user_id')
+					 ->join('tokens', 'tokens.id', 'user_vouchers.token_id')
+					 ->where('user_vouchers.status',0)->orderBy('id','desc')->get();
+			$title = 'Verify Membership Voucher';
+			return view('admin/membership-voucher/verify-voucher')->with('title',$title)->with('tokens',$tokens);
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
 	public function updateMembershipVoucherPost(Request $request,$id){
 		try{
 			$token_id = Crypt::decrypt($id);
@@ -130,7 +144,7 @@ class TokenController extends Controller
 				Token::insert($inputData);
 				$response['delayTime'] = 2000;
 				$response['message'] = 'Token add successfully';
-				$response['url'] = url('/admin/view-token');
+				$response['url'] = url('/admin/view-membership-voucher');
 				return response($this->getSuccessResponse($response));
 			}else{
 				return response($this->getErrorResponse('Token is already exists'));

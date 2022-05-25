@@ -56,6 +56,7 @@ Route::group(['prefix'=>'admin'], function () {
 		Route::get('/add-membership-voucher','TokenController@addMembershipVoucher');
 		Route::get('/membership-voucher/{id}','TokenController@editMembershipVoucher');
 		Route::get('/view-membership-voucher','TokenController@viewMembershipVoucher');
+		Route::get('/verify-membership-voucher','TokenController@verifyMembershipVoucher');
 		Route::post('/add-membership-voucher','TokenController@addMembershipVoucherPost');
 		Route::post('/add-membership-voucher/{id}','TokenController@updateMembershipVoucherPost');
 		

@@ -138,11 +138,12 @@
                                 <li><a title="View Mail" href="{{url('admin/view-token')}}"><span class="mini-sub-pro">View Token</span></a></li>
                             </ul>
                         </li>
-						<li class="{{ (Request::segment(2) == 'add-membership-voucher' || Request::segment(2) == 'view-membership-voucher') ? 'active':'' }}">
+						<li class="{{ (Request::segment(2) == 'add-membership-voucher' || Request::segment(2) == 'view-membership-voucher' || Request::segment(2) == 'verify-membership-voucher') ? 'active':'' }}">
                             <a class="has-arrow" href="view-category" aria-expanded="false"><i class="fa fa-shopping-bag" aria-hidden="true"></i> <span class="mini-click-non">M- Voucher</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="Inbox" href="{{url('admin/add-membership-voucher')}}"><span class="mini-sub-pro">Add Voucher</span></a></li>
                                 <li><a title="View Mail" href="{{url('admin/view-membership-voucher')}}"><span class="mini-sub-pro">View Voucher</span></a></li>
+                                <li><a title="View Mail" href="{{url('admin/verify-membership-voucher')}}"><span class="mini-sub-pro">Verify Voucher</span></a></li>
                             </ul>
                         </li>
 						<li class="{{ (Request::segment(2) == 'add-configuration' || Request::segment(2) == 'view-configuration') ? 'active':'' }}">

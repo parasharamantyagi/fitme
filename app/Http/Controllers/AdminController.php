@@ -191,14 +191,19 @@ class AdminController extends Controller
 			$input = $request->all();
 			$input['product_image'] = array();
 			$files = $request->file('image');
-			foreach ($files as $image_key => $file) {
-				$namefile = 	rand(1,999999) .time() . '.' . $file->getClientOriginalExtension();
-				$destinationPath = public_path('/products'); //public path folder dir
-				$file->move($destinationPath, $namefile);  //mve to destination you mentioned
-				$input['product_image'][$image_key] = 'products/'.$namefile;
+			if($files){
+				foreach ($files as $image_key => $file) {
+					$namefile = 	rand(1,999999) .time() . '.' . $file->getClientOriginalExtension();
+					$destinationPath = public_path('/products'); //public path folder dir
+					$file->move($destinationPath, $namefile);  //mve to destination you mentioned
+					$input['product_image'][$image_key] = 'products/'.$namefile;
+				}
 			}
 			$product_fields = array('product_field_id'=>$input['product_field_id'],'Band_size_ID'=>$input['Band_size_ID'],'Cup_size_ID'=>$input['Cup_size_ID'],
-									'color'=>$input['color'],'quantity'=>$input['quantity'],'image'=>$input['product_image']);
+									'color'=>$input['color'],'quantity'=>$input['quantity']);
+			if($input['product_image']){
+				$product_fields['image'] = $input['product_image'];
+			}
 			$input['cat_id'] = $cat_id;
 			unset($input['_token']);
 			unset($input['Band_size_ID']);
@@ -210,21 +215,23 @@ class AdminController extends Controller
 			unset($input['product_image']);
 			Product::where('id',$id)->update($input);
 			ProductField::where('product_id',$id)->whereNotIn('id',$product_fields['product_field_id'])->delete();
-			for ($x = 0; $x < count($product_fields['product_field_id']); $x++) {
-				if($product_fields['product_field_id'][$x]){
-					ProductField::where('id',$product_fields['product_field_id'][$x])->update(array(
-							'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
-							'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x],'color'=>$product_fields['color'][$x],
-							'quantity'=>$product_fields['quantity'][$x],'image'=>$product_fields['image'][$x]
-							));
-				}else{
-					ProductField::insert(
-							array(
-							'product_id'=>$id,'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
-							'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x],'color'=>$product_fields['color'][$x],
-							'quantity'=>$product_fields['quantity'][$x],'image'=>$product_fields['image'][$x]
-							)
-					);
+			if(array_key_exists('image',$product_fields)){
+				for ($x = 0; $x < count($product_fields['product_field_id']); $x++) {
+					if($product_fields['product_field_id'][$x]){
+						ProductField::where('id',$product_fields['product_field_id'][$x])->update(array(
+								'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
+								'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x],'color'=>$product_fields['color'][$x],
+								'quantity'=>$product_fields['quantity'][$x],'image'=>$product_fields['image'][$x]
+								));
+					}else{
+						ProductField::insert(
+								array(
+								'product_id'=>$id,'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
+								'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x],'color'=>$product_fields['color'][$x],
+								'quantity'=>$product_fields['quantity'][$x],'image'=>$product_fields['image'][$x]
+								)
+						);
+					}
 				}
 			}
 			
@@ -233,7 +240,7 @@ class AdminController extends Controller
 			}
 			$response['message'] = 'Product update successfully';
 			$response['delayTime'] = 2000;
-			$response['url'] = url('/admin/view-product');
+			$response['url'] = url('/admin/view-product?cat_id='.encryptID($cat_id));
 			return response($this->getSuccessResponse($response));
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
