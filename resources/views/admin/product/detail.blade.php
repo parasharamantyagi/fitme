@@ -53,7 +53,7 @@
 													<div class="row product_images_action">
 														<div class="col-md-2 form-group">
 														<label class="toggleSwitch nolabel" onclick="" style="margin-top: 5px;">
-																<input class="toggle-switch" data-type="product_images" data-id="{{$productfield->id}}" type="checkbox"  @if($productfield->image) checked @endif/>
+																<input class="toggle-switch" data-type="product_field_image" data-id="{{$productfield->id}}" type="checkbox"  @if($productfield->status) checked @endif/>
 																<span>
 																	<span>OFF</span>
 																	<span>ON</span>
@@ -73,7 +73,7 @@
 															<div class="row product_images_action">
 																<div class="col-md-2 form-group">
 																<label class="toggleSwitch nolabel" onclick="" style="margin-top: 5px;">
-																		<input class="toggle-switch" data-type="product_field_image" data-id="{{$productFieldImages->id}}" type="checkbox"  @if($productFieldImages->status) checked @endif/>
+																		<input class="toggle-switch" data-type="product_images" data-id="{{$productFieldImages->id}}" type="checkbox"  @if($productFieldImages->status) checked @endif/>
 																		<span>
 																			<span>OFF</span>
 																			<span>ON</span>
