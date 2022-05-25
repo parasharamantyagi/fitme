@@ -65,6 +65,7 @@ Route::group([
 		
 		
 		Route::get('get-video', 'Api\AuthController@getVideo');
+		Route::post('watch-video', 'Api\AuthController@watchVideo');
 		
 		
 

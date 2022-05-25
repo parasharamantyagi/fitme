@@ -192,12 +192,21 @@ class AdminController extends Controller
 			$input = $request->all();
 			$input['product_image'] = array();
 			$files = $request->file('image');
-			if($files){
-				foreach ($files as $image_key => $file) {
-					$namefile = 	rand(1,999999) .time() . '.' . $file->getClientOriginalExtension();
-					$destinationPath = public_path('/products'); //public path folder dir
-					$file->move($destinationPath, $namefile);  //mve to destination you mentioned
-					$input['product_image'][$image_key] = 'products/'.$namefile;
+			if($request->hasFile('image'))
+			{
+				$index = 0;
+				foreach($_FILES['image']['tmp_name'] as $key => $error){
+					if($_FILES['image']['tmp_name'][$index]){
+					   $filename = file_get_contents($_FILES['image']['tmp_name'][$key]);
+					   $pack_filename = preg_replace("/[^a-z0-9\.]/", "_", strtolower($_FILES['image']['name'][$key]));
+					   $pack_filename = strtotime("now")."_".$pack_filename;
+					   $file_name = $_FILES['image']['name'][$key];
+					   move_uploaded_file($_FILES['image']['tmp_name'][$key],'products/'.$pack_filename);
+					   $input['product_image'][$index] = 'products/'.$pack_filename;
+					}else{
+						$input['product_image'][$index] = '';
+					}
+					$index++;
 				}
 			}
 			$product_fields = array('product_field_id'=>$input['product_field_id'],'Band_size_ID'=>$input['Band_size_ID'],'Cup_size_ID'=>$input['Cup_size_ID'],
@@ -218,7 +227,7 @@ class AdminController extends Controller
 			ProductField::where('product_id',$id)->whereNotIn('id',$product_fields['product_field_id'])->delete();
 			if(array_key_exists('image',$product_fields)){
 				for ($x = 0; $x < count($product_fields['product_field_id']); $x++) {
-					if($product_fields['product_field_id'][$x]){
+					if($product_fields['product_field_id'][$x] && $product_fields['image'][$x]){
 						ProductField::where('id',$product_fields['product_field_id'][$x])->update(array(
 								'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
 								'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x],'color'=>$product_fields['color'][$x],

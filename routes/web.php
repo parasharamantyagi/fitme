@@ -25,7 +25,6 @@ Route::get('/version','HomeController@phpInfoVersion');
 Route::group(['prefix'=>'admin'], function () {
 	Route::group(['middleware'=>['auth','roles']], function () {
 		Route::get('/dashboard','AdminController@dashboard');
-		
 		Route::get('/add-category','AdminController@addCategory');
 		Route::get('/view-category','AdminController@viewCategory');
 		

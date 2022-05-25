@@ -11,6 +11,7 @@ use App\Model\Category;
 use App\Model\Product;
 use App\Model\ProductField;
 use App\Model\Video;
+use App\Model\WatchVideo;
 use App\Model\Cart;
 use App\Model\PaymentHistory;
 use App\Model\UserProduct;
@@ -257,10 +258,21 @@ class AuthController extends Controller
 		$returnData = array();
 		$allVideos = Video::where('status',1)->get();
 		foreach($allVideos as $my_video){
-			$my_video->is_seen = 0;
+			$watchVideo = WatchVideo::where('user_id',$request->user()->id)->where('video_id',$my_video->id)->first();
+			$my_video->is_seen = ($watchVideo) ? 1 : 0;
 			$returnData[] = $my_video;
 		}
         return response()->json(api_response(1, "Video list", $returnData));
+    }
+	
+	public function watchVideo(Request $request)
+    {
+		$inputData = $request->all();
+		$inputData['user_id'] = $request->user()->id;
+		$inputData['created_at'] = Carbon::now();
+		$inputData['updated_at'] = Carbon::now();
+		WatchVideo::insert($inputData);
+        return response()->json(api_response(1, "Your activity saved successfully", $inputData));
     }
 	
 	public function getProducts(Request $request)
