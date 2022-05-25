@@ -13,7 +13,7 @@
                         <div class="product-status-wrap">
                             <h4>Membership List</h4>
                             <div class="add-product">
-                                <a href="{{url('admin/add-token')}}">Add Token</a>
+                                <a href="{{url($form_array['url'])}}">{{$form_array['link_name']}}</a>
                             </div>
                             <table>
                                 <tr>

@@ -89,24 +89,59 @@ class TokenController extends Controller
         }
 	}
 	
+	public function membershipVoucherDetail($id){
+		try{
+			$token_id = Crypt::decrypt($id);
+			$userVoucher = UserVoucher::find($token_id);
+			$title = 'Voucher detail';
+			return view('admin/membership-voucher/verify-voucher-detail')->with('title',$title)->with('user_voucher',$userVoucher);
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	public function membershipVoucherVerify(Request $request, $id){
+		try{
+			$inputData = $request->all();
+			$user_voucher_id = Crypt::decrypt($id);
+			if($request->submit === 'Verify'){
+				UserVoucher::find($user_voucher_id)->update(array('status'=>1));
+			}else{
+				UserVoucher::find($user_voucher_id)->delete();
+			}
+			$response['delayTime'] = 2000;
+			$response['message'] = 'User voucher verified successfully';
+			$response['url'] = url('/admin/verify-membership-voucher');
+			return response($this->getSuccessResponse($response));
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
 	public function viewMembershipVoucher(){
 		try{
 			$tokens = Token::where('category','membership_voucher')->orderBy('id','desc')->get();
-			$title = 'View Token';
+			$title = 'View Membership Voucher';
 			return view('admin/membership-voucher/view')->with('title',$title)->with('tokens',$tokens);
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }
 	}
 	
-	public function verifyMembershipVoucher(){
+	public function verifyMembershipVoucher(Request $request){
 		try{
 			$tokens = UserVoucher::select('user_vouchers.*','tokens.token_name','tokens.amount','type','valid_to','misapplying_message','applying_message','users.name','users.email','users.phone','users.address')
 					 ->join('users', 'users.id', 'user_vouchers.user_id')
-					 ->join('tokens', 'tokens.id', 'user_vouchers.token_id')
-					 ->where('user_vouchers.status',0)->orderBy('id','desc')->get();
+					 ->join('tokens', 'tokens.id', 'user_vouchers.token_id');
+			if($request->action){
+				$form_array = array('url'=>'admin/verify-membership-voucher','link_name'=>'Membership voucher request');
+				$tokens = $tokens->where('user_vouchers.status',1);
+			}else{
+				$form_array = array('url'=>'admin/verify-membership-voucher?action=active-voucher','link_name'=>'Verify Member');
+				$tokens = $tokens->where('user_vouchers.status',0);
+			}
+			$tokens = $tokens->orderBy('id','desc')->get();
 			$title = 'Verify Membership Voucher';
-			return view('admin/membership-voucher/verify-voucher')->with('title',$title)->with('tokens',$tokens);
+			return view('admin/membership-voucher/verify-voucher')->with('title',$title)->with('tokens',$tokens)->with('form_array',$form_array);
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }

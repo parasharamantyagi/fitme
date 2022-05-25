@@ -55,10 +55,12 @@ Route::group(['prefix'=>'admin'], function () {
 		
 		Route::get('/add-membership-voucher','TokenController@addMembershipVoucher');
 		Route::get('/membership-voucher/{id}','TokenController@editMembershipVoucher');
+		Route::get('/membership-voucher-detail/{id}','TokenController@membershipVoucherDetail');
 		Route::get('/view-membership-voucher','TokenController@viewMembershipVoucher');
 		Route::get('/verify-membership-voucher','TokenController@verifyMembershipVoucher');
 		Route::post('/add-membership-voucher','TokenController@addMembershipVoucherPost');
 		Route::post('/add-membership-voucher/{id}','TokenController@updateMembershipVoucherPost');
+		Route::post('/membership-voucher-verify/{id}','TokenController@membershipVoucherVerify');
 		
 		Route::get('/add-configuration','ConfigurationController@addConfiguration');
 		Route::get('/view-configuration','ConfigurationController@viewConfiguration');

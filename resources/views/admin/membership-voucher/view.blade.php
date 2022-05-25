@@ -11,9 +11,9 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="product-status-wrap">
-                            <h4>Token List</h4>
+                            <h4>Voucher List</h4>
                             <div class="add-product">
-                                <a href="{{url('admin/add-token')}}">Add Token</a>
+                                <a href="{{url('admin/add-membership-voucher')}}">Add Voucher</a>
                             </div>
                             <table>
                                 <tr>

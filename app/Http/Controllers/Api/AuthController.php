@@ -348,7 +348,7 @@ class AuthController extends Controller
 		->where('user_vouchers.user_id',$request->user()->id)
 		->where('user_vouchers.status',1)
 		->where('tokens.category','membership_voucher')->get();
-        return response()->json(api_response(1, "My Voucher code", $referralCode));
+        return response()->json(api_response(1, "My Active Voucher code", $referralCode));
     }
 	
 	
