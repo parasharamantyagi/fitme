@@ -22,7 +22,7 @@ use App\Model\Token;
 use App\Model\UserToken;
 use App\Model\ReferralCode;
 use Stripe;
-use App\Helpers\PlivoSms;
+use App\Helper\PlivoSms;
 // use DB;
 use Mail;
 
@@ -245,7 +245,7 @@ class AuthController extends Controller
     {
 		$inputData = explode('_',$request->folder);
 		$user = User::find($inputData[1]);
-		$cccccccccc = PlivoSms::push_notification($user->device_token);
+		$cccccccccc = PlivoSms::push_notification($user->device_token,array('message'=>"Your new 3D-Model has been generated",'type'=>1));
 		return response()->json(api_response(1, "Notification send successfully", $cccccccccc));
 	}
 	
@@ -258,13 +258,13 @@ class AuthController extends Controller
 		if($request->destination){
 			$inputData['destination'] = $request->destination;
 		}
+		if($request->user_id){
+			$device_token = User::select('device_token')->where('id',$request->user_id)->first();
+			// array('message'=>"Your latest 3D model is ready to download",'type'=>2)
+			PlivoSms::push_notification($device_token->device_token,'Your latest 3D model is ready to download');
+		}
 		CurlRequest::insert($inputData);
 		return response()->json(true);
-		// pr($request->all());
-		// $inputData = explode('_',$request->folder);
-		// $user = User::find($inputData[1]);
-		// $cccccccccc = PlivoSms::push_notification($user->device_token);
-		// return response()->json(api_response(1, "Notification send successfully", $cccccccccc));
 	}
 	
 	public function getCategories(Request $request)
@@ -404,12 +404,6 @@ class AuthController extends Controller
 		}
 		$inputData['status'] = 0;
 		UserVoucher::insert($inputData);
-		// pr($inputData);
-		// $referralCode = Token::select('tokens.*')
-		// ->join('user_vouchers', 'user_vouchers.token_id', 'tokens.id')
-		// ->where('user_vouchers.user_id',$request->user()->id)
-		// ->where('user_vouchers.status',1)
-		// ->where('tokens.category','membership_voucher')->get();
         return response()->json(api_response(1, "Voucher detail add successfully", $inputData));
     }
 	
@@ -433,7 +427,7 @@ class AuthController extends Controller
 		}elseif($request->type && $request->type == 'membership_voucher'){
 			$referralCode = UserVoucher::join('tokens','tokens.id','user_vouchers.token_id')->where('tokens.token_name',$request->token)->where('user_id',$request->user()->id)->where('category','membership_voucher')->first();
 			if($referralCode){
-				// UserToken::insert(array('user_id'=>$request->user()->id,'token_id'=>$referralCode->id,'status'=>0));
+				UserToken::insert(array('user_id'=>$request->user()->id,'token_id'=>$referralCode->token_id,'status'=>0));
 				return response()->json(api_response(1, "Your token has been apply", $referralCode));
 			}else{
 				return response()->json(api_response(0, "This is invalid token", $inputData));

@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Helpers;
-
-use Plivo\RestClient;
+namespace App\Helper;
 
 class PlivoSms
 {
     const API_KEY = "AAAABrYZ0vA:APA91bGIzetw4t3PHJ3cx3UA8oAcDf-IouC1G6UDlSsf5dN7OKrR0sMUr2T1sjxLKNh5I-tzHoQrjmUa6EbrrWEZ5CSgoGgm_veRMewa5BT3-gkGaaDAfJIXr3jWZNSGcwcXod-8kBlW";
     
-	public static function push_notification($token) {
+	public static function push_notification($token,$body) {
 		$url = "https://fcm.googleapis.com/fcm/send";
 		$serverKey = self::API_KEY;
 		$title = "Fit me";
-		$body = "Your new 3D-Model has been generated";
+		// $body = "Your new 3D-Model has been generated";
 		$notification = array('title' =>$title , 'body' => $body, 'sound' => 'default', 'badge' => '1');
 		$arrayToSend = array('to' => $token, 'notification' => $notification,'priority'=>'high');
 		$json = json_encode($arrayToSend);
