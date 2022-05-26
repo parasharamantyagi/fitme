@@ -258,6 +258,9 @@ class AuthController extends Controller
 		if($request->destination){
 			$inputData['destination'] = $request->destination;
 		}
+		if($request->status){
+			$inputData['status'] = $request->status;
+		}
 		if($request->user_id){
 			$device_token = User::select('device_token')->where('id',$request->user_id)->first();
 			// array('message'=>"Your latest 3D model is ready to download",'type'=>2)
