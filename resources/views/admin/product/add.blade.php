@@ -90,7 +90,7 @@
 											</div>
 											<div class="col-md-2 form-group">
 											  <label class="extra-filed">Cup size</label>
-												<select name="Cup_size_ID[]" class="form-control" multiple>
+												<select name="Cup_size_ID[0][]" class="form-control" multiple>
 													<option value="">Select Cup size</option>
 													@foreach(["AA","A","B","C","D","DD","E","F","FF","G","GG","H","HH","J","JJ","K"] as $cup_size_ID)
 														<option value="{{$cup_size_ID}}">{{$cup_size_ID}}</option>
@@ -111,7 +111,7 @@
 											</div>
 											<div class="col-md-2 form-group">
 												<label class="extra-filed">&nbsp;</label><br/>
-												<button type="button" data-toggle="tooltip" title="" class="pd-setting-ed plus-circle-button" data-original-title="Add"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+												<button type="button" data-toggle="tooltip" title="" class="pd-setting-ed plus-circle-button-add" data-original-title="Add"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
 											</div>
 										</div>
 										@endif

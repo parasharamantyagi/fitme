@@ -185,7 +185,11 @@ class AdminController extends Controller
 			$product = Product::find($id);
 			$cat_id = $product->cat_id;
 			$product_fields = Category::where('id',$cat_id)->first()->field;
-			$validation = $this->agentNewFeatureValidations($request,validation_name_of_filed($product_fields->filed));
+			$validation_filed = array(
+				'brand_name'=>'required','Bra_type_ID'=>'required','materialid1'=>'required','percentage1'=>'required',
+				'Bra_name'=>'required','price'=>'required'
+			);
+			$validation = $this->agentNewFeatureValidations($request,$validation_filed);
 			if($validation['status']==false){
 				return response($this->getValidationsErrors($validation));
 			}
@@ -241,6 +245,16 @@ class AdminController extends Controller
 								'quantity'=>$product_fields['quantity'][$x],'image'=>$product_fields['image'][$x]
 								)
 						);
+					}
+				}
+			}else{
+				for ($x = 0; $x < count($product_fields['product_field_id']); $x++) {
+					if($product_fields['product_field_id'][$x]){
+						ProductField::where('id',$product_fields['product_field_id'][$x])->update(array(
+								'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
+								'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x],'color'=>$product_fields['color'][$x],
+								'quantity'=>$product_fields['quantity'][$x]
+								));
 					}
 				}
 			}
@@ -308,20 +322,35 @@ class AdminController extends Controller
 		try{
 			$cat_id = decryptId($request->cat_id);
 			$product_fields = Category::where('id',$cat_id)->first()->field;
-			$validation = $this->agentNewFeatureValidations($request,validation_name_of_filed($product_fields->filed));
+			$validation_filed = array(
+				'brand_name'=>'required','Bra_type_ID'=>'required','materialid1'=>'required','percentage1'=>'required',
+				'Bra_name'=>'required','price'=>'required'
+			);
+			$validation = $this->agentNewFeatureValidations($request,$validation_filed);
 			if($validation['status']==false){
 				return response($this->getValidationsErrors($validation));
 			}
 			$input = $request->all();
 			$input['product_image'] = array();
 			$files = $request->file('image');
-			foreach ($files as $image_key => $file) {
-				$namefile = 	rand(1,999999) .time() . '.' . $file->getClientOriginalExtension();
-				$destinationPath = public_path('/products'); //public path folder dir
-				$file->move($destinationPath, $namefile);  //mve to destination you mentioned
-				$input['product_image'][$image_key] = 'products/'.$namefile;
+			if($request->hasFile('image'))
+			{
+				$index = 0;
+				foreach($_FILES['image']['tmp_name'] as $key => $error){
+					if($_FILES['image']['tmp_name'][$index]){
+					   $filename = file_get_contents($_FILES['image']['tmp_name'][$key]);
+					   $pack_filename = preg_replace("/[^a-z0-9\.]/", "_", strtolower($_FILES['image']['name'][$key]));
+					   $pack_filename = strtotime("now")."_".$pack_filename;
+					   $file_name = $_FILES['image']['name'][$key];
+					   move_uploaded_file($_FILES['image']['tmp_name'][$key],'products/'.$pack_filename);
+					   $input['product_image'][$index] = 'products/'.$pack_filename;
+					}else{
+						$input['product_image'][$index] = '';
+					}
+					$index++;
+				}
 			}
-			$product_fields = array('Band_size_ID'=>$input['Band_size_ID'],'Cup_size_ID'=>$input['Cup_size_ID'],
+			$product_fields = array('Band_size_ID'=>$input['Band_size_ID'],'Cup_size_ID'=>array_values($input['Cup_size_ID']),
 									'color'=>$input['color'],'quantity'=>$input['quantity'],'image'=>$input['product_image']);
 			$input['cat_id'] = $cat_id;
 			unset($input['_token']);
@@ -332,31 +361,26 @@ class AdminController extends Controller
 			unset($input['image']);
 			unset($input['product_image']);
 			unset($input['product_field_id']);
-			// pr($input);
 			$my_product = Product::insertGetId($input);
 			for ($x = 0; $x < count($product_fields['Band_size_ID']); $x++) {
-				ProductField::insert(
-						array(
-						'product_id'=>$my_product,'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
-						'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x],'color'=>$product_fields['color'][$x],
-						'quantity'=>$product_fields['quantity'][$x],'image'=>$product_fields['image'][$x]
-						)
-				);
+				for ($jj = 0; $jj < count($product_fields['Cup_size_ID'][$x]); $jj++) {
+					if($product_fields['image'][$x]){
+						$first_product_fields = $product_fields['image'][$x];
+					}else{
+						$first_product_fields = $product_fields['image'][$x-1];
+					}
+					ProductField::insert(
+							array(
+							'product_id'=>$my_product,'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
+							'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x][$jj],'color'=>$product_fields['color'][$x],
+							'quantity'=>$product_fields['quantity'][$x],'image'=>$first_product_fields
+							)
+					);
+				}
 			}
 			if($request->session()->has('product_file')){
 				ProductImage::where('image_id',$request->session()->get('product_file'))->update(array('product_id'=>$my_product));
 			}
-			// DB::table($product_fields->table_name)->insert($input);
-			// if ($request->hasFile('image')) {
-				   // $image = $request->file('image'); //get the file
-				   // $namefile = 	rand(1,999999) .time() . '.' . $image->getClientOriginalExtension();
-				   // $destinationPath = public_path('/products'); //public path folder dir
-				   // $image->move($destinationPath, $namefile);  //mve to destination you mentioned
-				   // $input['image'] = 'products/'.$namefile;
-			// }
-			// unset($input['_token']);
-			// $input['cat_id'] = decryptId($request->cat_id);
-			// Product::insert($input);
 			$response['message'] = 'Product add successfully';
 			$response['delayTime'] = 2000;
 			$response['url'] = url('/admin/view-product?cat_id='.$request->cat_id);
