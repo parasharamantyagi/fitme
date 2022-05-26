@@ -264,7 +264,7 @@ class AuthController extends Controller
 		if($request->user_id){
 			$device_token = User::select('device_token')->where('id',$request->user_id)->first();
 			// array('message'=>"Your latest 3D model is ready to download",'type'=>2)
-			PlivoSms::push_notification($device_token->device_token,'Your latest 3D model is ready to download',1);
+			PlivoSms::push_notification($device_token->device_token,'Your latest 3D model is ready to download',33);
 		}
 		CurlRequest::insert($inputData);
 		return response()->json(true);
