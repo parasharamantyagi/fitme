@@ -263,8 +263,11 @@ class AuthController extends Controller
 		}
 		if($request->user_id){
 			$device_token = User::select('device_token')->where('id',$request->user_id)->first();
-			// array('message'=>"Your latest 3D model is ready to download",'type'=>2)
-			PlivoSms::push_notification($device_token->device_token,'Your latest 3D model is ready to download',33);
+			if((int)$request->status){
+				PlivoSms::push_notification($device_token->device_token,'Your latest 3D model is ready to download',1);
+			}else{
+				PlivoSms::push_notification($device_token->device_token,'Sorry to inform for that there was a problem in processing your information please can yourself again',2);
+			}
 		}
 		CurlRequest::insert($inputData);
 		return response()->json(true);
@@ -430,7 +433,7 @@ class AuthController extends Controller
 		}elseif($request->type && $request->type == 'membership_voucher'){
 			$referralCode = UserVoucher::join('tokens','tokens.id','user_vouchers.token_id')->where('tokens.token_name',$request->token)->where('user_id',$request->user()->id)->where('category','membership_voucher')->first();
 			if($referralCode){
-				UserToken::insert(array('user_id'=>$request->user()->id,'token_id'=>$referralCode->token_id,'status'=>0));
+				UserToken::insert(array('user_id'=>$request->user()->id,'token_id'=>$referralCode->token_id,'status'=>0,'created_at'=>Carbon::now()));
 				return response()->json(api_response(1, "Your token has been apply", $referralCode));
 			}else{
 				return response()->json(api_response(0, "This is invalid token", $inputData));
@@ -438,7 +441,7 @@ class AuthController extends Controller
 		}else{
 			$referralCode = Token::where('token_name',$request->token)->first();
 			if($referralCode){
-				UserToken::insert(array('user_id'=>$request->user()->id,'token_id'=>$referralCode->id,'status'=>0));
+				UserToken::insert(array('user_id'=>$request->user()->id,'token_id'=>$referralCode->id,'status'=>0,'created_at'=>Carbon::now()));
 				return response()->json(api_response(1, "Your token has been apply", $referralCode));
 			}else{
 				return response()->json(api_response(0, "This is invalid token", $inputData));
@@ -545,6 +548,7 @@ class AuthController extends Controller
 					$userProduct[] = array('user_id'=>$user,'order_id'=>$Oid,'product_id'=>$product->product_id,'quantity'=>$product->quantity,'color'=>$product->color,'price'=>$product->product->price,'status'=>1);
 				}
 				UserProduct::insert($userProduct);
+				UserToken::where('user_id',$user)->where('status',0)->update(array('status'=>1,'updated_at'=>Carbon::now()));
 				Cart::where('user_id',$user)->delete();
 			}
 			return response()->json(api_response(1, "Product buy successfully", $userProduct));

@@ -1,6 +1,11 @@
 @extends('layout.admin')
 @section('style')
 	<link rel="stylesheet" href="{{ url('admin/css/dropzone/dropzone.css') }}">
+	<style>
+	label.extra-filed {
+		height: 38px;
+	}
+	</style>
 @endsection
 @section('content')
 
@@ -74,8 +79,8 @@
                                         </div>
 										@if($cat_id === 6)
 										<div class="row parent">
-											<div class="col-md-3 form-group">
-											  <label>Band size</label>
+											<div class="col-md-2 form-group">
+											  <label class="extra-filed">Band size</label>
 												<select name="Band_size_ID[]" class="form-control">
 													<option value="">Select Band size</option>
 													@foreach([24,26,28,30,32,34,36,38,40,42,44,46,48,50] as $band_size_ID)
@@ -83,9 +88,9 @@
 													@endforeach
 												</select>
 											</div>
-											<div class="col-md-3 form-group">
-											  <label>Cup size</label>
-												<select name="Cup_size_ID[]" class="form-control">
+											<div class="col-md-2 form-group">
+											  <label class="extra-filed">Cup size</label>
+												<select name="Cup_size_ID[]" class="form-control" multiple>
 													<option value="">Select Cup size</option>
 													@foreach(["AA","A","B","C","D","DD","E","F","FF","G","GG","H","HH","J","JJ","K"] as $cup_size_ID)
 														<option value="{{$cup_size_ID}}">{{$cup_size_ID}}</option>
@@ -93,19 +98,19 @@
 												</select>
 											</div>
 											<div class="col-md-2 form-group">
-												<label>Colour</label>
+												<label class="extra-filed">Colour</label>
 												<input class="form-control" name="color[]" value="" type="text" aria-invalid="false">
 											</div>
 											<div class="col-md-2 form-group">
-												<label>Image</label>
+												<label class="extra-filed">Image</label>
 												<input class="form-control" name="image[]" type="file" aria-invalid="false">
 											</div>
-											<div class="col-md-1 form-group">
-												<label>Quantity</label>
+											<div class="col-md-2 form-group">
+												<label class="extra-filed">Quantity(Please use , for multiple Cup Size)</label>
 												<input class="form-control" name="quantity[]" value="" type="text" aria-invalid="false">
 											</div>
-											<div class="col-md-1 form-group">
-												<label>&nbsp;</label><br/>
+											<div class="col-md-2 form-group">
+												<label class="extra-filed">&nbsp;</label><br/>
 												<button type="button" data-toggle="tooltip" title="" class="pd-setting-ed plus-circle-button" data-original-title="Add"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
 											</div>
 										</div>

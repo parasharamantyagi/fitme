@@ -97,10 +97,10 @@ $('.product-category').change(function() {
 $('button[class="pd-setting-ed plus-circle-button"]').click(function(){
 	let product_bra_append = '<div class="row child">';
 	product_bra_append += '<input name="product_field_id[]" value="0" type="hidden">';
-	product_bra_append += '<div class="col-md-3 form-group">';
+	product_bra_append += '<div class="col-md-2 form-group">';
 	product_bra_append += $('select[name="Band_size_ID[]"]').parent().html();
 	product_bra_append += '</div>';
-	product_bra_append += '<div class="col-md-3 form-group">';
+	product_bra_append += '<div class="col-md-2 form-group">';
 	product_bra_append += $('select[name="Cup_size_ID[]"]').parent().html();
 	product_bra_append += '</div>';
 	product_bra_append += '<div class="col-md-2 form-group">';
@@ -109,12 +109,13 @@ $('button[class="pd-setting-ed plus-circle-button"]').click(function(){
 	product_bra_append += '<div class="col-md-2 form-group">';
 	product_bra_append += $('input[name="image[]"]').parent().html();
 	product_bra_append += '</div>';
-	product_bra_append += '<div class="col-md-1 form-group">';
+	product_bra_append += '<div class="col-md-2 form-group">';
 	product_bra_append += $('input[name="quantity[]"]').parent().html();
 	product_bra_append += '</div>';
-	product_bra_append += '<div class="col-md-1 form-group">';
+	product_bra_append += '<div class="col-md-2 form-group">';
 	product_bra_append += '<label>&nbsp;</label><br/>';
 	product_bra_append += '<button type="button" data-toggle="tooltip" title="" class="pd-setting-ed minus-circle-button" data-original-title="Add"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>';
+	product_bra_append += '<button type="button" data-toggle="tooltip" title="" class="pd-setting-ed copy-circle-button" data-original-title="Copy"><i class="fa fa-clone" aria-hidden="true"></i></button>';
 	product_bra_append += '</div>';
 	product_bra_append += '</div>';
 	$('div[class="row parent"]').after(product_bra_append);
@@ -137,5 +138,18 @@ $('button[class="pd-setting-ed plus-circle-button-multi_image"]').click(function
 
 $(document).on("click",'button[class="pd-setting-ed minus-circle-button"]',function() {
 	$(this).parent().parent().remove();
+});
+
+$(document).on("click",'button[class="pd-setting-ed copy-circle-button"]',function() {
+	let color_name = $('input[name^="color[]"]').map(function(idx, elem) {
+					return $(elem).val();
+				  }).get();
+	let get_selected_val = $(this).closest('div.child').find('input[name="color[]"]').val();
+	if(color_name.length === 2){
+		$(this).closest('div.child').find('input[name="color[]"]').val(color_name[0]);
+	}else{
+		$(this).closest('div.child').find('input[name="color[]"]').val(color_name[2]);
+	}
+
 });
 	
