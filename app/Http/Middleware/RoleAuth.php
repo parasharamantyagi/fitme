@@ -20,7 +20,7 @@ class RoleAuth
         switch($currentRoleID){
             case 1:
                 if(!($prefix=='/provider' && $currentRoleID==1)){
-                    return redirect('provider/dashboard');        
+                    return redirect('/');
                 }
             break;
             case 2:
@@ -29,7 +29,12 @@ class RoleAuth
                 }
             break;
             case 3:
-                if(!($prefix=='' && $currentRoleID==3)){
+                if(!($prefix=='/admin' && $currentRoleID==3)){
+                    return redirect('/');        
+                }
+			break;
+			case 4:
+                if(!($prefix=='/admin' && $currentRoleID==4)){
                     return redirect('/');        
                 }
         }

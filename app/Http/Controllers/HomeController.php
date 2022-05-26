@@ -48,8 +48,7 @@ class HomeController extends Controller
 	public function adminLoginPost(Request $request){
 		$userdata = array(
 			'email'     => $request->email,
-			'password'  => $request->password,
-			'roll_id'  => 2
+			'password'  => $request->password
 		);
 		if(Auth::attempt($userdata)) {
 			$authUser = Auth::user()->roll_id;

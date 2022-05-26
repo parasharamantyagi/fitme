@@ -11,6 +11,7 @@ use App\Model\Category;
 use App\Model\Product;
 use App\Model\ProductField;
 use App\Model\Video;
+use App\Model\CurlRequest;
 use App\Model\WatchVideo;
 use App\Model\Cart;
 use App\Model\PaymentHistory;
@@ -18,6 +19,7 @@ use App\Model\UserProduct;
 use App\Model\UserVoucher;
 use App\Model\Order;
 use App\Model\Token;
+use App\Model\UserToken;
 use App\Model\ReferralCode;
 use Stripe;
 use App\Helpers\PlivoSms;
@@ -247,6 +249,24 @@ class AuthController extends Controller
 		return response()->json(api_response(1, "Notification send successfully", $cccccccccc));
 	}
 	
+	public function curlRequestPost(Request $request)
+    {
+		$inputData = array();
+		if($request->user_id){
+			$inputData['user_id'] = $request->user_id;
+		}
+		if($request->destination){
+			$inputData['destination'] = $request->destination;
+		}
+		CurlRequest::insert($inputData);
+		return response()->json(true);
+		// pr($request->all());
+		// $inputData = explode('_',$request->folder);
+		// $user = User::find($inputData[1]);
+		// $cccccccccc = PlivoSms::push_notification($user->device_token);
+		// return response()->json(api_response(1, "Notification send successfully", $cccccccccc));
+	}
+	
 	public function getCategories(Request $request)
     {
 		$allCat = Category::where('status',1)->get();
@@ -368,12 +388,12 @@ class AuthController extends Controller
     {
 		$inputData = $request->all();
 		$inputData['user_id'] = $request->user()->id;
-		if($request->hasFile('fron_image')){
-			   $fron_image_image = $request->file('fron_image'); //get the file
+		if($request->hasFile('front_image')){
+			   $fron_image_image = $request->file('front_image'); //get the file
 			   $fron_image_image_namefile = 	rand(1,999999) .time() . '.' . $fron_image_image->getClientOriginalExtension();
 			   $destinationPath = public_path('/voucher'); //public path folder dir
 			   $fron_image_image->move($destinationPath, $fron_image_image_namefile);  //mve to destination you mentioned
-			   $inputData['fron_image'] = 'voucher/'.$fron_image_image_namefile;
+			   $inputData['front_image'] = 'voucher/'.$fron_image_image_namefile;
 		}
 		if($request->hasFile('back_image')){
 			   $back_image = $request->file('back_image'); //get the file
@@ -410,9 +430,18 @@ class AuthController extends Controller
 			}else{
 				return response()->json(api_response(0, "This is invalid token", $inputData));
 			}
+		}elseif($request->type && $request->type == 'membership_voucher'){
+			$referralCode = UserVoucher::join('tokens','tokens.id','user_vouchers.token_id')->where('tokens.token_name',$request->token)->where('user_id',$request->user()->id)->where('category','membership_voucher')->first();
+			if($referralCode){
+				// UserToken::insert(array('user_id'=>$request->user()->id,'token_id'=>$referralCode->id,'status'=>0));
+				return response()->json(api_response(1, "Your token has been apply", $referralCode));
+			}else{
+				return response()->json(api_response(0, "This is invalid token", $inputData));
+			}
 		}else{
 			$referralCode = Token::where('token_name',$request->token)->first();
 			if($referralCode){
+				UserToken::insert(array('user_id'=>$request->user()->id,'token_id'=>$referralCode->id,'status'=>0));
 				return response()->json(api_response(1, "Your token has been apply", $referralCode));
 			}else{
 				return response()->json(api_response(0, "This is invalid token", $inputData));

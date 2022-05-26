@@ -458,6 +458,37 @@ class AdminController extends Controller
 	}
 	
 	
+	public function addUser(){
+		try{
+			$title = 'Add User';
+			return view('admin/user/add')->with('title',$title);
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function addUserPost(Request $request){
+		try{
+			$inputData = $request->all();
+			$checkMail = User::where('email',$request->email)->first();
+			if($checkMail){
+				return response($this->getErrorResponse('This email is already exists'));
+			}
+			unset($inputData['_token']);
+			$inputData['email_verified_at'] = Carbon::now();
+			$inputData['password'] = bcrypt($request->password);
+			$inputData['status'] = 1;
+			$inputData['created_at'] = Carbon::now();
+			$inputData['updated_at'] = Carbon::now();
+			User::insert($inputData);
+			$response['message'] = 'User add successfully';
+			$response['delayTime'] = 2000;
+			$response['url'] = url('/admin/view-user');
+			return response($this->getSuccessResponse($response));
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
 	
 	public function viewUser(){
 		try{

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('curl-request', 'Api\AuthController@curlRequestPost');
+
 Route::group([
     'prefix' => 'auth'
 ], function () {

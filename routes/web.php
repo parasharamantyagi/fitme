@@ -34,6 +34,8 @@ Route::group(['prefix'=>'admin'], function () {
 		Route::get('/product-edit/{id}','AdminController@productEdit');
 		Route::get('/add-product/{id}','AdminController@addProductId');
 		
+		Route::get('/add-user','AdminController@addUser');
+		Route::post('/add-user','AdminController@addUserPost');
 		Route::get('/view-user','AdminController@viewUser');
 		
 		
