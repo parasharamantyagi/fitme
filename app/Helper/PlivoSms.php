@@ -10,9 +10,8 @@ class PlivoSms
 		$url = "https://fcm.googleapis.com/fcm/send";
 		$serverKey = self::API_KEY;
 		$title = "Fit me";
-		// $body = "Your new 3D-Model has been generated";
 		$notification = array('title' =>$title , 'body' => $body, 'sound' => 'default', 'badge' => '1');
-		$arrayToSend = array('to' => $token, 'notification' => $notification,'data'=>array('message'=>$body,'type'=>$type),'priority'=>'high');
+		$arrayToSend = array('to' => $token, 'notification' => $notification,'type'=>$type,'priority'=>'high');
 		$json = json_encode($arrayToSend);
 		$headers = array();
 		$headers[] = 'Content-Type: application/json';
