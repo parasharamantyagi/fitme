@@ -28,6 +28,8 @@ Route::group(['prefix'=>'admin'], function () {
 		Route::get('/add-category','AdminController@addCategory');
 		Route::get('/view-category','AdminController@viewCategory');
 		
+		Route::get('/add-brand','AdminController@addBrand');
+		Route::post('/add-brand','AdminController@addBrandPost');
 		Route::get('/add-product','AdminController@addProduct');
 		Route::get('/view-product','AdminController@viewProduct');
 		Route::get('/product-detail/{id}','AdminController@productDetail');

@@ -109,9 +109,10 @@
                             </ul>
                         </li>
 						@endif
-						<li class="{{ (Request::segment(2) == 'add-product' || Request::segment(2) == 'view-product') ? 'active':'' }}">
+						<li class="{{ (Request::segment(2) == 'add-product' || Request::segment(2) == 'view-product' || Request::segment(2) == 'add-brand') ? 'active':'' }}">
                             <a class="has-arrow" href="view-product" aria-expanded="false"><i class="fa fa-cubes"></i> <span class="mini-click-non">Product</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
+                                <li><a title="Inbox" href="{{url('admin/add-brand')}}"><span class="mini-sub-pro">Add Brand</span></a></li>
                                 <li><a title="Inbox" href="{{url('admin/add-product')}}"><span class="mini-sub-pro">Add Product</span></a></li>
                                 <li><a title="View Mail" href="{{url('admin/view-product')}}"><span class="mini-sub-pro">View Product</span></a></li>
                             </ul>

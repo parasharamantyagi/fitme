@@ -48,6 +48,10 @@ class BandController extends Controller
 			$input = $request->all();
 			$input['user_id'] = $request->user()->id;
 			BandBust::insert($input);
+			$content = implode(",",array($input["band"],$input["bust"],$input["age"]));
+			$fp = fopen(public_path('/bb/'.$input['image_path'].'.txt'),"wb");
+			fwrite($fp,$content);
+			fclose($fp);
 			return response()->json(api_response(1, "Band Bust add successfully", $input));
 		}catch(\Exception $e){
 			return response($this->getApiErrorResponse($e->getMessage()));

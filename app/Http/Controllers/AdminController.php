@@ -42,7 +42,7 @@ class AdminController extends Controller
 		$count_data['user_count'] = User::count();
 		$count_data['category_count'] = Category::count();
 		$count_data['product_count'] = Product::count();
-		$title = 'dashboard';
+		$title = 'Dashboard';
 		return view('admin/dashboard')->with('title',$title)->with('count_data',$count_data);
 	}
 	
@@ -132,6 +132,41 @@ class AdminController extends Controller
 			$category = Category::orderBy('id','desc')->get();
 			$title = 'View Category';
 			return view('admin/category/view')->with('title',$title)->with('categories',$category);
+		}catch(\Exception $e){
+            return response($this->getErrorResponse($e->getMessage()));
+        }
+	}
+	
+	public function addBrand(Request $request){
+		$title = 'Add Brand';
+		if($request->session()->has('product_file')){
+			$request->session()->forget('product_file');
+		}		
+		$category = Category::where('status',1)->orderBy('id','desc')->get();
+		$product_fields = array();
+		$cat_id = '';
+		if($request->cat_id){
+			$cat_id = decryptId($request->cat_id);
+			$product_fields = Category::where('id',$cat_id)->first()->field;
+			if($product_fields){
+				$product_fields = json_decode($product_fields->filed);
+				$product_fields = $product_fields[0];
+			}
+		}
+		$urlform = 'admin/add-brand';
+		return view('admin/brand/add')->with('title',$title)->with('product_fields',$product_fields)->with('cat_id',$cat_id)->with('categories',$category)->with('urlform',$urlform);
+	}
+	
+	public function addBrandPost(Request $request){
+		try{
+			$product_fields = Category::where('id',$request->cat_id)->first()->field;
+			$product_fields = json_decode($product_fields->filed,true);
+			$product_fields[0] = array('name'=>$product_fields[0]['name'],'label'=>$product_fields[0]['label'],'field'=>array_merge($product_fields[0]['field'],array($request->name=>$request->name)));
+			DB::table('fields')->where('cat_id',$request->cat_id)->update(array('filed'=>json_encode($product_fields)));  
+			$response['message'] = 'Brand add successfully';
+			$response['delayTime'] = 2000;
+			$response['url'] = url('/admin/add-brand?cat_id='.encryptID($request->cat_id));
+			return response($this->getSuccessResponse($response));
 		}catch(\Exception $e){
             return response($this->getErrorResponse($e->getMessage()));
         }
@@ -329,6 +364,9 @@ class AdminController extends Controller
 			$validation = $this->agentNewFeatureValidations($request,$validation_filed);
 			if($validation['status']==false){
 				return response($this->getValidationsErrors($validation));
+			}
+			if(!$request->session()->has('product_file')){
+				return response($this->getValidationsErrors(array('status'=>false,'errors'=>array("Bra_name"=>'Please Drop or upload at least one image.'))));
 			}
 			$input = $request->all();
 			$input['product_image'] = array();

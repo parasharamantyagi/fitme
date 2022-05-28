@@ -10,7 +10,7 @@ class BandBust extends Model
 	protected $table="band_busts";
 	
 	protected $fillable = [
-        'user_id', 'bust','band','date','image_path'
+        'user_id', 'bust','band','age','date','image_path'
     ];
 	
 	// public function order(){
