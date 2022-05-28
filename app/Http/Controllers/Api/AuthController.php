@@ -394,19 +394,23 @@ class AuthController extends Controller
     {
 		$inputData = $request->all();
 		$inputData['user_id'] = $request->user()->id;
-		if($request->hasFile('front_image')){
-			   $fron_image_image = $request->file('front_image'); //get the file
-			   $fron_image_image_namefile = 	rand(1,999999) .time() . '.' . $fron_image_image->getClientOriginalExtension();
+		
+		if ($request->hasFile('image')) {
+		   $files = $request->file('image');
+		   unset($inputData['image']);
+		   foreach ($files as $file) {
+			   $namefile = 	rand(1,999999) .time() . '.' . $file->getClientOriginalExtension();
 			   $destinationPath = public_path('/voucher'); //public path folder dir
-			   $fron_image_image->move($destinationPath, $fron_image_image_namefile);  //mve to destination you mentioned
-			   $inputData['front_image'] = 'voucher/'.$fron_image_image_namefile;
-		}
-		if($request->hasFile('back_image')){
-			   $back_image = $request->file('back_image'); //get the file
-			   $back_image_namefile = 	rand(1,999999) .time() . '.' . $back_image->getClientOriginalExtension();
-			   $destinationPath = public_path('/voucher'); //public path folder dir
-			   $back_image->move($destinationPath, $back_image_namefile);  //mve to destination you mentioned
-			   $inputData['back_image'] = 'voucher/'.$back_image_namefile;
+			   $file->move($destinationPath, $namefile);
+			   $inputData['image'][] = 'voucher/'.$namefile;
+		   }
+		   if(count($inputData['image']) == 2){
+			   $inputData['front_image'] = $inputData['image'][0];
+			   $inputData['back_image'] = $inputData['image'][1];
+		   }else{
+			   $inputData['front_image'] = $inputData['image'][0];
+		   }
+		   unset($inputData['image']);
 		}
 		$inputData['status'] = 0;
 		UserVoucher::insert($inputData);

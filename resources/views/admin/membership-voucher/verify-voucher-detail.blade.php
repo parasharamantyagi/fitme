@@ -47,10 +47,10 @@
 										</div>
 										<div class="row">
 											<div class="col-md-6 form-group">
-												  <image src="{{url($user_voucher->fron_image)}}">
+												  <img src="{{url($user_voucher->front_image)}}">
 											</div>
 											<div class="col-md-6 form-group">
-												  <image src="{{url($user_voucher->back_image)}}">
+												  <img src="{{url($user_voucher->back_image)}}">
 											</div>
 										</div>
 										{{Form::open(['url'=>url('admin/membership-voucher-verify/'.encryptID($user_voucher->id)),'id'=>'general_form'])}}
