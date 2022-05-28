@@ -402,6 +402,7 @@ class AdminController extends Controller
 			$my_product = Product::insertGetId($input);
 			for ($x = 0; $x < count($product_fields['Band_size_ID']); $x++) {
 				for ($jj = 0; $jj < count($product_fields['Cup_size_ID'][$x]); $jj++) {
+					$product_field_quantity = explode(',',$product_fields['quantity'][$x]);
 					if($product_fields['image'][$x]){
 						$first_product_fields = $product_fields['image'][$x];
 					}else{
@@ -411,7 +412,7 @@ class AdminController extends Controller
 							array(
 							'product_id'=>$my_product,'Band_size_ID'=>$product_fields['Band_size_ID'][$x],
 							'Cup_size_ID'=>$product_fields['Cup_size_ID'][$x][$jj],'color'=>$product_fields['color'][$x],
-							'quantity'=>$product_fields['quantity'][$x],'image'=>$first_product_fields
+							'quantity'=>$product_field_quantity[$jj],'image'=>$first_product_fields
 							)
 					);
 				}
