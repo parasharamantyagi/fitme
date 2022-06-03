@@ -39,6 +39,12 @@
                                         </div>
 										<div class="row">
 												<div class="col-md-6 form-group">
+												  <label>Image</label>
+												  <input class="form-control" name="image" type="file" aria-invalid="false">
+												</div>
+                                        </div>
+										<div class="row">
+												<div class="col-md-6 form-group">
 												  <label>Misapplying message</label>
 												  <input class="form-control" name="misapplying_message" type="text" value="{{$token['misapplying_message']}}" aria-invalid="false" required>
 												</div>

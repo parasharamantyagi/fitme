@@ -56,7 +56,7 @@
 															@foreach($product_fields->field as $product_key => $product_val)
 															<tr>
 																<td>{{$product_val}}</td>
-																<td><button data-toggle="tooltip" title="" class="pd-setting-ed" onclick="deleteData('{{json_encode(array($product_val))}}','brand_delete')" data-original-title="Trash"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
+																<td><button data-toggle="tooltip" title="" class="pd-setting-ed" onclick="deleteData('{{json_encode(array($product_val,$cat_id))}}','brand_delete')" data-original-title="Trash"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
 															</tr>
 															@endforeach
 													</table>

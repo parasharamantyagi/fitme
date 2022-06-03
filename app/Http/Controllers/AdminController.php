@@ -90,6 +90,14 @@ class AdminController extends Controller
 				Video::where('id',$request->id)->delete();
 				$response['message'] = 'Configuration delete successfully';
 				$response['url'] = url('/admin/view-configuration');
+			}else if($request->action == 'brand_delete'){
+				$myinputData = json_decode($inputData['id']);
+				$product_fields = Category::where('id',$myinputData[1])->first()->field;
+				$product_fields = json_decode($product_fields->filed,true);
+				unset($product_fields[0]['field'][$myinputData[0]]);
+				DB::table('fields')->where('cat_id',$myinputData[1])->update(array('filed'=>json_encode($product_fields)));
+				$response['message'] = 'Brand delete successfully';
+				$response['url'] = url('/admin/add-brand?cat_id='.encryptID($myinputData[1]));
 			}else if($request->action == 'product_image'){
 				$productImage = ProductImage::find($request->id);
 				$product_id = $productImage->product->id;

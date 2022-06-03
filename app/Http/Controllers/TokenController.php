@@ -151,6 +151,13 @@ class TokenController extends Controller
 		try{
 			$token_id = Crypt::decrypt($id);
 			$inputData = $request->all();
+			if ($request->hasFile('image')) {
+				$image = $request->file('image'); //get the file
+				$namefile = rand(1,999999) .time() . '.' . $image->getClientOriginalExtension();
+				$destinationPath = public_path('/membership-voucher'); //public path folder dir
+			    $image->move($destinationPath, $namefile);  //mve to destination you mentioned
+			    $inputData['image'] = 'membership-voucher/'.$namefile;
+			}
 			$token_check = Token::where('id','!=',$token_id)->where('token_name',$inputData['token_name'])->first();
 			if(!$token_check){
 				unset($inputData['_token']);
@@ -170,6 +177,13 @@ class TokenController extends Controller
 	public function addMembershipVoucherPost(Request $request){
 		try{
 			$inputData = $request->all();
+			if ($request->hasFile('image')) {
+				$image = $request->file('image'); //get the file
+				$namefile = rand(1,999999) .time() . '.' . $image->getClientOriginalExtension();
+				$destinationPath = public_path('/membership-voucher'); //public path folder dir
+			    $image->move($destinationPath, $namefile);  //mve to destination you mentioned
+			    $inputData['image'] = 'membership-voucher/'.$namefile;
+			}
 			$token_check = Token::where('token_name',$inputData['token_name'])->first();
 			if(!$token_check){
 				$inputData['category'] = 'membership_voucher';

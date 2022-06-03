@@ -46,6 +46,16 @@
 											@endforeach
 											<div class="breadcomb-ctn">
 												<h2>Extra image</h2>
+												<table>
+													<tr>
+														<th>Status</th>
+														<th>Action</th>
+													</tr>
+												<tr>
+														<td>Status</td>
+														<td>Action</td>
+												</tr>
+												</table>
 												@foreach($product->admin_product_field as $productfield)
 												<div class="col-md-{{(12/count($product->admin_product_field))}} form-group">
 													<label>{{$productfield->color}}</label>
