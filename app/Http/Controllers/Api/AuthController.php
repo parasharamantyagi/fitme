@@ -465,9 +465,9 @@ class AuthController extends Controller
 				$myCart_one  = $myCart;
 				$product_id = $myCart->product_id;
 				$my_product = ProductField::where('id',$product_id)->first();
-				$product = Product::with(['product_images','product_field.product_field_images'])->whereHas('product_field',function($query) use($product_id){
-					return $query->where('id', $product_id);
-				})->first();
+				$my_product->total_quantity = $my_product->quantity;
+				$my_product->quantity = $myCart_one->quantity;
+				$product = Product::with(['product_images'])->where('id',$my_product->product_id)->first();
 				$resultArray[] = array(
 							'id'=>$myCart_one->id,'user_id'=>$myCart_one->user_id,'cat_id'=>$myCart_one->cat_id,
 							'product_id'=>$myCart_one->product_id,'quantity'=>$myCart_one->quantity,'status'=>$myCart_one->status,
