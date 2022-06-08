@@ -463,13 +463,17 @@ class AuthController extends Controller
 			$total_amount = array();
 			foreach($myCarts as $myCart){
 				$myCart_one  = $myCart;
-					$product = Product::with('product_images')->where('id',$myCart->product_id)->first();
+				$product_id = $myCart->product_id;
+				$my_product = ProductField::where('id',$product_id)->first();
+				$product = Product::with(['product_images','product_field.product_field_images'])->whereHas('product_field',function($query) use($product_id){
+					return $query->where('id', $product_id);
+				})->first();
 				$resultArray[] = array(
 							'id'=>$myCart_one->id,'user_id'=>$myCart_one->user_id,'cat_id'=>$myCart_one->cat_id,
 							'product_id'=>$myCart_one->product_id,'quantity'=>$myCart_one->quantity,'status'=>$myCart_one->status,
 							'created_at'=>$myCart_one->created_at,'updated_at'=>$myCart_one->updated_at,
 							'category'=>array('id'=>$myCart_one->category->id,'title'=>$myCart_one->category->title),
-							'product'=>$product
+							'my_product'=>$my_product,'product'=>$product
 							);
 				if($product && $product->price)
 					$total_amount[] = $myCart_one->quantity * $product->price;
