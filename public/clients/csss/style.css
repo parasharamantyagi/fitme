@@ -2224,3 +2224,19 @@ h2.resp-tab-active:before {
 	padding-left: 30px!important;
 	}
 }
+#preloader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	background-color: #FFF;
+	min-height: 100%;
+	width: 100%;
+	height: auto;
+	opacity: .50;
+	filter: alpha(opacity=65);
+	background-image: url(../fit-image/app-loading.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	display: none;
+}

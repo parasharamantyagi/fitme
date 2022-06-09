@@ -24,6 +24,10 @@ var toastr = {
       });
   }
 }
+
+$(document).ready(function (){
+	// $("#preloader").show();
+});
 $(document).ready(function ()
 {
     var minPhoneLen = 10;

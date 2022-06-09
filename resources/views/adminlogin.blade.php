@@ -1,8 +1,6 @@
 @extends('layout.app')
 
 @section('content')
-
-
 		<div class="page-wrapper">
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
@@ -10,7 +8,7 @@
             <div class="change-pass-col-page mb-5 mt-5">
                <div class="container-detail">
                   <div class="row">
-					
+					<div id="preloader"></div>
                      <div class="col-md-12">
                         <div class="admin-change-pass-col ">
                            {{Form::open(['url'=>url('admin-login'),'id'=>'general_form'])}}	

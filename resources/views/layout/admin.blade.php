@@ -363,7 +363,7 @@
                 </div>
             </div>
         </div>
-		
+		<div id="preloader"></div>
 		@yield('content')
 		
 		
