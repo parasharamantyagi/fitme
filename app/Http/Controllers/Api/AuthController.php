@@ -56,6 +56,9 @@ class AuthController extends Controller
 			$user->name = $request->name;
 			$user->email = $request->email;
 			$user->phone = $request->phone;
+			if($request->year_of_birth){
+				$user->year_of_birth = $request->year_of_birth;
+			}
 			$user->password = bcrypt($request->password);
 			$user->save();
 			$user->user_otp(array('user_id'=>$user->id,'otp'=>$user_otp,'status'=>0));
@@ -537,21 +540,22 @@ class AuthController extends Controller
 			$products = Cart::with('product')->where('user_id',$user)->get();
 			$userProduct = array();
 			$charge_amount = round($request->amount);
+			$strip_charge = $charge_amount * 100;
 			$createCharge = Stripe\Charge::create ([
-					"amount" => $charge_amount,
+					"amount" => $strip_charge,
 					"currency" => "GBP",
 					"source" => $request->token,
-					"description" => "Making test payment." 
+					"description" => "Payment has been done for Tesco" 
 			]);
 			// $payId = PaymentHistory::insertGetId(array('user_id'=>$user,'charge_id'=>'ch_3JkP8fFmFQnpPZgU0vEnjCd6','amount'=>50,'currency'=>'usd'));
 			if($createCharge->id){
-				$my_order = array('user_id'=>$user,'amount'=>$createCharge->amount);
+				$my_order = array('user_id'=>$user,'amount'=>$charge_amount);
 				if($request->token_id){
 					$my_order['token_id'] = $request->token_id;
 				}
 				$Oid = Order::insertGetId($my_order);
 				ReferralCode::where('referral_id',$user)->where('is_used',1)->update(array('status'=>0));
-				$payId = PaymentHistory::insertGetId(array('user_id'=>$user,'order_id'=>$Oid,'charge_id'=>$createCharge->id,'amount'=>$createCharge->amount,'currency'=>$createCharge->currency,'created_at'=>Carbon::now(),'updated_at'=>Carbon::now()));
+				$payId = PaymentHistory::insertGetId(array('user_id'=>$user,'order_id'=>$Oid,'charge_id'=>$createCharge->id,'amount'=>$charge_amount,'currency'=>$createCharge->currency,'created_at'=>Carbon::now(),'updated_at'=>Carbon::now()));
 				foreach($products as $product){
 					$userProduct[] = array('user_id'=>$user,'order_id'=>$Oid,'product_id'=>$product->product_id,'quantity'=>$product->quantity,'color'=>$product->color,'price'=>$product->product->price,'status'=>1);
 				}
