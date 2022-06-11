@@ -18,4 +18,9 @@ class ProductField extends Model
 	public function admin_product_field_images(){
     	return $this->hasMany('App\Model\ProductImage', 'product_field_id', 'id');
     }
+	
+	public function product(){
+    	return $this->hasOne('App\Model\Product', 'id', 'product_id');
+		// return $returnData;
+    }
 }

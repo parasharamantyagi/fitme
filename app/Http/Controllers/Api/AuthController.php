@@ -536,28 +536,40 @@ class AuthController extends Controller
 		try{
 			// GBP
 			$user = $request->user()->id;
+			// $stripe = new \Stripe\StripeClient(
+			  // 'sk_test_51JdZSuFmFQnpPZgUeFWN6NDtUalFH3j9Y8HtK3f63K2GqjPCgsfS6ETqriL5bVVgE1DqQsGQu56yjbCrKR31Ha1n00CrrDekew'
+			// );
+			// $uuuuu = $stripe->tokens->create([
+			  // 'card' => [
+				// 'number' => '4242424242424242',
+				// 'exp_month' => 2,
+				// 'exp_year' => 2023,
+				// 'cvc' => '314',
+			  // ],
+			// ]);
+			// pr($uuuuu);
 			Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 			$products = Cart::with('product')->where('user_id',$user)->get();
 			$userProduct = array();
+			$my_amount = $request->amount;
 			$charge_amount = round($request->amount);
 			$createCharge = Stripe\Charge::create ([
-					"amount" => $charge_amount,
+					"amount" => $charge_amount * 100,
 					"currency" => "GBP",
 					"source" => $request->token,
 					"description" => "Payment has been done for Tesco" 
 			]);
-			$charge_amount = $charge_amount / 100;
-			// $payId = PaymentHistory::insertGetId(array('user_id'=>$user,'charge_id'=>'ch_3JkP8fFmFQnpPZgU0vEnjCd6','amount'=>50,'currency'=>'usd'));
 			if($createCharge->id){
-				$my_order = array('user_id'=>$user,'amount'=>$charge_amount);
+				$my_order = array('user_id'=>$user,'amount'=>$my_amount);
 				if($request->token_id){
 					$my_order['token_id'] = $request->token_id;
 				}
 				$Oid = Order::insertGetId($my_order);
 				ReferralCode::where('referral_id',$user)->where('is_used',1)->update(array('status'=>0));
-				$payId = PaymentHistory::insertGetId(array('user_id'=>$user,'order_id'=>$Oid,'charge_id'=>$createCharge->id,'amount'=>$charge_amount,'currency'=>$createCharge->currency,'created_at'=>Carbon::now(),'updated_at'=>Carbon::now()));
+				$payId = PaymentHistory::insertGetId(array('user_id'=>$user,'order_id'=>$Oid,'charge_id'=>$createCharge->id,'amount'=>$my_amount,'currency'=>$createCharge->currency,'created_at'=>Carbon::now(),'updated_at'=>Carbon::now()));
 				foreach($products as $product){
-					$userProduct[] = array('user_id'=>$user,'order_id'=>$Oid,'product_id'=>$product->product_id,'quantity'=>$product->quantity,'color'=>$product->color,'price'=>$product->product->price,'status'=>1);
+					$productField = ProductField::find($product->product_id);
+					$userProduct[] = array('user_id'=>$user,'order_id'=>$Oid,'product_id'=>$product->product_id,'quantity'=>$product->quantity,'color'=>$product->color,'price'=>$productField->product->price,'status'=>1);
 				}
 				UserProduct::insert($userProduct);
 				UserToken::where('user_id',$user)->where('status',0)->update(array('status'=>1,'updated_at'=>Carbon::now()));
