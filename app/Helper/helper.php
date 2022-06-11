@@ -131,6 +131,12 @@ if (! function_exists('pr')) {
     }
 }
 
+if (! function_exists('app_file_url')) {
+    function app_file_url($input) {
+		// return 'http://fitme.tech/'.$input;
+		return url($input);
+    }
+}
 
 
 ?>

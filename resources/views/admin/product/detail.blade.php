@@ -6,6 +6,10 @@
 	.breadcome-list {
 		margin: 30px 0px 30px;
 	}
+	label.toggleSwitch.nolabel {
+		float: right;
+		margin: 4px 25px;
+	}
 	</style>
 @endsection
 
@@ -26,10 +30,10 @@
 											</div>
 											@foreach($product->product_images as $product_image)
 												<div class="col-md-{{(12/count($product->product_images))}} form-group">
-													<img src="{{url($product_image->file_path)}}" class="form-control" alt="" style="height: 200px;width: 375px;" />
+													<img src="{{app_file_url($product_image->file_path)}}" class="form-control" alt="" style="height: 200px;width: 375px;" />
 													<div class="row product_images_action">
 														<div class="col-md-2 form-group">
-														<label class="toggleSwitch nolabel" onclick="" style="margin-top: 5px;">
+														<label class="toggleSwitch nolabel" onclick="">
 																<input class="toggle-switch" data-type="product_images" data-id="{{$product_image->id}}" type="checkbox"  @if($product_image->status) checked @endif/>
 																<span>
 																	<span>OFF</span>
@@ -44,25 +48,16 @@
 													</div>
 												</div>
 											@endforeach
+											</div>
 											<div class="breadcomb-ctn">
 												<h2>Extra image</h2>
-												<table>
-													<tr>
-														<th>Status</th>
-														<th>Action</th>
-													</tr>
-												<tr>
-														<td>Status</td>
-														<td>Action</td>
-												</tr>
-												</table>
 												@foreach($product->admin_product_field as $productfield)
-												<div class="col-md-{{(12/count($product->admin_product_field))}} form-group">
+												<div class="row">
+												<div class="col-md-4 form-group">
 													<label>{{$productfield->color}}</label>
-													<img src="{{url($productfield->image)}}" class="form-control" alt="" style="height: 200px;width: 375px;" />
+													<img src="{{app_file_url($productfield->image)}}" class="form-control" alt="" style="height: 200px;width: 375px;" />
 													<div class="row product_images_action">
-														<div class="col-md-2 form-group">
-														<label class="toggleSwitch nolabel" onclick="" style="margin-top: 5px;">
+														<label class="toggleSwitch nolabel" onclick="">
 																<input class="toggle-switch" data-type="product_field_image" data-id="{{$productfield->id}}" type="checkbox"  @if($productfield->status) checked @endif/>
 																<span>
 																	<span>OFF</span>
@@ -70,36 +65,32 @@
 																</span>
 																<a></a>
 														</label>
-														</div>
 														<div class="col-md-4 form-group custom-pro-edt-ds">
 														<button type="submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10" onclick="deleteData({{$productfield->id}},'product_image')">Delete</button>
 														</div>
 													</div>
-													<div class="row">
-														@foreach($productfield->admin_product_field_images as $productFieldImages)
-															<div class="col-md-{{(12/count($productfield->admin_product_field_images))}} form-group">
-																<img src="{{url($productFieldImages->file_path)}}" class="form-control" alt="" style="height: 200px;width: 375px;" />
-															</div>
+												</div>
+												@foreach($productfield->admin_product_field_images as $productFieldImages)
+													<div class="col-md-3 form-group">
+															<label>{{$productfield->color}} (Sub image)</label>
+															<img src="{{app_file_url($productFieldImages->file_path)}}" class="form-control" alt="" style="height: 200px;width: 375px;" />
 															<div class="row product_images_action">
-																<div class="col-md-2 form-group">
-																<label class="toggleSwitch nolabel" onclick="" style="margin-top: 5px;">
-																		<input class="toggle-switch" data-type="product_images" data-id="{{$productFieldImages->id}}" type="checkbox"  @if($productFieldImages->status) checked @endif/>
-																		<span>
-																			<span>OFF</span>
-																			<span>ON</span>
-																		</span>
-																		<a></a>
-																</label>
-																</div>
-																<div class="col-md-4 form-group custom-pro-edt-ds">
-																<button type="submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10" onclick="deleteData({{$productFieldImages->id}},'product_image')">Delete</button>
-																</div>
+															<label class="toggleSwitch nolabel" onclick="">
+																	<input class="toggle-switch" data-type="product_images" data-id="{{$productFieldImages->id}}" type="checkbox"  @if($productFieldImages->status) checked @endif/>
+																	<span>
+																		<span>OFF</span>
+																		<span>ON</span>
+																	</span>
+																	<a></a>
+															</label>
+															<div class="col-md-4 form-group custom-pro-edt-ds">
+															<button type="submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10" onclick="deleteData({{$productFieldImages->id}},'product_image')">Delete</button>
 															</div>
-														@endforeach
-													</div>
+															</div>
+														</div>
+												@endforeach
 												</div>
 											@endforeach
-											</div>
 											</div>
 											<div class="row">
 											<div class="col-md-4 form-group">

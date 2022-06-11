@@ -17,6 +17,7 @@
                                     <th>Sr. no </th>
                                     <th>name</th>
                                     <th>email</th>
+                                    <th>Total Product</th>
                                     <th>phone</th>
                                     <th>Amount</th>
 									<th>Action</th>
@@ -26,6 +27,7 @@
                                     <td>{{$key+1}}</td>
                                     <td>{{($all_Order->name) ? $all_Order->name: 'N/A'}}</td>
                                     <td>{{$all_Order->email}}</td>
+                                    <td>{{count($all_Order->user_product)}}</td>
                                     <td>{{($all_Order->phone) ? $all_Order->phone:'N/A' }}</td>
                                     <td>{{my_currecy($all_Order->amount)}}</td>
                                     <td>
