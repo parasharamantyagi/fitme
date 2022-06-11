@@ -540,13 +540,13 @@ class AuthController extends Controller
 			$products = Cart::with('product')->where('user_id',$user)->get();
 			$userProduct = array();
 			$charge_amount = round($request->amount);
-			$strip_charge = $charge_amount * 100;
 			$createCharge = Stripe\Charge::create ([
-					"amount" => $strip_charge,
+					"amount" => $charge_amount,
 					"currency" => "GBP",
 					"source" => $request->token,
 					"description" => "Payment has been done for Tesco" 
 			]);
+			$charge_amount = $charge_amount / 100;
 			// $payId = PaymentHistory::insertGetId(array('user_id'=>$user,'charge_id'=>'ch_3JkP8fFmFQnpPZgU0vEnjCd6','amount'=>50,'currency'=>'usd'));
 			if($createCharge->id){
 				$my_order = array('user_id'=>$user,'amount'=>$charge_amount);
