@@ -29,7 +29,7 @@
                                     <td>{{($all_Order->phone) ? $all_Order->phone:'N/A' }}</td>
                                     <td>{{my_currecy($all_Order->amount)}}</td>
                                     <td>
-                                        <button data-toggle="tooltip" title="View detail" class="pd-setting-ed" onclick="editData({{$all_Order->id}},'order-detail')"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                        <button data-toggle="tooltip" title="View detail" class="pd-setting-ed" onclick="editData('{{encryptID($all_Order->id)}}','order-detail')"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                      </td>
                                 </tr>
 								@endforeach

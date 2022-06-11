@@ -589,9 +589,11 @@ class AdminController extends Controller
 	
 	public function orderDetail($id){
 		try{
+			$id = decryptId($id);
 			$order = Order::find($id);
 			$user_address = User::find($order->user_id);
-			$user_products = UserProduct::with('product')->where('order_id',$id)->get();
+			$user_products = UserProduct::with('product_field')->where('order_id',$id)->get();
+			// pr($user_products[0]->product_field->product->toArray());
 			$title = 'Order detail';
 			return view('admin/order/detail')->with('title',$title)->with('order',$order)->with('user_products',$user_products)->with('user_address',$user_address);
 		}catch(\Exception $e){

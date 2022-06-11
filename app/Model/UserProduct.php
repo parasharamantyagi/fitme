@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserProduct extends Model
 {
 	// protected $table = 'customers';
-    public function product(){
-    	return $this->hasOne('App\Model\Product', 'id', 'product_id');
+    public function product_field(){
+    	return $this->hasOne('App\Model\ProductField', 'id', 'product_id');
     }
 }
