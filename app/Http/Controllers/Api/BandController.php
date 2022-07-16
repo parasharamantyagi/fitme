@@ -48,7 +48,19 @@ class BandController extends Controller
 			$input = $request->all();
 			$input['user_id'] = $request->user()->id;
 			BandBust::insert($input);
-			$content = implode(",",array($input["band"],$input["bust"],$input["age"]));
+			$content_array = array($input["band"],$input["bust"]);
+			if($request->example){
+				array_push($content_array,$request->example);
+				// $content_array = array($input["band"],$input["bust"],$input["example"],$input["age"]);
+			}else{
+				array_push($content_array,"0.00");
+			}
+			if($request->age){
+				array_push($content_array,$request->age);
+			}else{
+				array_push($content_array,0);
+			}
+			$content = implode(",",$content_array);
 			$fp = fopen(public_path('/bb/'.$input['image_path'].'.txt'),"wb");
 			fwrite($fp,$content);
 			fclose($fp);

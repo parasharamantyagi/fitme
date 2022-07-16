@@ -599,6 +599,12 @@ class AuthController extends Controller
 	public function testing(Request $request)
     {
 		try{
+			$input = $request->all();
+			// $array_val = array('aaa');
+			// if($request->example){
+				// array_push($array_val,$request->example);
+			// }
+			// pr($array_val);
 			return response()->json(api_response(1, "testing 1", array()));
 		}catch(\Exception $e){
 			return response($this->getApiErrorResponse($e->getMessage()));
