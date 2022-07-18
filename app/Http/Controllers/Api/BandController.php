@@ -49,8 +49,8 @@ class BandController extends Controller
 			$input['user_id'] = $request->user()->id;
 			BandBust::insert($input);
 			$content_array = array($input["band"],$input["bust"]);
-			if($request->example){
-				array_push($content_array,$request->example);
+			if($request->degree){
+				array_push($content_array,$request->degree);
 				// $content_array = array($input["band"],$input["bust"],$input["example"],$input["age"]);
 			}else{
 				array_push($content_array,"0.00");
