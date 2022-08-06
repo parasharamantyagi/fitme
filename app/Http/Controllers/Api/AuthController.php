@@ -244,12 +244,38 @@ class AuthController extends Controller
         return response()->json(api_response(1, "User update successfully", $user));
     }
 	
+	/**
+     * Get the authenticated User
+     *
+     * @return [json] user object
+     */
+    public function notificationStatus(Request $request)
+    {
+		$my_user = $request->user();
+		$updateData = $request->all();
+		User::where('id',$my_user->id)->update($updateData);
+		$user = User::find($my_user->id);
+        return response()->json(api_response(1, "Notification has been update successfully", $user));
+    }
+	
 	public function notificationPost(Request $request)
     {
 		$inputData = explode('_',$request->folder);
 		$user = User::find($inputData[1]);
 		$cccccccccc = PlivoSms::push_notification($user->device_token,array('message'=>"Your new 3D-Model has been generated",'type'=>1));
 		return response()->json(api_response(1, "Notification send successfully", $cccccccccc));
+	}
+	
+	public function reset_password(Request $request)
+    {
+		$my_user = $request->user();
+		$updateData = $request->all();
+		if(Auth::guard('web')->attempt(array('email'=>$my_user->email,'password'=>$updateData['old']), false, false)) {
+			User::where('id',$request->user()->id)->update(array('password'=>$updateData['new']));
+			return response()->json(api_response(1, "Your password has been update successfully", $my_user));
+		  } else {
+			return response()->json(api_response(0, "Your old password does't match", $my_user));
+		 }
 	}
 	
 	public function curlRequestPost(Request $request)

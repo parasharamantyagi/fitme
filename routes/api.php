@@ -41,6 +41,8 @@ Route::group([
 		Route::post('proceed-to-checkout', 'Api\AuthController@proceedToCheckout');
 		
 		Route::get('my-product', 'Api\AuthController@myProduct');
+		Route::post('notification_status', 'Api\AuthController@notificationStatus');
+		Route::post('reset_password', 'Api\AuthController@reset_password');
 		
 		
 		Route::get('my-referral', 'Api\AuthController@myReferral');
