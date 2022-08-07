@@ -262,7 +262,10 @@ class AuthController extends Controller
     {
 		$inputData = explode('_',$request->folder);
 		$user = User::find($inputData[1]);
-		$cccccccccc = PlivoSms::push_notification($user->device_token,array('message'=>"Your new 3D-Model has been generated",'type'=>1));
+		$cccccccccc = array();
+		if($user->notification_status){
+			$cccccccccc = PlivoSms::push_notification($user->device_token,"Your new 3D-Model has been generated",1);
+		}
 		return response()->json(api_response(1, "Notification send successfully", $cccccccccc));
 	}
 	
@@ -291,11 +294,13 @@ class AuthController extends Controller
 			$inputData['status'] = $request->status;
 		}
 		if($request->user_id){
-			$device_token = User::select('device_token')->where('id',$request->user_id)->first();
-			if((int)$request->status){
-				PlivoSms::push_notification($device_token->device_token,'Your latest 3D model is ready to download',1);
-			}else{
-				PlivoSms::push_notification($device_token->device_token,'Sorry to inform for that there was a problem in processing your information please can yourself again',2);
+			$device_token = User::select(['device_token','notification_status'])->where('id',$request->user_id)->first();
+			if($device_token->notification_status){
+				if((int)$request->status){
+					PlivoSms::push_notification($device_token->device_token,'Your latest 3D model is ready to download',1);
+				}else{
+					PlivoSms::push_notification($device_token->device_token,'Sorry to inform for that there was a problem in processing your information please can yourself again',2);
+				}
 			}
 		}
 		CurlRequest::insert($inputData);
