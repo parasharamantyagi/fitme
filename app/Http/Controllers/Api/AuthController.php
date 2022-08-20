@@ -23,6 +23,8 @@ use App\Model\UserToken;
 use App\Model\ReferralCode;
 use Stripe;
 use App\Helper\PlivoSms;
+use Illuminate\Support\Facades\Crypt;
+use App\Traits\CurlTrait;
 // use DB;
 use Mail;
 
@@ -30,7 +32,7 @@ use App\Http\Resources\Product as ProductResource;
 
 class AuthController extends Controller
 {
-	use ResponseTrait;
+	use ResponseTrait, CurlTrait;
     /**
      * Create user
      *
@@ -171,6 +173,28 @@ class AuthController extends Controller
             return response(api_response(0,$e->getMessage(),array()));
         }
     }
+	
+	public function forgotPassword(Request $request){
+		try{
+			$request->validate([
+				'email' => 'required|string|email'
+			]);
+			$user_otp = User::select(['id','name'])->where('email',$request->email)->first();
+			if($user_otp){
+				$email_s = $request->email;
+				Mail::send('emails.email', ['name' => $user_otp->name, 'with_url' => url('reset-password/'.Crypt::encrypt($user_otp->id))], function ($message) use($email_s) {
+					$message->from('uscisdev@gmail.com', 'FITME');
+					$message->to($email_s);
+					$message->subject('Reset password');
+				});
+				return response()->json(api_response(1, "Please check you mail for reset password", array()));
+			}else{
+				return response()->json(api_response(0, "This email id does not exit", array()));
+			}
+		}catch(\Exception $e){
+			return response($this->getApiErrorResponse($e->getMessage()));
+        }
+	}
 	
 	public function verifyOtp(Request $request)
     {

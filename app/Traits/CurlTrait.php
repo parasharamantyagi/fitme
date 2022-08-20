@@ -8,6 +8,14 @@ trait CurlTrait
 	// private $base_url = 'http://localhost:7000/';
 	private $base_url = 'http://51.68.139.99:3000/';
 	
+	public function paython_get_band_bust($input){
+		$client = new \GuzzleHttp\Client();
+		$response = $client->request('POST', 'http://fitme.tech:8082/search_size', ['query' => $input]);
+		$statusCode = $response->getStatusCode();
+		$content = $response->getBody();
+		return $content;
+	}
+	
 	public function Make_GET($link){
         $curl = curl_init();
 		curl_setopt_array($curl, array(
