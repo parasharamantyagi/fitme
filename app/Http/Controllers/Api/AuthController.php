@@ -30,6 +30,12 @@ use Mail;
 
 use App\Http\Resources\Product as ProductResource;
 
+// pr($this->paython_get_band_bust([
+			// 'band' => 32, 
+			// 'bust' => 38,
+			// 'age' => 1,
+		// ]));
+
 class AuthController extends Controller
 {
 	use ResponseTrait, CurlTrait;
