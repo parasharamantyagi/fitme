@@ -297,8 +297,9 @@ class AuthController extends Controller
     {
 		$my_user = $request->user();
 		$updateData = $request->all();
+		// $user->password = bcrypt($request->password);
 		if(Auth::guard('web')->attempt(array('email'=>$my_user->email,'password'=>$updateData['old']), false, false)) {
-			User::where('id',$request->user()->id)->update(array('password'=>$updateData['new']));
+			User::where('id',$request->user()->id)->update(array('password'=>bcrypt($updateData['new'])));
 			return response()->json(api_response(1, "Your password has been update successfully", $my_user));
 		  } else {
 			return response()->json(api_response(0, "Your old password does't match", $my_user));
