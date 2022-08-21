@@ -32,6 +32,7 @@ Route::group([
         Route::get('user', 'Api\AuthController@user');
         Route::get('categories', 'Api\AuthController@getCategories');
 		
+		Route::post('search-size', 'Api\AuthController@searchProductOfSize');
         Route::post('products', 'Api\AuthController@getProducts');
         Route::post('product-detail', 'Api\AuthController@getProductDetail');
 		

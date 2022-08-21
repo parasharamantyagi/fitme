@@ -30,12 +30,6 @@ use Mail;
 
 use App\Http\Resources\Product as ProductResource;
 
-// pr($this->paython_get_band_bust([
-			// 'band' => 32, 
-			// 'bust' => 38,
-			// 'age' => 1,
-		// ]));
-
 class AuthController extends Controller
 {
 	use ResponseTrait, CurlTrait;
@@ -365,6 +359,22 @@ class AuthController extends Controller
 		WatchVideo::insert($inputData);
         return response()->json(api_response(1, "Your activity saved successfully", $inputData));
     }
+	
+	public function searchProductOfSize(Request $request)
+    {
+		try{
+			$product = $request->all();
+			$getProduct = $this->paython_get_band_bust([
+				'band' => 32, 
+				'bust' => 38,
+				'age' => 1,
+			]);
+			// $product =array();
+			return response()->json(array("status"=>1,"message"=>"Product list","data"=>$getProduct));
+		}catch(\Exception $e){
+			return response($this->getApiErrorResponse($e->getMessage()));
+        }
+	}
 	
 	public function getProducts(Request $request)
     {
