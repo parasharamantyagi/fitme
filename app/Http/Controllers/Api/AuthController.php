@@ -396,6 +396,18 @@ class AuthController extends Controller
 				if($request->brand_name){
 					$product = $product->whereIn('brand_name',$request->brand_name);
 				}
+				if($request->cup_size){
+					$cup_size = $request->cup_size;
+					$product = $product->whereHas('product_field',function ($query) use ($cup_size){
+						$query->where('Cup_size_ID',$cup_size);
+					});
+				}
+				if($request->band_size){
+					$band_size = $request->band_size;
+					$product = $product->whereHas('product_field',function ($query) use ($band_size){
+						$query->where('Band_size_ID',$band_size);
+					});
+				}
 				$product = $product->orderBy('id', 'DESC')->paginate(10);
 			}
 			$product = $product->toArray();
