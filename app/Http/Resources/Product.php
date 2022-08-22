@@ -15,10 +15,14 @@ class Product extends JsonResource
 	public function implementFunction($arrayData,$whereObj){
 		return array_map(function ($a) { return $a; },array_filter($arrayData,function ($a) use ($whereObj) {
 					 if(array_key_exists('cup_size',$whereObj) && array_key_exists('band_size',$whereObj)){
-						 if($a['Cup_size_ID'] === $whereObj['cup_size'] && $a['Band_size_ID'] === $whereObj['band_size']){
-							 return true;
+						 if($whereObj['cup_size'] && $whereObj['band_size']){
+							 if($a['Cup_size_ID'] === $whereObj['cup_size'] && $a['Band_size_ID'] === $whereObj['band_size']){
+								 return true;
+							 }else{
+								 return false;
+							 }
 						 }else{
-							 return false;
+							 return true;
 						 }
 					 }else{
 						 return true;
