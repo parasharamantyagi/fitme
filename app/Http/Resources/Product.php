@@ -48,7 +48,9 @@ class Product extends JsonResource
 						));
 			}
 			$returnData['product_field'] = $this->implementFunction($returnData['product_field'],$request->all());
-			$product_array[] = $returnData;
+			if($returnData['product_field']){
+				$product_array[] = $returnData;
+			}
 		}
         return $product_array;
     }
