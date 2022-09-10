@@ -23,9 +23,20 @@ class HomeController extends Controller
 	}
 	
 	public function adminIndex(){
-		
-		return view('adminlogin');
-		
+		try {
+			return view('adminlogin');
+		} catch(\RuntimeException $e) {
+			return Redirect::to('/');
+        }
+	}
+	
+	public function resetPassword($id){
+		try {
+			$decrypt_id = Crypt::decrypt($id);
+			return view('reset-password')->with('id',$id);
+		} catch(\RuntimeException $e) {
+			return Redirect::to('/');
+        }
 	}
 	
 	public function forgetPassword(Request $request){
@@ -269,7 +280,8 @@ class HomeController extends Controller
 	public function resetPasswordPost(Request $request, $id){
 		if($request->new_password){
 			if($request->new_password == $request->confirm_password){
-				User::find(Crypt::decrypt($id))->update(array('password'=>Hash::make($request->new_password)));
+				User::where('id',Crypt::decrypt($id))->update(array('password'=>Hash::make($request->new_password)));
+				// User::find(Crypt::decrypt($id))->update(array('password'=>Hash::make($request->new_password)));
 				return Redirect::to('/')->with('success_message','Your password has been successfully');
 			}else{
 				return Redirect::to('/reset-password/'.$id)->with('error_message','Your confirm password does not match');

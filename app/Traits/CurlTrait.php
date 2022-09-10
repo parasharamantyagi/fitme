@@ -8,6 +8,38 @@ trait CurlTrait
 	// private $base_url = 'http://localhost:7000/';
 	private $base_url = 'http://51.68.139.99:3000/';
 	
+	public function paython_get_band_bust($input){
+		  $post_data = json_encode($input);
+		  // Prepare new cURL resource
+		  $crl = curl_init('http://fitme.tech:8082/search_size');
+		  curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
+		  curl_setopt($crl, CURLINFO_HEADER_OUT, true);
+		  curl_setopt($crl, CURLOPT_POST, true);
+		  curl_setopt($crl, CURLOPT_POSTFIELDS, $input);
+		  // Set HTTP Header for POST request 
+		  curl_setopt($crl, CURLOPT_HTTPHEADER, array(
+			  'Content-Type: application/json'
+			));
+		  // Submit the POST request
+		  $result = curl_exec($crl);
+		  // handle curl error
+		  if ($result === false) {
+			  // throw new Exception('Curl error: ' . curl_error($crl));
+			  //print_r('Curl error: ' . curl_error($crl));
+			  return $result_noti = 0; die();
+		  } else {
+			  return $result; die();
+		  }
+		  // Close cURL session handle
+		  curl_close($crl);
+		
+		// $client = new \GuzzleHttp\Client();
+		// $response = $client->request('POST', 'http://fitme.tech:8082/search_size', ['query' => $input]);
+		// $statusCode = $response->getStatusCode();
+		// $content = $response->getBody();
+		// return $content;
+	}
+	
 	public function Make_GET($link){
         $curl = curl_init();
 		curl_setopt_array($curl, array(
