@@ -93,6 +93,7 @@ class TokenController extends Controller
 		try{
 			$token_id = Crypt::decrypt($id);
 			$userVoucher = UserVoucher::find($token_id);
+			// pr($userVoucher->user_detail->toArray());
 			$title = 'Voucher detail';
 			return view('admin/membership-voucher/verify-voucher-detail')->with('title',$title)->with('user_voucher',$userVoucher);
 		}catch(\Exception $e){

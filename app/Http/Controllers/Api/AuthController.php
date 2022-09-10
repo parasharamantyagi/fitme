@@ -23,7 +23,7 @@ use App\Model\UserToken;
 use App\Model\ReferralCode;
 use Stripe;
 use App\Helper\PlivoSms;
-// use DB;
+use DB;
 use Mail;
 
 use App\Http\Resources\Product as ProductResource;
@@ -643,18 +643,15 @@ class AuthController extends Controller
         }
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public function runQuery(Request $request)
+    {
+		try{
+			DB::statement('ALTER TABLE `videos` ADD `thumb_image` VARCHAR(200) NULL DEFAULT NULL AFTER `name`');
+			return response()->json(api_response(1, "testing 1", array()));
+		}catch(\Exception $e){
+			return response($this->getApiErrorResponse($e->getMessage()));
+        }
+	}
 	
 	
 	
