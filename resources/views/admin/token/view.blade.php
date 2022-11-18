@@ -23,7 +23,7 @@
                                     <th>Type</th>
                                     <th>Valid to</th>
 									<th>Status</th>
-                                    <th>Setting</th>
+                                    <th>Action</th>
                                 </tr>
 								@foreach($tokens as $key => $token)
                                 <tr>

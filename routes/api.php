@@ -24,7 +24,9 @@ Route::group([
     Route::post('verify-otp', 'Api\AuthController@verifyOtp');
 	Route::post('test12', 'Api\AuthController@testing');
 	Route::post('notification', 'Api\AuthController@notificationPost');
-	Route::post('forgot-password', 'Api\AuthController@forgotPassword');
+	Route::get('forget-password', 'Api\AuthController@forgotPassword');
+	Route::get('run-query', 'Api\AuthController@runQuery');
+	
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
@@ -32,7 +34,6 @@ Route::group([
         Route::get('user', 'Api\AuthController@user');
         Route::get('categories', 'Api\AuthController@getCategories');
 		
-		Route::post('search-size', 'Api\AuthController@searchProductOfSize');
         Route::post('products', 'Api\AuthController@getProducts');
         Route::post('product-detail', 'Api\AuthController@getProductDetail');
 		

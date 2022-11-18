@@ -46,12 +46,16 @@
 											</div>
 										</div>
 										<div class="row">
+											@if($user_voucher->front_image)
 											<div class="col-md-6 form-group">
 												  <img src="{{url($user_voucher->front_image)}}">
 											</div>
+											@endIf
+											@if($user_voucher->back_image)
 											<div class="col-md-6 form-group">
 												  <img src="{{url($user_voucher->back_image)}}">
 											</div>
+											@endIf
 										</div>
 										{{Form::open(['url'=>url('admin/membership-voucher-verify/'.encryptID($user_voucher->id)),'id'=>'general_form'])}}
 										<div class="row">
